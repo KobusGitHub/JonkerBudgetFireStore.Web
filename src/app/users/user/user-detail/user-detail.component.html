@@ -1,0 +1,35 @@
+<mat-card>
+        <mat-card-title>
+          Details
+        </mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <div layout="row">
+            <div flex></div>
+            <ng-template tdLoading="users.details" layout="row" layout-align="center center">
+              <form layout="column" flex="80" flex-xs="90" [formGroup]="detailForm" novalidate>
+                <h2 class="text-caps">
+                  <mat-icon class="v-align-bottom">person</mat-icon> {{user.username}}</h2>            
+                <mat-input-container>
+                  <input matInput placeholder="First Name" formControlName="firstname" />
+                </mat-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="Last Name" formControlName="surname" />
+                </mat-input-container>
+                <mat-input-container>
+                  <input matInput placeholder="Email Address" formControlName="email" />
+                </mat-input-container>
+                <mat-checkbox class="" matInput placeholder="Active" formControlName="isActive">Active</mat-checkbox>
+              </form>
+            </ng-template>
+            <div flex></div>
+          </div>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+          <div align="end">
+            <button mat-button class="text-caps" (click)="resetUserDetails()" *ngIf="!disabled">RESET</button>
+            <button mat-button class="text-caps" (click)="saveUserDetails()" [disabled]="disabled || detailForm.pristine || !detailForm.valid">SAVE</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>

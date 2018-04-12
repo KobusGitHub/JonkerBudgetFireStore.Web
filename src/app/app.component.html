@@ -1,0 +1,3 @@
+<div [ngClass]="_appStore.themeClass | async" [@appRouterTransition]="o.isActivated && o.activatedRoute.routeConfig.path">
+    <router-outlet #o="outlet"></router-outlet>
+</div>

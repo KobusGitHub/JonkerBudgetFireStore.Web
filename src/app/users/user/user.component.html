@@ -1,0 +1,17 @@
+<mat-toolbar>
+        <button mat-icon-button (click)="back()"><mat-icon class="mat-24">arrow_back</mat-icon></button>
+        <span>Edit User</span>
+        <span flex></span>
+        <!-- <button mat-icon-button (click)="refresh()"><mat-icon class="mat-24">refresh</mat-icon></button> -->
+      </mat-toolbar>
+      <!-- Main Content -->
+      <div layout-gt-xs="row">
+      
+        <div layout="column" flex-gt-xs="50">
+          <app-user-detail [user]="_usersStore.editUser | async" [disabled]="_usersStore.isBusy | async"></app-user-detail>
+        </div>
+        <div layout-gt-xs="column" flex-gt-xs="50">
+            <app-user-roles [user]="_usersStore.editUser | async" [disabled]="_usersStore.isBusy | async"></app-user-roles>
+        </div>
+      </div>
+      

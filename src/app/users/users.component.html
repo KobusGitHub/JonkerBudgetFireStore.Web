@@ -1,0 +1,85 @@
+<td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'push'"
+    [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+    <mat-toolbar td-sidenav-content>
+        <span>Users</span>
+    </mat-toolbar>
+    <mat-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
+        <ng-template tdLoading="roles.list">
+            <a (click)="_usersStore.selectUserSideMenu(menu)" mat-list-item *ngFor="let menu of _usersStore.userSideMenu | async">
+                <mat-icon [color]="menu.selected ? 'primary': ''" mat-list-icon>{{menu.icon}}</mat-icon>
+                {{menu.name}}
+            </a>
+        </ng-template>
+    </mat-nav-list>
+    <mat-toolbar>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex>
+            <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <span *ngFor="let menu of (_usersStore.userSideMenu | async)">
+                    <span *ngIf="menu.selected">Filtered By "{{menu.description}}"</span>
+                </span>
+            <span fxFlex></span>
+            <button (click)="_usersStore.loadInitialUsers()" mat-icon-button>
+                <mat-icon class="mat-24">refresh</mat-icon>
+            </button>
+            <button (click)="_usersStore.sortUsers()" mat-icon-button>
+                <mat-icon class="mat-24">sort</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <div fxFlex>
+            <mat-card>
+                <td-search-box class="push-left push-right custom-td-search-box" placeholder="Search..." [alwaysVisible]="true" (searchDebounce)="filterUsers($event)"></td-search-box>
+                <mat-divider></mat-divider>
+                <ng-template tdLoading="users.list">
+                    <mat-list class="will-load">
+                        <div class="mat-padding" *ngIf="(_usersStore.getFilteredUsers(filter) | async)?.length === 0" fxLayout="row" fxLayoutAlign="center center">
+                            <h3>No users to display.</h3>
+                        </div>
+                        <ng-template let-user let-last="last" ngFor [ngForOf]="_usersStore.getFilteredUsers(filter) | async">
+                            <mat-list-item>
+                                <mat-icon *ngIf="user.isActive" color="primary" mat-list-avatar>person</mat-icon>
+                                <mat-icon *ngIf="!user.isActive" color="warn" mat-list-avatar>person</mat-icon>
+                                <h3 mat-line> {{user.firstname}} {{user.surname}} </h3>
+                                <p mat-line> {{user.email}} </p>
+                                <p mat-line hide-gt-md class="mat-caption"> created: {{ user.createdDateUtc | amUtc | amDateFormat: 'YYYY-MM-DD HH:mm A' }} </p>
+                                <span fxFlex></span>
+                                <span hide-xs hide-sm hide-md fxFlex.gt-xs="100" fxFlex.xs="10" fxLayout.gt-xs="row">
+                                    <mat-chip-list>
+                                        <mat-chip color="primary" selected="true">{{user.roleCount}} Roles</mat-chip>
+                                        <mat-chip *ngIf="user.isActiveDirectoryUser" color="primary" selected="true">Active Directory</mat-chip>
+                                        <mat-chip *ngIf="!user.isActive" color="warn" selected="true">Disabled</mat-chip>
+                                    </mat-chip-list>
+                                </span>
+                                <span hide-xs hide-sm hide-md fxFlex.gt-xs="100" fxFlex.xs="40" fxLayout.gt-xs="row">
+                                    <div class="mat-caption tc-grey-500" fxFlex.gt-xs="50"> created: {{ user.createdDateUtc | amDateFormat: 'YYYY-MM-DD HH:mm' }} </div>
+                                    <div class="mat-caption tc-grey-500" fxFlex.gt-xs="50"> by: {{ user.createdBy }} </div>
+                                </span>
+                                <span>
+                                    <button mat-icon-button [mat-menu-trigger-for]="menu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu x-position="before" #menu="matMenu">
+                                        <a [routerLink]="[user.userId]" mat-menu-item>
+                                            <mat-icon>edit</mat-icon> Edit
+                                        </a>
+                                        <button *ngIf="user.isActive" (click)="enableOrDisable(user.userId, false)" mat-menu-item>
+                                                <mat-icon>remove_circle_outline</mat-icon> Disable
+                                            </button>
+                                            <button *ngIf="!user.isActive" (click)="enableOrDisable(user.userId, true)" mat-menu-item>
+                                                <mat-icon>add_circle_outline</mat-icon> Enable
+                                            </button>                                       
+                                    </mat-menu>
+                                </span>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+                        </ng-template>
+                    </mat-list>
+                </ng-template>
+            </mat-card>
+        </div>
+    </div>
+    <button mat-fab color="accent" class="mat-fab-bottom-right" (click)="createUser()"><mat-icon>add</mat-icon></button>
+</td-layout-manage-list>

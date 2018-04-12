@@ -1,0 +1,64 @@
+// Custom style for loading elements without height
+.will-load {
+    min-height: 80px;
+}
+
+// Href line height wasn't right for mat-icon-button
+a[mat-icon-button] {
+    line-height: 36px;
+}
+
+// Capitalize
+.text-capital {
+    text-transform: capitalize;
+}
+
+// Lighter font weight in sub-toolbars
+td-layout-manage-list .mat-toolbar {
+    font-weight: 400;
+}
+
+// .custom-toolbar>div>.mat-toolbar {
+//   background-image: url("/assets/img/blackTriangles_64.png") !important;
+//   color: whitesmoke !important;
+// }
+// .custom-toolbar>.mat-toolbar {
+//   background-image: url("/assets/img/blackTriangles_64.png") !important;
+//   color: whitesmoke !important;
+// }
+
+.mat-subhead {
+    font-family: 'Raleway', sans-serif;
+    font-size: 32px !important;
+    margin-bottom: 8px;
+}
+
+.mat-input-container .mat-datepicker-toggle,
+.mat-input-container .mat-icon {
+    font-size: 150% !important;
+    margin-top: -4px;
+}
+
+// td-navigation-drawer>.mat-toolbar {
+//   background-image: url("/assets/img/blackTriangles.png") !important;
+//   color: whitesmoke !important;
+// }
+
+.custom-td-search-box .mat-input-wrapper {
+    margin: 1em 0;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+}
+
+.text-white {
+    color: white;
+}
+
+.td-navigation-drawer-title {
+    font-size: 24px !important;
+    font-family: 'Raleway', sans-serif !important;
+}
+
+// ::-webkit-scrollbar {
+//     display: none;
+// }

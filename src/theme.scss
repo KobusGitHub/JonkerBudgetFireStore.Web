@@ -1,0 +1,45 @@
+@import '../node_modules/@angular/material/_theming.scss';
+@import '../node_modules/@covalent/core/theming/_all-theme';
+@import '../node_modules/@covalent/markdown/_markdown-theme';
+@import '../node_modules/@covalent/highlight/_highlight-theme';
+@import url('https://fonts.googleapis.com/css?family=Raleway:200');
+
+@include mat-core();
+
+// Light Theme
+//$light-theme-primary: mat-palette($mat-blue, 700);
+$light-theme-primary: mat-palette($mat-red, 700);
+
+$light-theme-accent: mat-palette($mat-orange, 800, A100, A400);
+$light-theme-warn: mat-palette($mat-red, 600);
+$light-theme: mat-light-theme($light-theme-primary, $light-theme-accent, $light-theme-warn);
+
+@include angular-material-theme($light-theme);
+@include covalent-theme($light-theme);
+@include covalent-markdown-theme($light-theme);
+
+// Dark Theme
+.dark-theme {
+    $dark-primary: mat-palette($mat-blue, 500);
+    $dark-accent: mat-palette($mat-orange, 800, A100, A400);
+    $dark-warn: mat-palette($mat-red, 600);
+    $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+    @include angular-material-theme($dark-theme);
+    @include covalent-theme($dark-theme);
+    @include covalent-markdown-theme($dark-theme);
+}
+
+// Other Theme
+.other-theme {
+    $other-primary: mat-palette($mat-grey, 50);
+    $other-accent: mat-palette($mat-orange, 800);
+    $other-warn: mat-palette($mat-red, 600);
+    $other-theme: mat-light-theme($other-primary, $other-accent, $other-warn);
+
+    @include angular-material-theme($other-theme);
+    @include covalent-theme($other-theme);
+    @include covalent-markdown-theme($other-theme);
+}
+
+@include covalent-highlight-theme();

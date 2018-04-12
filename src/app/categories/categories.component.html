@@ -1,0 +1,47 @@
+<ng-template tdLoading="category.list" layout="row" layout-align="center center">
+<!-- <div class="flex-container" fxLayout="row" fxLayoutAlign="stretch stretch" style="padding-bottom:60px;" layout-wrap>
+  <div flex-gt-xs="50" flex-gt-md="25" flex="100" *ngFor="let item of items" style="cursor: pointer;" (click)="detailClick(item)">
+    <mat-card>
+      <mat-card-content style="margin-bottom:0px;" flex fxLayout="column">
+        <div fxFlexAlign="center">
+          <i class="material-icons" *ngIf="item.isFavourite" style="color:Red;">star rate</i>
+          <i class="material-icons" *ngIf="!item.isFavourite" style="color:lightgray;">star rate</i>
+        </div>
+        <div flex fxFlexAlign="center" style="padding-top:5px;">{{item.categoryName}}</div>
+        <div fxFlexAlign="end" style="font-weight: bold; padding-top:5px;">
+          <app-currency-formatter style="text-align: right" [numberToFormat]='item.budget'></app-currency-formatter>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> -->
+
+<div class="flex-container" fxLayout="row" fxLayoutAlign="stretch stretch" style="padding-bottom:60px;" layout-wrap>
+  <div flex-gt-xs="50" flex-gt-md="25" flex="100" *ngFor="let item of items" style="cursor: pointer;" (click)="detailClick(item)">
+    <mat-card>
+      <mat-card-title style="background-color: gray; color:white">
+          <div style="text-align: center">{{item.categoryName}}</div>
+      </mat-card-title>
+      <mat-card-content style="margin-bottom:0px;" flex fxLayout="row">
+        <div>
+          <i class="material-icons" *ngIf="item.isFavourite" style="color:Red; padding-bottom: 10px; font-size: 40px;">star rate</i>
+          <i class="material-icons" *ngIf="!item.isFavourite" style="color:lightgray; padding-bottom: 10px; font-size: 40px;">star rate</i>
+        </div>
+        <div style="padding-top:12px; padding-left:20px">
+          <app-currency-formatter style="text-align: right" [numberToFormat]='item.budget'></app-currency-formatter>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+</ng-template>
+
+<a mat-fab routerLink="/category-add-modify/0" color="primary" style="top:auto; right:15px; left:auto; bottom:50px; position:fixed;" >
+    <mat-icon>add</mat-icon>
+</a>
+
+<!-- 
+<a mat-fab matTooltip="New Category" matTooltipPosition="before" color="accent" class="mat-fab-position-bottom-right z-3" routerLink="/category-add-modify/0">
+	<mat-icon>add</mat-icon>
+</a> -->

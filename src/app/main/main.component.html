@@ -1,0 +1,53 @@
+<td-layout #layout>
+    <td-navigation-drawer color="primary" fxFlex sidenavTitle="{{appTitle}}" [name]="token.username">
+        <mat-nav-list>
+            <ng-template let-route let-last="last" ngFor [ngForOf]="mainMenuRoutes">
+                <a mat-list-item [routerLink]="[route.data.url]" (click)="layout.close()">
+                    <mat-icon [color]="route.data.url === currentRoute ? 'accent' : ''">{{route.data.icon}}</mat-icon>
+                    <label class="pointer">{{route.data.title}}</label>
+                </a>
+                <mat-divider></mat-divider>
+            </ng-template>
+            <a mat-list-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Sign out</span>
+            </a>
+        </mat-nav-list>
+        <mat-nav-list td-navigation-drawer-menu>
+            <a mat-list-item [routerLink]="['/profile']" (click)="layout.close()">
+                <mat-icon [color]="currentRoute === '/profile' ? 'accent': ''">account_circle</mat-icon>
+                <span>My Profile</span>
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Sign out</span>
+            </a>
+        </mat-nav-list>
+    </td-navigation-drawer>
+    <td-layout-nav class="custom-toolbar">
+        <div td-toolbar-content fxLayout="row" fxLayoutAlign="center center" fxFlex>
+            <button mat-icon-button td-menu-button tdLayoutToggle>
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="mat-icon-logo cursor-pointer">{{currentRouteIcon}}</mat-icon>
+            <span class="cursor-pointer">{{pageTitle}}</span>
+            <span fxFlex></span>
+            <span fxFlex></span>
+            <span class="logo-text" hide-xs hide-sm>{{appTitle}}</span>
+        </div>
+        <div [@mainRouterTransition]="o.isActivated && o.activatedRoute.routeConfig.path">
+            <router-outlet #o="outlet"></router-outlet>
+        </div>
+        <td-layout-footer>
+            <div fxLayout="row">
+                <div fxFlex>
+                    <span class="mat-caption">Powered by Kobus Jonker</span>
+                </div>
+                <div fxFlex fxLayoutAlign="end">
+                    <span class="mat-caption">{{token.username}}</span>
+                </div>
+            </div>
+        </td-layout-footer>
+    </td-layout-nav>
+</td-layout>

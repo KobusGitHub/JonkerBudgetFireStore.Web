@@ -1,0 +1,31 @@
+:host /deep/ {
+    mat-divider {
+        display: block;
+        border-top-style: solid;
+        border-top-width: 1px;
+    }
+}
+
+// .pattern-bg {
+//     background-image: url("/assets/img/triangles.png") !important;
+// }
+
+.title-text {
+    margin-left: 8px;
+    font-family: "Raleway", "Roboto", "Helvetica Neue", "sans-serif";
+}
+
+.logo-text {
+    font-family: 'Raleway', sans-serif;
+    font-size: 48px;
+    color: whitesmoke;
+}
+
+.login-title-icon {
+    font-size: 32px;
+    vertical-align: text-bottom;
+}
+
+.input-lg {
+    font-size: 125%;
+}
