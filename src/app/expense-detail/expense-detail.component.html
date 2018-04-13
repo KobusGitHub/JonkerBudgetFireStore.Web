@@ -5,40 +5,40 @@
       <mat-card-content>
         <mat-list>
           <mat-list-item>
-            <div flex fxFlexAlign="center">
+            <div flex fxFlexAlign="center" class="customPadding">
               Date
             </div>
-            <div flex fxFlexAlign="end">
+            <div flex fxFlexAlign="end"  class="customPadding">
               {{record.recordDate}}
             </div>
             <mat-divider></mat-divider>
           </mat-list-item>
 
           <mat-list-item>
-            <div flex fxFlexAlign="center">
+            <div flex fxFlexAlign="center" class="customPadding">
               Category
             </div>
-            <div flex fxFlexAlign="end">
+            <div flex fxFlexAlign="end"  class="customPadding">
               {{record.category}}
             </div>
             <mat-divider></mat-divider>
           </mat-list-item>
 
           <mat-list-item>
-            <div flex fxFlexAlign="center">
+            <div flex fxFlexAlign="center" class="customPadding">
               Expense Value
             </div>
-            <div flex fxFlexAlign="end">
+            <div flex fxFlexAlign="end"  class="customPadding">
               <app-currency-formatter style="text-align: left" [numberToFormat]='record.expenseValue'></app-currency-formatter>
             </div>
             <mat-divider></mat-divider>
           </mat-list-item>
 
           <mat-list-item>
-            <div flex fxFlexAlign="center">
+            <div flex fxFlexAlign="center" class="customPadding">
               Comment
             </div>
-            <div flex fxFlexAlign="end">
+            <div flex fxFlexAlign="end" class="customPadding">
               {{record.comment}}
             </div>
             <mat-divider></mat-divider>

@@ -15,6 +15,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { CategoryAddModifyComponent } from './category-add-modify/category-add-modify.component';
 import { ExpenseReportComponent } from './expense-report/expense-report.component';
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
+import { CategoryGroupReportComponent } from './category-group-report/category-group-report.component';
+import { CategoryExpenseReportComponent } from './category-expense-report/category-expense-report.component';
 
 const routes: Routes = [
     {
@@ -55,19 +57,31 @@ const routes: Routes = [
                 path: 'categories',
                 component: CategoriesComponent,
                 canActivate: [],
-                data: { roles: [], url: '/categories', title: 'Categories', icon: 'person', show: true, seq: 4 }
+                data: { roles: [], url: '/categories', title: 'Categories', icon: 'attach_money', show: true, seq: 4 }
             },
             {
                 path: 'expense-report',
                 component: ExpenseReportComponent,
                 canActivate: [],
-                data: { roles: [], url: '/expense-report', title: 'Expense Report', icon: 'person', show: true, seq: 4 }
+                data: { roles: [], url: '/expense-report', title: 'Expense Report', icon: 'assignment', show: true, seq: 4 }
+            },
+            {
+                path: 'category-group-report',
+                component: CategoryGroupReportComponent,
+                canActivate: [],
+                data: { roles: [], url: '/category-group-report', title: 'Category Group Report', icon: 'assignment', show: true, seq: 4 }
             },
             {
                 path: 'expense-detail/:expenseGuidId',
                 component: ExpenseDetailComponent,
                 canActivate: [RouteGuard],
                 data: { roles: [], url: '', title: 'Expense Detail', icon: 'person', show: false, seq: 0 }
+            },
+            {
+                path: 'category-expense-report/:catGuidId/:year/:month',
+                component: CategoryExpenseReportComponent,
+                canActivate: [RouteGuard],
+                data: { roles: [], url: '', title: 'Category-Expense Report', icon: 'assignment', show: false, seq: 0 }
             },
             {
                 path: 'users/:id',

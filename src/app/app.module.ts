@@ -29,6 +29,8 @@ import { CurrencyFormatterComponent } from './currency-formatter/currency-format
 import { ExpenseReportComponent } from './expense-report/expense-report.component';
 import { ExpenseFirebaseServiceProvider } from '../services/firebase/expense-firebase-service-provider';
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
+import { CategoryGroupReportComponent } from './category-group-report/category-group-report.component';
+import { CategoryExpenseReportComponent } from './category-expense-report/category-expense-report.component';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -47,6 +49,8 @@ const httpInterceptorProviders: Type<any>[] = [
         CurrencyFormatterComponent,
         ExpenseReportComponent,
         ExpenseDetailComponent,
+        CategoryGroupReportComponent,
+        CategoryExpenseReportComponent,
     ],
     imports: [
         MatGridListModule,

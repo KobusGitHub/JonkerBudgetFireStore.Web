@@ -1,3 +1,4 @@
+
 <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
   <div flex-gt-md="50" flex="100">
     <mat-card>
@@ -32,11 +33,11 @@
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
-          <mat-list-item *ngFor="let record of records" (click)="detailClick(record)">
+          <mat-list-item *ngFor="let record of categories" (click)="detailClick(record)">
             <div flex fxFlexAlign="center">
-              {{record.category}}
+              {{record.categoryName}}
             </div>
-            <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
+            <div flex fxFlexAlign="end" style="padding-bottom:13px;" [style.color]="record.textColor">
               <app-currency-formatter style="text-align: right" [numberToFormat]='record.expenseValue'></app-currency-formatter>
             </div>
             <mat-divider></mat-divider>
