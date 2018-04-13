@@ -32,7 +32,7 @@
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
-          <mat-list-item *ngFor="let record of records">
+          <mat-list-item *ngFor="let record of records" (click)="detailClick(record)">
             <div flex fxFlexAlign="center">
               {{record.category}}
             </div>

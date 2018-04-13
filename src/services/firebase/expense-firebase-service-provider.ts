@@ -102,12 +102,10 @@ export class ExpenseFirebaseServiceProvider {
         });
 
     }
-    public getAllInPeriod(year: number, month: string, callbackMethod) {
-        let yearString = year.toString();
-
+    public getAllInPeriod(year: string, month: string, callbackMethod) {
         let collectionRef = this.db.collection('expense', (ref) => {
             // tslint:disable-next-line:radix
-            return ref.where('month', '==', month).where('year', '==', parseInt(yearString)).orderBy('recordDate');
+            return ref.where('month', '==', month).where('year', '==', parseInt(year)).orderBy('recordDate');
         });
         let notes = collectionRef.valueChanges();
         let subscription = notes.subscribe((res) => {

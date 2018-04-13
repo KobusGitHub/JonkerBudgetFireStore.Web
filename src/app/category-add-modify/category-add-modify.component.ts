@@ -36,7 +36,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.push(this._activatedRoute.params.subscribe((params) => {
       /* tslint:disable:no-string-literal */
-      this.categoryGuidId = params['categoryUserId'];
+      this.categoryGuidId = params['expenseGuidId'];
       if (this.categoryGuidId === '0') {
         this.categoryGuidId = '';
       }

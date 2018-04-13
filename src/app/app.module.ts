@@ -28,6 +28,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { CurrencyFormatterComponent } from './currency-formatter/currency-formatter';
 import { ExpenseReportComponent } from './expense-report/expense-report.component';
 import { ExpenseFirebaseServiceProvider } from '../services/firebase/expense-firebase-service-provider';
+import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -45,6 +46,7 @@ const httpInterceptorProviders: Type<any>[] = [
         CategoryAddModifyComponent,
         CurrencyFormatterComponent,
         ExpenseReportComponent,
+        ExpenseDetailComponent,
     ],
     imports: [
         MatGridListModule,

@@ -14,6 +14,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CategoryAddModifyComponent } from './category-add-modify/category-add-modify.component';
 import { ExpenseReportComponent } from './expense-report/expense-report.component';
+import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
 
 const routes: Routes = [
     {
@@ -63,6 +64,12 @@ const routes: Routes = [
                 data: { roles: [], url: '/expense-report', title: 'Expense Report', icon: 'person', show: true, seq: 4 }
             },
             {
+                path: 'expense-detail/:expenseGuidId',
+                component: ExpenseDetailComponent,
+                canActivate: [RouteGuard],
+                data: { roles: [], url: '', title: 'Expense Detail', icon: 'person', show: false, seq: 0 }
+            },
+            {
                 path: 'users/:id',
                 component: UserComponent,
                 canActivate: [RouteGuard],
@@ -75,7 +82,7 @@ const routes: Routes = [
                 data: { roles: [], url: '/profile', title: 'Profile', icon: 'account_circle', show: false, seq: 0 }
             },
             {
-                path: 'category-add-modify/:categoryUserId',
+                path: 'category-add-modify/:expenseGuidId',
                 component: CategoryAddModifyComponent,
                 canActivate: [RouteGuard],
                 data: { roles: [], url: '/category-add-modify', title: 'Category', icon: 'assignment', show: false, seq: 7 }

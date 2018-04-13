@@ -16,7 +16,7 @@ export class ExpenseReportComponent implements OnInit {
   years = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'];
 
   selectedMonth = '';
-  selectedYear = 1900;
+  selectedYear = '1900';
   showReport = false;
 
   categories = undefined;
@@ -29,6 +29,14 @@ export class ExpenseReportComponent implements OnInit {
 
   ngOnInit() {
     this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCategoriesCallback(e));
+
+    this.selectedYear = localStorage.getItem('expense-report-year');
+    this.selectedMonth = localStorage.getItem('expense-report-month');
+
+    if (this.selectedMonth !== undefined && this.selectedYear !== undefined) {
+      this.generateClick();
+    }
+
   }
 
   getAllCategoriesCallback(sqliteCallbackModel: SqliteCallbackModel) {
@@ -38,6 +46,9 @@ export class ExpenseReportComponent implements OnInit {
   }
 
   generateClick() {
+    localStorage.setItem('expense-report-year', this.selectedYear.toString());
+    localStorage.setItem('expense-report-month', this.selectedMonth);
+
     this.showReport = true;
 
     this.expenseFirebaseServiceProvider.getAllInPeriod(this.selectedYear, this.selectedMonth, (e) => this.getAllInPeriodCallback(e));
@@ -65,8 +76,8 @@ export class ExpenseReportComponent implements OnInit {
     }
   }
 
-  detailClick(event, item) {
+  detailClick(item) {
     let obj = { expenseGuidId: item.expenseGuidId };
-    // this.navCtrl.push(ExpenseDetailPage, obj);
+    this._router.navigate(['/expense-detail/' + item.expenseGuidId ]);
   }
 }

@@ -1,0 +1,54 @@
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
+  <div flex-gt-md="50" flex="100">
+
+    <mat-card>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <div flex fxFlexAlign="center">
+              Date
+            </div>
+            <div flex fxFlexAlign="end">
+              {{record.recordDate}}
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div flex fxFlexAlign="center">
+              Category
+            </div>
+            <div flex fxFlexAlign="end">
+              {{record.category}}
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div flex fxFlexAlign="center">
+              Expense Value
+            </div>
+            <div flex fxFlexAlign="end">
+              <app-currency-formatter style="text-align: left" [numberToFormat]='record.expenseValue'></app-currency-formatter>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div flex fxFlexAlign="center">
+              Comment
+            </div>
+            <div flex fxFlexAlign="end">
+              {{record.comment}}
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+
+      </mat-card-content>
+      <mat-card-actions class="text-right">
+          <button color="secondary" (click)="goBack()" mat-raised-button>Back</button>
+        </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
