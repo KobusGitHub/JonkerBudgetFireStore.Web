@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CategoryAddModifyComponent } from './category-add-modify/category-add-modify.component';
+import { ExpenseReportComponent } from './expense-report/expense-report.component';
 
 const routes: Routes = [
     {
@@ -54,6 +55,12 @@ const routes: Routes = [
                 component: CategoriesComponent,
                 canActivate: [],
                 data: { roles: [], url: '/categories', title: 'Categories', icon: 'person', show: true, seq: 4 }
+            },
+            {
+                path: 'expense-report',
+                component: ExpenseReportComponent,
+                canActivate: [],
+                data: { roles: [], url: '/expense-report', title: 'Expense Report', icon: 'person', show: true, seq: 4 }
             },
             {
                 path: 'users/:id',

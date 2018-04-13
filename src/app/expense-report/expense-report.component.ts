@@ -1,0 +1,72 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TdLoadingService } from '@covalent/core';
+import { CategoryFirebaseServiceProvider } from '../../services/firebase/category-firebase-service-provider';
+import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
+import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-firebase-service-provider';
+
+@Component({
+  selector: 'app-expense-report',
+  templateUrl: './expense-report.component.html',
+  styleUrls: ['./expense-report.component.scss']
+})
+export class ExpenseReportComponent implements OnInit {
+
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  years = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'];
+
+  selectedMonth = '';
+  selectedYear = 1900;
+  showReport = false;
+
+  categories = undefined;
+  records = [];
+
+  constructor(private _router: Router,
+    private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
+    private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
+    private _loadingService: TdLoadingService) { }
+
+  ngOnInit() {
+    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCategoriesCallback(e));
+  }
+
+  getAllCategoriesCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    if (sqliteCallbackModel.success) {
+      this.categories = sqliteCallbackModel.data;
+    }
+  }
+
+  generateClick() {
+    this.showReport = true;
+
+    this.expenseFirebaseServiceProvider.getAllInPeriod(this.selectedYear, this.selectedMonth, (e) => this.getAllInPeriodCallback(e));
+
+  }
+
+  getAllInPeriodCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    this.records = [];
+    if (sqliteCallbackModel.success) {
+      let catName = '';
+
+      sqliteCallbackModel.data.forEach((rec) => {
+        this.categories.forEach((cat) => {
+          if (cat.guidId === rec.categoryGuidId) {
+            catName = cat.categoryName;
+          }
+        });
+
+        this.records.push({
+          expenseGuidId: rec.guidId,
+          category: catName,
+          expenseValue: rec.expenseValue
+        });
+      });
+    }
+  }
+
+  detailClick(event, item) {
+    let obj = { expenseGuidId: item.expenseGuidId };
+    // this.navCtrl.push(ExpenseDetailPage, obj);
+  }
+}

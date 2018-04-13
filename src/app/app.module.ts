@@ -26,6 +26,8 @@ import { CategoryAddModifyComponent } from './category-add-modify/category-add-m
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CurrencyFormatterComponent } from './currency-formatter/currency-formatter';
+import { ExpenseReportComponent } from './expense-report/expense-report.component';
+import { ExpenseFirebaseServiceProvider } from '../services/firebase/expense-firebase-service-provider';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -41,7 +43,8 @@ const httpInterceptorProviders: Type<any>[] = [
         UserRolesComponent,
         CategoriesComponent,
         CategoryAddModifyComponent,
-        CurrencyFormatterComponent
+        CurrencyFormatterComponent,
+        ExpenseReportComponent,
     ],
     imports: [
         MatGridListModule,
@@ -73,7 +76,8 @@ const httpInterceptorProviders: Type<any>[] = [
         RolesService,
         UsersService,
         UsersStore,
-        CategoryFirebaseServiceProvider
+        CategoryFirebaseServiceProvider,
+        ExpenseFirebaseServiceProvider
     ],
     exports: [
     ],
