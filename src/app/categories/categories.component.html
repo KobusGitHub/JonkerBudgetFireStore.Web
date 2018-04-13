@@ -27,7 +27,7 @@
           <i class="material-icons" *ngIf="item.isFavourite" style="color:Red; padding-bottom: 10px; font-size: 40px;">star rate</i>
           <i class="material-icons" *ngIf="!item.isFavourite" style="color:lightgray; padding-bottom: 10px; font-size: 40px;">star rate</i>
         </div>
-        <div style="padding-top:12px; padding-left:20px">
+        <div style="padding-top:8px; padding-left:20px; font-size: 20px;">
           <app-currency-formatter style="text-align: right" [numberToFormat]='item.budget'></app-currency-formatter>
         </div>
       </mat-card-content>
