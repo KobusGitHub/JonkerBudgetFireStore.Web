@@ -1,0 +1,65 @@
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
+  <div flex-gt-md="50" flex="100">
+
+
+    <mat-card>
+      <mat-card-title>
+        <div style="width: 100%; text-align: right">
+
+
+            <div flex fxFlexAlign="end" class="customPadding">
+                <button mat-raised-button *ngIf="forecastBudget >= 0"  style="background-color: green; color:white;  cursor: default;">
+                  <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
+                </button>
+                <button mat-raised-button  *ngIf="forecastBudget < 0" style="background-color: red; color:white;  cursor: default;">
+                  <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
+                </button>
+
+
+              </div>
+
+
+
+        </div>
+      </mat-card-title>
+      <mat-card-content>
+
+
+        <mat-list>
+          <mat-list-item>
+            <div flex fxFlexAlign="center">
+              <b>Category</b>
+            </div>
+            <div flex fxFlexAlign="end" style="text-align: right; padding-bottom:13px;">
+              <b>Outstanding Value</b>
+            </div>
+            <mat-divider></mat-divider>
+
+          </mat-list-item>
+
+          <mat-list-item *ngFor="let record of catOutstandingBudgets" (click)="budgetClick(record)">
+            <!-- <ion-checkbox color="secondary" style="margin-right: 4px; margin-top:7px;" [(ngModel)]="record.selected" (click)="calculate()"></ion-checkbox> -->
+            <mat-checkbox color="primary" style="margin-right: 8px;" [(ngModel)]="record.selected" (click)="calculate()"></mat-checkbox>
+
+            <div flex fxFlexAlign="center">
+              {{record.category}}
+            </div>
+            <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
+              <app-currency-formatter style="text-align: right" [numberToFormat]='record.outstandingValue'></app-currency-formatter>
+            </div>
+            <mat-divider></mat-divider>
+
+          </mat-list-item>
+
+        </mat-list>
+
+
+
+      </mat-card-content>
+      <mat-card-actions class="text-right">
+          <button color="seconday" (click)="backClick()" mat-raised-button>Back</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+</div>

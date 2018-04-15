@@ -1,0 +1,41 @@
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
+  <div flex-gt-md="50" flex="100">
+
+
+    <mat-card>
+      <mat-card-title>
+        Budget Year/Month
+      </mat-card-title>
+      <mat-card-content>
+
+
+        
+            <mat-form-field style="width: 100%">
+              <mat-select placeholder="Current Year" [(ngModel)]='selectedYear' style="padding-bottom: 15px;" required>
+                <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%;">
+              <mat-select placeholder="Current Month" [(ngModel)]='selectedMonth' style="padding-bottom: 15px;" required>
+                <mat-option *ngFor="let month of monthNames" [value]="month">{{month}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+         
+            <mat-form-field style="width: 100%">
+              <input matInput type="number" placeholder="Income" [(ngModel)]="income" maxlength="50">
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%">
+                <input matInput placeholder="Share Token" [(ngModel)]="shareToken" maxlength="50">
+            </mat-form-field>
+            <button color="secondary" (click)="generateShareTokenClick()" mat-raised-button>Generate Share Token</button>
+       
+      </mat-card-content>
+      
+      <mat-card-actions class="text-right">
+        <button color="primary" [disabled]="isSaveDisabled()" (click)="saveClick()" mat-raised-button>Save</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

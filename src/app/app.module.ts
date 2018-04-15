@@ -31,6 +31,10 @@ import { ExpenseFirebaseServiceProvider } from '../services/firebase/expense-fir
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
 import { CategoryGroupReportComponent } from './category-group-report/category-group-report.component';
 import { CategoryExpenseReportComponent } from './category-expense-report/category-expense-report.component';
+import { ExpenseComponent } from './expense/expense.component';
+import { TrackBudgetComponent } from './track-budget/track-budget';
+import { ForecastComponent } from './forecast/forecast.component';
+import { SetupComponent } from './setup/setup.component';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -47,10 +51,14 @@ const httpInterceptorProviders: Type<any>[] = [
         CategoriesComponent,
         CategoryAddModifyComponent,
         CurrencyFormatterComponent,
+        TrackBudgetComponent,
         ExpenseReportComponent,
         ExpenseDetailComponent,
         CategoryGroupReportComponent,
         CategoryExpenseReportComponent,
+        ExpenseComponent,
+        ForecastComponent,
+        SetupComponent
     ],
     imports: [
         MatGridListModule,

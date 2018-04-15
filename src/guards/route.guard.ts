@@ -15,6 +15,38 @@ export class RouteGuard implements CanActivate {
         : boolean {
 
         return true;
+
+        // let selectedYear = localStorage.getItem('budgetYear');
+        // let selectedMonth = localStorage.getItem('budgetMonth');
+        // let income = parseFloat(localStorage.getItem('budgetIncome'));
+        // let shareToken = localStorage.getItem('shareToken');
+
+        // if (!selectedYear || selectedYear.toString() === '') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
+
+        // if (!selectedMonth || selectedMonth.toString() === '') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
+
+        // if (!income || income.toString() === '') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
+
+        // if (!shareToken || shareToken.toString() === '') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
+
+        // return true;
+
         // let roles: string[] = route.data.roles;
         // if (!this._authStore.hasValidToken()) {
         //     this._mdSnackBar.open('Session Expired! Please Login Again.', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
