@@ -1,5 +1,4 @@
 export class ExpenseModel {
-    id?: number;
     guidId: string;
     categoryGuidId: string;
     expenseValue: number;
@@ -8,5 +7,5 @@ export class ExpenseModel {
     recordDate: string;
     expenseCode: string;
     comment: string;
-    inSync: boolean;
+    shareToken: string;
 }

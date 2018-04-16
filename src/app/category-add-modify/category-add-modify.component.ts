@@ -90,7 +90,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
       categoryName: frmCmps.frmCmpCategory,
       budget: frmCmps.frmCmpBudget,
       isFavourite: this.isFavourite,
-      inSync: false
+      shareToken: localStorage.getItem('shareToken')
     };
 
     if (this.categoryGuidId === '') {

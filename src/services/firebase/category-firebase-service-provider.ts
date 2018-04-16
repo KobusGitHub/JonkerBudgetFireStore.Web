@@ -45,7 +45,7 @@ export class CategoryFirebaseServiceProvider  {
     public getAll(callbackMethod) {
         // tslint:disable-next-line:no-debugger
         let categoryCollectionRef = this.db.collection('category', (ref) => {
-            return ref.orderBy('isFavourite', 'desc').orderBy('categoryName');
+            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).orderBy('isFavourite', 'desc').orderBy('categoryName');
         });
         let notes = categoryCollectionRef.valueChanges();
         let subscription = notes.subscribe((res) => {

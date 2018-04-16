@@ -122,7 +122,6 @@ export class ExpenseComponent implements OnInit {
 
     if (!this.isTransferExpense) {
       this.modelToSave = {
-        id: 0,
         // tslint:disable-next-line:radix
         year: parseInt(localStorage.getItem('budgetYear')),
         month: localStorage.getItem('budgetMonth'),
@@ -132,13 +131,12 @@ export class ExpenseComponent implements OnInit {
         comment: this.formData.comment,
         recordDate: new Date().toString(),
         expenseCode: this.getNewExpenseCode(),
-        inSync: false
+        shareToken: localStorage.getItem('shareToken')
       };
     } else {
       let eValue = Number((-1) * this.formData.expenseValue);
       // console.log(eValue);
       this.modelToSave = {
-        id: 0,
         // tslint:disable-next-line:radix
         year: parseInt(localStorage.getItem('budgetYear')),
         month: localStorage.getItem('budgetMonth'),
@@ -148,14 +146,13 @@ export class ExpenseComponent implements OnInit {
         comment: this.formData.comment,
         recordDate: new Date().toString(),
         expenseCode: this.getNewExpenseCode(),
-        inSync: false
+        shareToken: localStorage.getItem('shareToken')
       };
     }
     this.saveExpense();
   }
 
   saveExpense() {
-    this.modelToSave.inSync = false;
     this.saveExpenseToSql();
   }
 
@@ -212,7 +209,6 @@ export class ExpenseComponent implements OnInit {
 
   saveTransfer() {
     this.modelToSave = {
-      id: 0,
       // tslint:disable-next-line:radix
       year: parseInt(localStorage.getItem('budgetYear')),
       month: localStorage.getItem('budgetMonth'),
@@ -222,9 +218,8 @@ export class ExpenseComponent implements OnInit {
       comment: this.formData.comment,
       recordDate: new Date().toString(),
       expenseCode: this.getNewExpenseCode(),
-      inSync: false
+      shareToken: localStorage.getItem('shareToken')
     };
-    this.modelToSave.inSync = false;
     this.saveTransferToSql();
   }
 

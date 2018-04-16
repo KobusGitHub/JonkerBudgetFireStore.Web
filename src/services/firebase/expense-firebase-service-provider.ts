@@ -41,7 +41,7 @@ export class ExpenseFirebaseServiceProvider {
     }
     public getAll(callbackMethod) {
         let collectionRef = this.db.collection('expense', (ref) => {
-            return ref.orderBy('recordDate');
+            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).orderBy('recordDate');
         });
         // var notes = categoryCollectionRef.valueChanges();
         let snapshot = collectionRef.snapshotChanges()
@@ -80,8 +80,9 @@ export class ExpenseFirebaseServiceProvider {
         let yearString = year.toString();
 
         let collectionRef = this.db.collection('expense', (ref) => {
+            return ref.where('shareToken', '==', localStorage.getItem('shareToken'))
             // tslint:disable-next-line:radix
-            return ref.where('month', '==', month).where('year', '==', parseInt(yearString)).orderBy('recordDate');
+            .where('month', '==', month).where('year', '==', parseInt(yearString)).orderBy('recordDate');
         });
         // var notes = categoryCollectionRef.valueChanges();
         let snapshot = collectionRef.snapshotChanges()
@@ -104,8 +105,9 @@ export class ExpenseFirebaseServiceProvider {
     }
     public getAllInPeriod(year: string, month: string, callbackMethod) {
         let collectionRef = this.db.collection('expense', (ref) => {
+            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).where('month', '==', month)
             // tslint:disable-next-line:radix
-            return ref.where('month', '==', month).where('year', '==', parseInt(year)).orderBy('recordDate');
+            .where('year', '==', parseInt(year)).orderBy('recordDate');
         });
         let notes = collectionRef.valueChanges();
         let subscription = notes.subscribe((res) => {
