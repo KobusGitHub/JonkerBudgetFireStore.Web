@@ -1,5 +1,11 @@
 {
-    "name": "Covalent",
+    "dir": "ltr",
+    "lang": "en",
+    "name": "Home Budget",
+    "short_name": "Home Budget",
+    "description": "Home Budget",
+    "orientation": "any",
+    "start_url": "http://localhost:8080/",
     "icons": [
         {
             "src": "/assets/favicon/android-chrome-192x192.png",

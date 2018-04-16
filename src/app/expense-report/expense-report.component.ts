@@ -33,8 +33,16 @@ export class ExpenseReportComponent implements OnInit {
     this.selectedYear = localStorage.getItem('expense-report-year');
     this.selectedMonth = localStorage.getItem('expense-report-month');
 
-    if (this.selectedMonth !== undefined && this.selectedYear !== undefined) {
+    if (this.selectedMonth !== undefined && this.selectedMonth !== null && this.selectedMonth !== ''
+      && this.selectedYear !== undefined && this.selectedYear !== null && this.selectedYear !== '') {
       this.generateClick();
+    } else {
+      this.selectedYear = localStorage.getItem('budgetYear');
+      this.selectedMonth = localStorage.getItem('budgetMonth');
+      if (this.selectedMonth !== undefined && this.selectedMonth !== null && this.selectedMonth !== ''
+        && this.selectedYear !== undefined && this.selectedYear !== null && this.selectedYear !== '') {
+        this.generateClick();
+      }
     }
 
   }
@@ -46,7 +54,7 @@ export class ExpenseReportComponent implements OnInit {
   }
 
   generateClick() {
-    localStorage.setItem('expense-report-year', this.selectedYear.toString());
+    localStorage.setItem('expense-report-year', this.selectedYear);
     localStorage.setItem('expense-report-month', this.selectedMonth);
 
     this.showReport = true;
@@ -56,6 +64,7 @@ export class ExpenseReportComponent implements OnInit {
   }
 
   getAllInPeriodCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    let recordsTemp = [];
     this.records = [];
     if (sqliteCallbackModel.success) {
       let catName = '';
@@ -67,17 +76,22 @@ export class ExpenseReportComponent implements OnInit {
           }
         });
 
-        this.records.push({
+        recordsTemp.push({
           expenseGuidId: rec.guidId,
           category: catName,
-          expenseValue: rec.expenseValue
+          expenseValue: rec.expenseValue,
+          recordDate: rec.recordDate
         });
+      });
+
+      this.records = recordsTemp.sort((a: any, b: any) => {
+        return Date.parse(a.recordDate) - Date.parse(b.recordDate);
       });
     }
   }
 
   detailClick(item) {
     let obj = { expenseGuidId: item.expenseGuidId };
-    this._router.navigate(['/expense-detail/' + item.expenseGuidId ]);
+    this._router.navigate(['/expense-detail/' + item.expenseGuidId]);
   }
 }

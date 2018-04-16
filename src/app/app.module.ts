@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { HomeComponent } from './home/home.component';
 import { CreateUserComponent, UserDetailComponent, UserRolesComponent } from './users';
 import { CategoriesComponent } from './categories/categories.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -69,6 +70,7 @@ const httpInterceptorProviders: Type<any>[] = [
         BrowserModule,
         BrowserAnimationsModule,
         SharedModule,
+        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
         // DynamicDashboardsModule.forRoot(environment.webApiBaseAddress),
         CommonModule,
         InfiniteScrollModule,

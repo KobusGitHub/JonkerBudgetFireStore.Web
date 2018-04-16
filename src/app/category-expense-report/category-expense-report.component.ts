@@ -59,6 +59,7 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
   }
 
   getAllInPeriodCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    let recordsTemp = [];
     this.records = [];
     if (sqliteCallbackModel.success) {
       sqliteCallbackModel.data.forEach((rec) => {
@@ -69,12 +70,17 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
                 catName = cat.categoryName;
               }
             });
-            this.records.push({
+            recordsTemp.push({
               expenseGuidId: rec.guidId,
               category: catName,
-              expenseValue: rec.expenseValue
+              expenseValue: rec.expenseValue,
+              recordDate: rec.recordDate
             });
           }
+      });
+
+      this.records = recordsTemp.sort((a: any, b: any) => {
+        return Date.parse(a.recordDate) - Date.parse(b.recordDate);
       });
     }
   }

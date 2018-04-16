@@ -24,14 +24,22 @@ export class CategoryGroupReportComponent implements OnInit {
     private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
     private _loadingService: TdLoadingService) { }
 
-    ngOnInit() {
-      this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCategoriesCallback(e));
-      this.selectedYear = localStorage.getItem('category-group-report-year');
-      this.selectedMonth = localStorage.getItem('category-group-report-month');
-      if (this.selectedMonth !== undefined && this.selectedYear !== undefined) {
+  ngOnInit() {
+    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCategoriesCallback(e));
+    this.selectedYear = localStorage.getItem('category-group-report-year');
+    this.selectedMonth = localStorage.getItem('category-group-report-month');
+    if (this.selectedMonth !== undefined && this.selectedMonth !== null && this.selectedMonth !== ''
+      && this.selectedYear !== undefined && this.selectedYear !== null && this.selectedYear !== '') {
+      this.generateClick();
+    } else {
+      this.selectedYear = localStorage.getItem('budgetYear');
+      this.selectedMonth = localStorage.getItem('budgetMonth');
+      if (this.selectedMonth !== undefined && this.selectedMonth !== null && this.selectedMonth !== ''
+        && this.selectedYear !== undefined && this.selectedYear !== null && this.selectedYear !== '') {
         this.generateClick();
       }
     }
+  }
 
   getAllCategoriesCallback(sqliteCallbackModel: SqliteCallbackModel) {
     this.categories = [];
@@ -52,7 +60,7 @@ export class CategoryGroupReportComponent implements OnInit {
 
   generateClick() {
 
-    localStorage.setItem('category-group-report-year', this.selectedYear.toString());
+    localStorage.setItem('category-group-report-year', this.selectedYear);
     localStorage.setItem('category-group-report-month', this.selectedMonth);
 
     this.showReport = true;
@@ -93,7 +101,7 @@ export class CategoryGroupReportComponent implements OnInit {
       catGuidId: item.guidId,
       year: this.selectedYear,
       month: this.selectedMonth
-     };
+    };
 
     this._router.navigate(['/category-expense-report/' + item.guidId + '/' + this.selectedYear + '/' + this.selectedMonth]);
     // this.navCtrl.push(CategoryReportPage, obj);
