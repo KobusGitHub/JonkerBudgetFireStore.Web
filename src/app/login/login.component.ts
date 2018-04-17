@@ -30,31 +30,16 @@ export class LoginComponent implements OnInit {
     }
 
     login(): void {
-
-        this._loadingService.register();
-
-        this._authStore.login({ userName: this.username, password: this.password }).subscribe(
-            (token) => {
+        if (this.username === 'jacobusjonker@gmail.com' &&
+            this.password === 'walle55') {
                 this._router.navigate(['/']);
-                this._loadingService.resolve();
-                // this._snackBarService -- existing snackbarservice
-                // .open('Welcome back ' + (token.firstName ? token.firstName : token.username) + '!', 'Close', { duration: 2500 });
-                this._notificationService.displayMessage('Welcome back ' + (token.firstName ? token.firstName : token.username) + '!');
-            },
-            (error) => {
-                this._loadingService.resolve();
-                let errorMessage = this._httpErrorService.handleHttpError(error);
-                // this._snackBarService
-                // .open('Login Failed! ' + errorMessage, 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-                this._notificationService.displayError('Login Failed!');
-            }
-        );
-    }
+        }
 
-    forgotPassword() {
-        this._router.navigate(['/forgot-password']);
+        if (this.username === 'guest@crazyjonker.com' &&
+            this.password === 'guest@123') {
+                this._router.navigate(['/']);
+        }
     }
-
     ngOnInit(): void {
         this._titleService.setTitle(this.appTitle + ' | ' + 'Login');
     }

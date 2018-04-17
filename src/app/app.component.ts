@@ -4,6 +4,7 @@ import { MatIconRegistry } from '@angular/material';
 import { appRouterTransition } from '../animations';
 import { AppStore } from '../stores/app.store';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { SwPush, SwUpdate } from '@angular/service-worker';
 
 @Component({
     selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
 
     constructor(
         public _overlayContainer: OverlayContainer,
+        private _swUpdate: SwUpdate,
         public _appStore: AppStore,
         private _iconRegistry: MatIconRegistry,
         private _domSanitizer: DomSanitizer
@@ -44,5 +46,14 @@ export class AppComponent implements OnInit {
         // this.themeClass = 'dark-theme';
         // this._overlayContainer.themeClass = 'dark-theme';
         // this._overlayContainer.getContainerElement().classList.add('dark-theme');
+
+        if (this._swUpdate.isEnabled) {
+            this._swUpdate.available.subscribe(() => {
+                if (confirm('New version available. Load new version?')) {
+                    window.location.reload();
+                }
+            });
+        }
+
     }
 }
