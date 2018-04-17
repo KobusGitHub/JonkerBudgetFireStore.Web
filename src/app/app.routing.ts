@@ -35,7 +35,7 @@ const routes: Routes = [
             {
                 path: '',
                 component: HomeComponent,
-                canActivate: [RouteGuard],
+                canActivate: [],
                 data: { roles: [], url: '/', title: 'Home', icon: 'home', show: true, seq: 1 }
             },
             {

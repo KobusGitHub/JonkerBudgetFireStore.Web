@@ -30,17 +30,45 @@ export class LoginComponent implements OnInit {
     }
 
     login(): void {
-        if (this.username === 'jacobusjonker@gmail.com' &&
-            this.password === 'walle55') {
-                this._router.navigate(['/']);
+
+        if (this.username === 'admin' &&
+            this.password === 'Walle55') {
+            this._router.navigate(['/']);
+        } else if (this.username === 'guest' &&
+            this.password === 'guest@123') {
+            this._router.navigate(['/']);
+        } else {
+            this._notificationService.displayMessage('Invalid login!');
+
         }
 
-        if (this.username === 'guest@crazyjonker.com' &&
-            this.password === 'guest@123') {
-                this._router.navigate(['/']);
-        }
     }
     ngOnInit(): void {
         this._titleService.setTitle(this.appTitle + ' | ' + 'Login');
+    }
+
+    isSetupDone(): boolean {
+        let selectedYear = localStorage.getItem('budgetYear');
+        let selectedMonth = localStorage.getItem('budgetMonth');
+        let income = parseFloat(localStorage.getItem('budgetIncome'));
+        let shareToken = localStorage.getItem('shareToken');
+
+        if (!selectedYear || selectedYear.toString() === '') {
+            return false;
+        }
+
+        if (!selectedMonth || selectedMonth.toString() === '') {
+            return false;
+        }
+
+        if (!income || income.toString() === '') {
+            return false;
+        }
+
+        if (!shareToken || shareToken.toString() === '') {
+            return false;
+        }
+        return true;
+
     }
 }

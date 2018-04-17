@@ -5,7 +5,9 @@
     "short_name": "Home Budget",
     "description": "Home Budget",
     "orientation": "any",
+
     "start_url": "http://www.crazyjonker.co.za/web/",
+
     "icons": [
         {
             "src": "/assets/favicon/android-chrome-192x192.png",
