@@ -9,9 +9,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
     constructor(private _snackBarService: MatSnackBar, private _router: Router,
-        private _activatedRoute: ActivatedRoute) {}
+        private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
-
+        if (localStorage.getItem('user') === undefined || localStorage.getItem('user') === '' || localStorage.getItem('user') === null) {
+            this._router.navigate(['/login']);
+        }
     }
 }

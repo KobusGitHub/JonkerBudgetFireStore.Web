@@ -27,15 +27,19 @@ export class LoginComponent implements OnInit {
         private _authStore: AuthStore,
         private _snackBarService: MatSnackBar,
         private _httpErrorService: HttpErrorService) {
+        localStorage.setItem('user', '');
+
     }
 
     login(): void {
 
         if (this.username === 'admin' &&
             this.password === 'Walle55') {
+            localStorage.setItem('user', 'admin');
             this._router.navigate(['/']);
         } else if (this.username === 'guest' &&
             this.password === 'guest@123') {
+            localStorage.setItem('user', 'guest');
             this._router.navigate(['/']);
         } else {
             this._notificationService.displayMessage('Invalid login!');
