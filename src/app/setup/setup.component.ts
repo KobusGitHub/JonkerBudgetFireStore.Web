@@ -56,6 +56,11 @@ export class SetupComponent implements OnInit {
     localStorage.setItem('budgetIncome', this.income.toString());
     localStorage.setItem('shareToken', this.shareToken);
 
+    localStorage.setItem('category-group-report-month', this.selectedMonth);
+    localStorage.setItem('category-group-report-year', this.selectedYear.toString());
+    localStorage.setItem('expense-report-month', this.selectedMonth);
+    localStorage.setItem('expense-report-year', this.selectedYear.toString());
+
     this._snackBarService.open('Saved Successfully', undefined, { duration: 3000 });
     this._router.navigate(['/']);
   }

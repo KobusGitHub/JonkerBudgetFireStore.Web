@@ -38,8 +38,8 @@
           </mat-list-item>
 
           <mat-list-item *ngFor="let record of catOutstandingBudgets" (click)="budgetClick(record)">
-            <!-- <ion-checkbox color="secondary" style="margin-right: 4px; margin-top:7px;" [(ngModel)]="record.selected" (click)="calculate()"></ion-checkbox> -->
-            <mat-checkbox color="primary" style="margin-right: 8px;" [(ngModel)]="record.selected" (click)="calculate()"></mat-checkbox>
+            <i class="material-icons" *ngIf="record.selected" style="color:#B81F24; padding-right:5px;">check_box</i>
+            <i class="material-icons" *ngIf="!record.selected" style="padding-right:5px;" >check_box_outline_blank</i>
 
             <div flex fxFlexAlign="center">
               {{record.category}}

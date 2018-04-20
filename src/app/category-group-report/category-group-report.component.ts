@@ -75,6 +75,7 @@ export class CategoryGroupReportComponent implements OnInit {
 
     this.categories.forEach((cat) => {
       cat.expenseValue = 0;
+      cat.textColor = 'lightgray';
     });
     if (sqliteCallbackModel.success) {
 
