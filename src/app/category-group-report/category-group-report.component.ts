@@ -19,6 +19,9 @@ export class CategoryGroupReportComponent implements OnInit {
   showReport = false;
   categories = [];
 
+  showExport = false;
+  exportReportLines: string[] = [];
+
   constructor(private _router: Router,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
     private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
@@ -106,5 +109,18 @@ export class CategoryGroupReportComponent implements OnInit {
 
     this._router.navigate(['/category-expense-report/' + item.guidId + '/' + this.selectedYear + '/' + this.selectedMonth]);
     // this.navCtrl.push(CategoryReportPage, obj);
+  }
+
+  exportBackClick() {
+    this.showExport = false;
+  }
+  exportReport() {
+    this.showExport = true;
+
+    this.exportReportLines = [];
+    this.exportReportLines.push('Category,Budget,ExpenseValue');
+    this.categories.forEach((categoryRec) => {
+      this.exportReportLines.push(categoryRec.categoryName + ',' + categoryRec.budget + ',' + categoryRec.expenseValue);
+    });
   }
 }

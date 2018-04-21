@@ -76,11 +76,16 @@ export class ExpenseReportComponent implements OnInit {
           }
         });
 
+        let dt = new Date(rec.recordDate);
+
         recordsTemp.push({
           expenseGuidId: rec.guidId,
           category: catName,
           expenseValue: rec.expenseValue,
-          recordDate: rec.recordDate
+          recordDate: rec.recordDate,
+          recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear() + ' '
+           + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds()
+
         });
       });
 

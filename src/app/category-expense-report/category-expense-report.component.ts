@@ -18,6 +18,8 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
   records = [];
   categories = [];
 
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
   constructor(private _router: Router, private _activatedRoute: ActivatedRoute,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
     private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
@@ -70,11 +72,15 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
                 catName = cat.categoryName;
               }
             });
+
+            let dt = new Date(rec.recordDate);
             recordsTemp.push({
               expenseGuidId: rec.guidId,
               category: catName,
               expenseValue: rec.expenseValue,
-              recordDate: rec.recordDate
+              recordDate: rec.recordDate,
+              recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear() + ' '
+              + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds()
             });
           }
       });

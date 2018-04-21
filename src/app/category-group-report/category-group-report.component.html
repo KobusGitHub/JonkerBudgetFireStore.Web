@@ -1,7 +1,7 @@
 
 <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
   <div flex-gt-md="50" flex="100">
-    <mat-card>
+    <mat-card *ngIf="!showExport">
       <mat-card-content>
         <mat-list>
 
@@ -25,11 +25,13 @@
 
       </mat-card-content>
       <mat-card-actions class="text-right">
-        <button color="primary" (click)="generateClick()" mat-raised-button>Generate Report</button>
+          <button color="secondary" (click)="exportReport()" mat-raised-button>CSV Report</button>
+        
+          <button color="primary" (click)="generateClick()" mat-raised-button>Generate Report</button>
       </mat-card-actions>
     </mat-card>
 
-    <mat-card *ngIf="showReport">
+    <mat-card *ngIf="showReport && !showExport">
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
@@ -37,6 +39,11 @@
             <div flex fxFlexAlign="center">
               {{record.categoryName}}
             </div>
+
+            <div hide-xs flex fxFlexAlign="center" style="text-align: right; color:lightgray">
+                <app-currency-formatter style="text-align: right" [numberToFormat]='record.budget'></app-currency-formatter>
+            </div>
+
             <div flex fxFlexAlign="end" style="padding-bottom:13px;" [style.color]="record.textColor">
               <app-currency-formatter style="text-align: right" [numberToFormat]='record.expenseValue'></app-currency-formatter>
             </div>
@@ -46,6 +53,17 @@
         </mat-list>
 
       </mat-card-content>
+    </mat-card>
+
+    <mat-card  *ngIf="showExport">
+        <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
+          <div *ngFor='let line of exportReportLines'> 
+              {{line}}
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="text-right">
+            <button color="secondary" (click)="exportBackClick()" mat-raised-button>Back</button>
+        </mat-card-actions>
     </mat-card>
   </div>
 </div>

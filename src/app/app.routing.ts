@@ -54,7 +54,7 @@ const routes: Routes = [
                 path: 'categories',
                 component: CategoriesComponent,
                 canActivate: [RouteGuard],
-                data: { roles: [], url: '/categories', title: 'Categories', icon: 'build', show: true, seq: 4 }
+                data: { roles: [], url: '/categories', title: 'Categories', icon: 'tune', show: true, seq: 4 }
             },
             {
                 path: 'forecast/:incomeLeft',
@@ -78,7 +78,7 @@ const routes: Routes = [
                 path: 'expense-detail/:expenseGuidId',
                 component: ExpenseDetailComponent,
                 canActivate: [RouteGuard],
-                data: { roles: [], url: '', title: 'Expense Detail', icon: 'person', show: false, seq: 0 }
+                data: { roles: [], url: '', title: 'Expense Detail', icon: 'assignment', show: false, seq: 0 }
             },
             {
                 path: 'category-expense-report/:catGuidId/:year/:month',

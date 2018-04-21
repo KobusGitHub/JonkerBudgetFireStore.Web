@@ -6,6 +6,9 @@
 
         <mat-list>
           <mat-list-item *ngFor="let record of records" (click)="detailClick(record)">
+            <div hide-xs flex fxFlexAlign="center">
+              {{record.recordDateFormatted}}
+            </div>
             <div flex fxFlexAlign="center">
               {{record.category}}
             </div>

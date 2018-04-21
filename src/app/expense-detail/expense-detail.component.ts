@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material';
 import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-firebase-service-provider';
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
 import { CategoryFirebaseServiceProvider } from '../../services/firebase/category-firebase-service-provider';
+import { ExpenseModel } from '../../models/expenses/expense-model';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-expense-detail',
@@ -17,9 +19,14 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy  {
   record: any = {};
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+  frmComment: FormGroup;
+  formData: any = {};
+  expenseModel: ExpenseModel;
+  showEditForm = false;
+
   constructor(private _snackBarService: MatSnackBar, private _router: Router,
     private _activatedRoute: ActivatedRoute, private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
-    private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider) { }
+    private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider, public builder: FormBuilder) { }
 
   ngOnInit() {
     this.subscriptions.push(this._activatedRoute.params.subscribe((params) => {
@@ -29,6 +36,10 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy  {
         this.expenseGuidId = '';
       }
       // alert(this.categoryGuidId);
+
+      this.frmComment = this.builder.group({
+        'comment': [{ value: '' }]
+      });
 
       this.loadData();
     }));
@@ -55,6 +66,7 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy  {
     if (sqliteCallbackModel.success) {
       let catName = '';
       let rec = sqliteCallbackModel.data;
+      this.expenseModel = sqliteCallbackModel.data;
 
       this.categories.forEach((cat) => {
         if (cat.guidId === rec.categoryGuidId) {
@@ -71,6 +83,8 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy  {
         comment: rec.comment,
         recordDate: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear()
       };
+
+      this.frmComment.reset(this.record);
     }
   }
 
@@ -83,4 +97,29 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy  {
     });
 
   }
+
+  itemEdit(item: ExpenseModel) {
+    this.showEditForm = true;
+  }
+
+  cancelClick() {
+    this.showEditForm = false;
+  }
+
+  saveClick(frmCmps) {
+    this.expenseModel.comment = this.frmComment.value.comment;
+    this.expenseFirebaseServiceProvider.updateRecord(this.expenseModel, (e) => this.updateExpenseRecordCallback(e));
+    this.cancelClick();
+  }
+
+  updateExpenseRecordCallback(result: SqliteCallbackModel) {
+    if (result.success) {
+      this.record.comment = this.frmComment.value.comment;
+      this._snackBarService.open('Expense edited successfully', undefined, { duration: 3000 });
+      return;
+    }
+    this._snackBarService.open('Error editing expense', undefined, { duration: 3000 });
+    alert(JSON.stringify(result.data));
+  }
+
 }
