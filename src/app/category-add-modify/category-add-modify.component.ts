@@ -5,6 +5,7 @@ import { CategoryFirebaseServiceProvider } from '../../services/firebase/categor
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
 import { CategoryModel } from '../../models/categories/category-model';
 import { MatSnackBar } from '@angular/material';
+import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-firebase-service-provider';
 
 @Component({
   selector: 'app-category-add-modify',
@@ -20,8 +21,21 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
   isFavourite = false;
   modelToSave: CategoryModel = undefined;
 
-  constructor( private _snackBarService: MatSnackBar, private _router: Router, private _activatedRoute: ActivatedRoute, public builder: FormBuilder,
-    private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider) {
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  years = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'];
+  currentMonthText = '';
+  currentMonthExpenses = 0;
+  oneBackMonthText = '';
+  oneBackMonthExpenses = 0;
+  twoBackMonthText = '';
+  twoBackMonthExpenses = 0;
+  avarageExpenses = 0;
+  showHistory = false;
+  currentBudget = 0;
+
+  constructor(private _snackBarService: MatSnackBar, private _router: Router, private _activatedRoute: ActivatedRoute, public builder: FormBuilder,
+    private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
+    private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider) {
     this.frmBudget = builder.group({
       'frmCmpCategory': [{ value: '' }, Validators.required],
       'frmCmpBudget': [{ value: '' }, Validators.required]
@@ -59,6 +73,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
     if (result.success) {
       // console.log(result.data);
       this.formData = result.data;
+      this.currentBudget = result.data.budget;
       this.isFavourite = result.data.isFavourite;
       return;
     }
@@ -138,4 +153,81 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
     return uuid;
   }
 
+  backClick() {
+    this.showHistory = false;
+  }
+
+  getHistoryData() {
+    if (this.categoryGuidId === '') {
+      this._snackBarService.open('Cannot generate history on new Category', undefined, { duration: 3000 });
+      return;
+    }
+    this.showHistory = true;
+
+    let currentDate = new Date();
+    let currentYear = currentDate.getFullYear();
+    let currentMonth = currentDate.getMonth() + 1;
+    this.currentMonthText = this.monthNames[currentMonth];
+
+    let backOneDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+    let backOneYear = backOneDate.getFullYear();
+    let backOneMonth = backOneDate.getMonth() + 1;
+    this.oneBackMonthText = this.monthNames[backOneMonth];
+
+    let backTwoDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+    let backTwoYear = backTwoDate.getFullYear();
+    let backTwoMonth = backTwoDate.getMonth() + 1;
+    this.twoBackMonthText = this.monthNames[backTwoMonth];
+
+    this.currentMonthExpenses = 0;
+    this.oneBackMonthExpenses = 0;
+    this.twoBackMonthExpenses = 0;
+    this.avarageExpenses = 0;
+
+    this.expenseFirebaseServiceProvider.getAllInPeriod(currentYear.toString(), this.currentMonthText,
+      (e) => this.getAllInCurrentPeriodCallback(e));
+
+    this.expenseFirebaseServiceProvider.getAllInPeriod(backOneYear.toString(), this.oneBackMonthText,
+      (e) => this.getAllInOneBackPeriodCallback(e));
+
+    this.expenseFirebaseServiceProvider.getAllInPeriod(backTwoYear.toString(), this.twoBackMonthText,
+      (e) => this.getAllInTwoBackPeriodCallback(e));
+
+  }
+
+  getAllInCurrentPeriodCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    this.currentMonthExpenses = 0;
+    if (sqliteCallbackModel.success) {
+      sqliteCallbackModel.data.forEach((rec) => {
+        if (this.categoryGuidId === rec.categoryGuidId) {
+          this.currentMonthExpenses = this.currentMonthExpenses + parseFloat(rec.expenseValue);
+        }
+      });
+    }
+    this.avarageExpenses = (this.currentMonthExpenses + this.oneBackMonthExpenses + this.twoBackMonthExpenses) / 3;
+  }
+
+  getAllInOneBackPeriodCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    this.oneBackMonthExpenses = 0;
+    if (sqliteCallbackModel.success) {
+      sqliteCallbackModel.data.forEach((rec) => {
+        if (this.categoryGuidId === rec.categoryGuidId) {
+          this.oneBackMonthExpenses = this.oneBackMonthExpenses + parseFloat(rec.expenseValue);
+        }
+      });
+    }
+    this.avarageExpenses = (this.currentMonthExpenses + this.oneBackMonthExpenses + this.twoBackMonthExpenses) / 3;
+  }
+
+  getAllInTwoBackPeriodCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    this.twoBackMonthExpenses = 0;
+    if (sqliteCallbackModel.success) {
+      sqliteCallbackModel.data.forEach((rec) => {
+        if (this.categoryGuidId === rec.categoryGuidId) {
+          this.twoBackMonthExpenses = this.twoBackMonthExpenses + parseFloat(rec.expenseValue);
+        }
+      });
+    }
+    this.avarageExpenses = (this.currentMonthExpenses + this.oneBackMonthExpenses + this.twoBackMonthExpenses) / 3;
+  }
 }

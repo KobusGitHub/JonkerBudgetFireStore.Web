@@ -31,11 +31,24 @@
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
-          <mat-list-item *ngFor="let record of records" (click)="detailClick(record)">
+          <mat-list-item class='listHeading'>
+            <div hide-xs flex fxFlexAlign="center">
+              Date
+            </div>
+            <div flex fxFlexAlign="center">
+              Category
+            </div>
+            <div flex fxFlexAlign="end" style="padding-bottom:13px; text-align: right">
+              Expense
+            </div>
+            <mat-divider></mat-divider>
+            
+          </mat-list-item>
+          <mat-list-item *ngFor="let record of records" (click)="detailClick(record)" class='hand'>
             <div hide-xs flex fxFlexAlign="center">
               {{record.recordDateFormatted}}
             </div>
-            
+
             <div flex fxFlexAlign="center">
               {{record.category}}
             </div>

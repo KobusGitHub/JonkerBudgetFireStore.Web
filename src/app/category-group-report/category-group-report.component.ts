@@ -4,6 +4,7 @@ import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-
 import { CategoryFirebaseServiceProvider } from '../../services/firebase/category-firebase-service-provider';
 import { TdLoadingService } from '@covalent/core';
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-category-group-report',
@@ -22,7 +23,7 @@ export class CategoryGroupReportComponent implements OnInit {
   showExport = false;
   exportReportLines: string[] = [];
 
-  constructor(private _router: Router,
+  constructor(private _snackBarService: MatSnackBar, private _router: Router,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
     private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
     private _loadingService: TdLoadingService) { }
@@ -86,7 +87,7 @@ export class CategoryGroupReportComponent implements OnInit {
         this.categories.forEach((cat) => {
           if (cat.guidId === rec.categoryGuidId) {
             // tslint:disable-next-line:radix
-            cat.expenseValue = parseInt(cat.expenseValue) + parseInt(rec.expenseValue);
+            cat.expenseValue = parseFloat(cat.expenseValue) + parseFloat(rec.expenseValue);
 
             if (cat.expenseValue > cat.budget) {
               cat.textColor = 'red';
@@ -101,14 +102,11 @@ export class CategoryGroupReportComponent implements OnInit {
   }
 
   detailClick(item) {
-    let obj = {
-      catGuidId: item.guidId,
-      year: this.selectedYear,
-      month: this.selectedMonth
-    };
-
+    if (item.expenseValue === 0) {
+      this._snackBarService.open('No expense to show', undefined, { duration: 3000 });
+      return;
+    }
     this._router.navigate(['/category-expense-report/' + item.guidId + '/' + this.selectedYear + '/' + this.selectedMonth]);
-    // this.navCtrl.push(CategoryReportPage, obj);
   }
 
   exportBackClick() {

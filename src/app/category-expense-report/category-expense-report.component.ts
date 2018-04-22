@@ -17,7 +17,7 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
   selectedYear = '1900';
   records = [];
   categories = [];
-
+  categoryName = '';
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   constructor(private _router: Router, private _activatedRoute: ActivatedRoute,
@@ -65,24 +65,23 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
     this.records = [];
     if (sqliteCallbackModel.success) {
       sqliteCallbackModel.data.forEach((rec) => {
-          if (rec.categoryGuidId === this.catGuidId) {
-            let catName = '';
-            this.categories.forEach((cat) => {
-              if (cat.guidId === rec.categoryGuidId) {
-                catName = cat.categoryName;
-              }
-            });
+        if (rec.categoryGuidId === this.catGuidId) {
+          this.categoryName = '';
+          this.categories.forEach((cat) => {
+            if (cat.guidId === rec.categoryGuidId) {
+              this.categoryName = cat.categoryName;
+            }
+          });
 
-            let dt = new Date(rec.recordDate);
-            recordsTemp.push({
-              expenseGuidId: rec.guidId,
-              category: catName,
-              expenseValue: rec.expenseValue,
-              recordDate: rec.recordDate,
-              recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear() + ' '
-              + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds()
-            });
-          }
+          let dt = new Date(rec.recordDate);
+          recordsTemp.push({
+            expenseGuidId: rec.guidId,
+            category: this.categoryName,
+            expenseValue: rec.expenseValue,
+            recordDate: rec.recordDate,
+            recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear()
+          });
+        }
       });
 
       this.records = recordsTemp.sort((a: any, b: any) => {
@@ -93,7 +92,7 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
 
   detailClick(item) {
     let obj = { expenseGuidId: item.expenseGuidId };
-    this._router.navigate(['/expense-detail/' + item.expenseGuidId ]);
+    this._router.navigate(['/expense-detail/' + item.expenseGuidId]);
 
   }
 

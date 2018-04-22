@@ -30,7 +30,7 @@
 
         <mat-list>
           
-          <mat-list-item *ngFor="let item of items" (click)="detailClick(item)">
+          <mat-list-item *ngFor="let item of items" (click)="detailClick(item)" class='hand'>
             <div flex="20" class="customPadding">
               <i class="material-icons" *ngIf="item.isFavourite" style="color:Red; padding-bottom: 10px; font-size: 40px;">star rate</i>
               <i class="material-icons" *ngIf="!item.isFavourite" style="color:lightgray; padding-bottom: 10px; font-size: 40px;">star rate</i>

@@ -2,17 +2,28 @@
   <div flex-gt-md="50" flex="100">
 
     <mat-card>
+      <mat-card-title>
+        {{categoryName}}
+      </mat-card-title>
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
-          <mat-list-item *ngFor="let record of records" (click)="detailClick(record)">
-            <div hide-xs flex fxFlexAlign="center">
+            <mat-list-item  class='listHeading'>
+                <div flex fxFlexAlign="center">
+                  Date
+                </div>
+                <div flex fxFlexAlign="end" style=" padding-bottom:13px; text-align: right">
+                  Expense
+                </div>
+                <mat-divider></mat-divider>
+    
+              </mat-list-item>
+
+          <mat-list-item *ngFor="let record of records" (click)="detailClick(record)" class='hand'>
+            <div flex fxFlexAlign="center">
               {{record.recordDateFormatted}}
             </div>
-            <div flex fxFlexAlign="center">
-              {{record.category}}
-            </div>
-            <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
+           <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
               <app-currency-formatter style="text-align: right;" [numberToFormat]='record.expenseValue'></app-currency-formatter>
             </div>
             <mat-divider></mat-divider>
