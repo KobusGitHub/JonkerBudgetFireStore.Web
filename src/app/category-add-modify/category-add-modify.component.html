@@ -41,7 +41,7 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card *ngIf='showHistory'>
+    <!-- <mat-card *ngIf='showHistory'>
       <mat-card-content style="margin-bottom:0px;" flex fxLayout="column">
         <mat-list>
           <mat-list-item>
@@ -89,7 +89,46 @@
       <mat-card-actions class="text-right">
         <button color="seconday" (click)="backClick()" mat-raised-button>Back</button>
       </mat-card-actions>
+    </mat-card> -->
+
+    <mat-card *ngIf='showHistory'>
+      <mat-card-content style="margin-bottom:0px;" flex fxLayout="column">
+        <mat-list>
+
+          <mat-list-item>
+            
+            <div flex style="font-weight: bold; color:lightgray;">Current Budget</div>
+            <div flex style="font-weight: bold; color:lightgray;">
+              <app-currency-formatter style="text-align: right" [numberToFormat]='currentBudget'></app-currency-formatter>
+            </div>
+
+          </mat-list-item>
+          <mat-list-item>
+            <div flex style="font-weight: bold">Suggested Budget</div>
+            <div flex style="font-weight: bold">
+              <app-currency-formatter style="text-align: right" [numberToFormat]='avarageExpenses'></app-currency-formatter>
+            </div>
+            <mat-divider></mat-divider>
+
+          </mat-list-item>
+
+          <mat-list-item *ngFor="let historyRecord of categoryHistoryRecords" (click) = "historyClick(historyRecord)">
+              <i class="material-icons" *ngIf="historyRecord.selected" style="color:#B81F24; padding-right:5px;">check_box</i>
+              <i class="material-icons" *ngIf="!historyRecord.selected" style="padding-right:5px;" >check_box_outline_blank</i>
+            <div flex>{{historyRecord.month}}</div>
+            <div flex>
+              <app-currency-formatter style="text-align: right" [numberToFormat]='historyRecord.monthValue'></app-currency-formatter>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions class="text-right">
+        <button color="seconday" (click)="backClick()" mat-raised-button>Back</button>
+      </mat-card-actions>
     </mat-card>
+
 
   </div>
 </div>

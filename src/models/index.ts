@@ -11,3 +11,4 @@ export {UpdateUserStateModel} from './users/update-user-state.model';
 export {UpdateUserDetailsModel} from './users/update-user-detail.model';
 export {UserRoleModel} from './users/user-role.model';
 export {UpdateUserRolesModel} from './users/update-user-roles.model';
+export {CategoryHistoryModel} from './categories/category-history-model';
