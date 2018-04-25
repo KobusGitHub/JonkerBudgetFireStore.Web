@@ -7,23 +7,34 @@
       </mat-card-title>
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
-        <mat-list>
-            <mat-list-item  class='listHeading'>
-                <div flex fxFlexAlign="center">
-                  Date
-                </div>
-                <div flex fxFlexAlign="end" style=" padding-bottom:13px; text-align: right">
-                  Expense
-                </div>
-                <mat-divider></mat-divider>
-    
-              </mat-list-item>
 
+        <mat-list>
+          <mat-list-item *ngIf="records.length > 0" class='listHeading'>
+            <div flex fxFlexAlign="center">
+              Date
+            </div>
+            <div flex fxFlexAlign="end" style=" padding-bottom:13px; text-align: right">
+              Expense
+            </div>
+            <mat-divider></mat-divider>
+
+          </mat-list-item>
+
+          <mat-list-item style="height: auto">
+            <div flex  *ngIf="records.length === 0">
+              <br/>
+              <div flex layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
+                <mat-icon flex  matListAvatar class="text-super push-bottom">device_hub</mat-icon>
+                <h2>No data</h2>
+                <h3>There are no category expenses</h3>
+              </div>
+            </div>
+          </mat-list-item>
           <mat-list-item *ngFor="let record of records" (click)="detailClick(record)" class='hand'>
             <div flex fxFlexAlign="center">
               {{record.recordDateFormatted}}
             </div>
-           <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
+            <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
               <app-currency-formatter style="text-align: right;" [numberToFormat]='record.expenseValue'></app-currency-formatter>
             </div>
             <mat-divider></mat-divider>

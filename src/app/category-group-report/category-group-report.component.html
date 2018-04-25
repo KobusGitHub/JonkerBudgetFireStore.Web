@@ -34,7 +34,7 @@
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
-          <mat-list-item class='listHeading'>
+          <mat-list-item *ngIf="categories.length > 0" class='listHeading'>
             <div flex fxFlexAlign="center">
               Category
             </div>
@@ -47,6 +47,16 @@
               Expense
             </div>
             <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item style="height: auto">
+            <div flex  *ngIf="categories.length === 0">
+              <br/>
+              <div flex layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
+                <mat-icon flex  matListAvatar class="text-super push-bottom">device_hub</mat-icon>
+                <h2>No data</h2>
+                <h3>There are no category groups</h3>
+              </div>
+            </div>
           </mat-list-item>
           <mat-list-item *ngFor="let record of categories" (click)="detailClick(record)" class="hand">
             <div flex fxFlexAlign="center">
