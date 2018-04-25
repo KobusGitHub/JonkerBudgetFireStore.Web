@@ -12,15 +12,15 @@
                         <mat-icon class="mat-icon-logo login-title-icon">lock_open</mat-icon>
                         <span class="title-text">Login</span>
                     </mat-card-title>
-                    <mat-card-subtitle>Please sign in with your credentials</mat-card-subtitle>
+                    <mat-card-subtitle>Please sign in with your credentials.</mat-card-subtitle>
                     <mat-divider></mat-divider>
                     <mat-card-content>
                         <form #loginForm="ngForm" (ngSubmit)="login()">
                             <div fxLayout="row">
                                 <mat-input-container fxFlex="100" class="input-lg">
-                                    <input matInput #userControl="ngModel" placeholder="Username" type="text" name="username" [(ngModel)]="username" required>
+                                    <input matInput #userControl="ngModel" placeholder="Email" type="text" name="email" [(ngModel)]="email" required>
                                     <span matPrefix>
-                                        <mat-icon>person</mat-icon>
+                                        <mat-icon style="padding-right:5px;">email</mat-icon>
                                     </span>
                                     <mat-hint align="start">
                                         <span [hidden]="!userControl.errors?.required || userControl.pristine" class="tc-red-600">Required</span>
@@ -31,7 +31,7 @@
                                 <mat-input-container fxFlex="100" class="input-lg">
                                     <input matInput #passControl="ngModel" placeholder="Password" type="password" name="password" [(ngModel)]="password" required>
                                     <span matPrefix>
-                                        <mat-icon>lock</mat-icon>
+                                        <mat-icon style="padding-right:5px;">lock</mat-icon>
                                     </span>
                                     <mat-hint align="start">
                                         <span [hidden]="!passControl.errors?.required || passControl.pristine" class="tc-red-600">Required</span>
@@ -43,7 +43,12 @@
                     </mat-card-content>
                     <mat-divider></mat-divider>
                     <mat-card-actions fxLayout="row">
-                        <div  fxFlex fxLayoutAlign="end">
+                        <div fxFlex fxLayout="row">
+                            <div style="padding-top:10px; font-size: 14px;">To register please email the
+                                <a href="mailto:kobus@crazysoftware.co.za">administrator</a>.
+                            </div>
+                        </div>
+                        <div fxFlex fxLayoutAlign="end">
                             <button mat-raised-button color="accent" [disabled]="!loginForm.form.valid" (click)="login()">LOGIN</button>
                         </div>
                     </mat-card-actions>

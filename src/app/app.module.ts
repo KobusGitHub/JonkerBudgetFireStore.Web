@@ -36,6 +36,7 @@ import { ExpenseComponent } from './expense/expense.component';
 import { TrackBudgetComponent } from './track-budget/track-budget';
 import { ForecastComponent } from './forecast/forecast.component';
 import { SetupComponent } from './setup/setup.component';
+import { AuthFirebaseServiceProvider } from '../services/firebase/auth-firebase-service-provider';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -94,7 +95,8 @@ const httpInterceptorProviders: Type<any>[] = [
         UsersService,
         UsersStore,
         CategoryFirebaseServiceProvider,
-        ExpenseFirebaseServiceProvider
+        ExpenseFirebaseServiceProvider,
+        AuthFirebaseServiceProvider
     ],
     exports: [
     ],

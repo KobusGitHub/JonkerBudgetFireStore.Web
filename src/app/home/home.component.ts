@@ -12,7 +12,8 @@ export class HomeComponent implements OnInit {
         private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
-        if (localStorage.getItem('user') === undefined || localStorage.getItem('user') === '' || localStorage.getItem('user') === null) {
+        if (localStorage.getItem('shareToken') === undefined || localStorage.getItem('shareToken') === ''
+         || localStorage.getItem('shareToken') === null) {
             this._router.navigate(['/login']);
         }
     }

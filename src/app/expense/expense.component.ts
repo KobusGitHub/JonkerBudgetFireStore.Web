@@ -192,7 +192,8 @@ export class ExpenseComponent implements OnInit {
   disableSaveButton() {
     if (this.formData.categoryGuidId === undefined || this.formData.categoryGuidId === null
       || this.formData.categoryGuidId === 0 || this.formData.categoryGuidId === '' ||
-      this.formData.expenseValue === undefined || this.formData.expenseValue === null || this.formData.expenseValue === 0) {
+      this.formData.expenseValue === undefined || this.formData.expenseValue === null
+       || this.formData.expenseValue === 0  || this.formData.expenseValue === '') {
       return true;
     }
 

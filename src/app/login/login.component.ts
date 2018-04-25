@@ -7,6 +7,9 @@ import { TdLoadingService } from '@covalent/core';
 import { AuthStore } from '../../stores';
 import { HttpErrorService } from '../../services';
 import { SgNotificationService } from '../../components';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
+import { AuthFirebaseServiceProvider } from '../../services/firebase/auth-firebase-service-provider';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +19,7 @@ import { SgNotificationService } from '../../components';
 export class LoginComponent implements OnInit {
 
     appTitle: string = environment.appTitle;
-    username: string;
+    email: string;
     password: string;
 
     constructor(
@@ -26,53 +29,61 @@ export class LoginComponent implements OnInit {
         private _notificationService: SgNotificationService,
         private _authStore: AuthStore,
         private _snackBarService: MatSnackBar,
-        private _httpErrorService: HttpErrorService) {
-        localStorage.setItem('user', '');
-
+        private _httpErrorService: HttpErrorService,
+        private afAuth: AngularFireAuth,
+        private authFirebaseService: AuthFirebaseServiceProvider
+    ) {
     }
+
+    // login(): void {
+    //     const promise = this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password);
+    //     promise.then((res) => {
+    //         this._notificationService.displayMessage('Logged in successfully');
+    //         localStorage.setItem('shareToken', res.uid);
+    //         this._router.navigate(['/']);
+    //     });
+    //     promise.catch((e) => {
+    //         this._notificationService.displayMessage(e.message);
+    //     });
+    // }
 
     login(): void {
+       this.authFirebaseService.loginWithEmailPassword(this.email, this.password, (e) => this.loginWithEmailPasswordCallback(e));
+    }
 
-        if (this.username === 'admin' &&
-            this.password === 'Walle55') {
-            localStorage.setItem('user', 'admin');
-            this._router.navigate(['/']);
-        } else if (this.username === 'guest' &&
-            this.password === 'guest@123') {
-            localStorage.setItem('user', 'guest');
+    loginWithEmailPasswordCallback(sqliteCallbackModel: SqliteCallbackModel) {
+        if (sqliteCallbackModel.success) {
+            this._notificationService.displayMessage('Logged in successfully');
+            localStorage.setItem('shareToken', sqliteCallbackModel.data.uid);
             this._router.navigate(['/']);
         } else {
-            this._notificationService.displayMessage('Invalid login!');
-
+            this._notificationService.displayMessage(sqliteCallbackModel.data.message);
         }
-
     }
+
+    // createUser(): void {
+    //     const promise = this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password);
+    //     promise.then((res) => {
+    //         this._notificationService.displayMessage('Logged in successfully');
+    //         // console.log(res);
+    //         // console.log(res.uid);
+    //         localStorage.setItem('shareToken', res.uid);
+    //         this._router.navigate(['/']);
+    //     });
+    //     promise.catch((e) => {
+    //         // console.log(e.message);
+    //         this._notificationService.displayMessage(e.message);
+    //     });
+    // }
+
     ngOnInit(): void {
+        localStorage.setItem('shareToken', '');
+        this.authFirebaseService.logout((e) => this.logoutCallback(e));
         this._titleService.setTitle(this.appTitle + ' | ' + 'Login');
     }
 
-    isSetupDone(): boolean {
-        let selectedYear = localStorage.getItem('budgetYear');
-        let selectedMonth = localStorage.getItem('budgetMonth');
-        let income = parseFloat(localStorage.getItem('budgetIncome'));
-        let shareToken = localStorage.getItem('shareToken');
-
-        if (!selectedYear || selectedYear.toString() === '') {
-            return false;
-        }
-
-        if (!selectedMonth || selectedMonth.toString() === '') {
-            return false;
-        }
-
-        if (!income || income.toString() === '') {
-            return false;
-        }
-
-        if (!shareToken || shareToken.toString() === '') {
-            return false;
-        }
-        return true;
-
+    logoutCallback(sqliteCallbackModel: SqliteCallbackModel) {
+        // console.log(sqliteCallbackModel.data);
     }
+
 }

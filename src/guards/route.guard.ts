@@ -16,6 +16,13 @@ export class RouteGuard implements CanActivate {
 
         // return true;
 
+        if (localStorage.getItem('shareToken') === undefined || localStorage.getItem('shareToken') === ''
+        || localStorage.getItem('shareToken') === null) {
+           this._mdSnackBar.open('Access Unauthorised!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+           this._authStore.logout();
+           return false;
+        }
+
         if (state.url === '/') {
             return true;
         }
@@ -62,8 +69,5 @@ export class RouteGuard implements CanActivate {
         //     return true;
         // }
 
-        // this._mdSnackBar.open('Access Unauthorised!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-        // this._authStore.logout();
-        // return false;
     }
 }

@@ -126,28 +126,18 @@
         </mat-list>
       </mat-card-content>
 
-      <mat-card-actions class="text-right">
+      <mat-card-actions class="text-right" hide-xs hide-sm hide-md>
         <button color="primary" [disabled]='disableSaveButton()' (click)="saveClick()" mat-raised-button>Save</button>
       </mat-card-actions>
 
     </mat-card>
 
-
-
-
-    <!-- </ion-content> -->
-
-    <!-- 
-<ion-footer>
-  <ion-toolbar>
-    <ion-buttons right>
-      <button ion-button icon-right [disabled]='disableSaveButton()' (click)="saveClick()">
-        Save
-        <ion-icon name="arrow-dropright"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer> -->
-
   </div>
+</div>
+
+<div hide-gt-md>
+
+<div class="footer" fxLayoutAlign="end" >
+  <button color="primary" style="margin:10px" [disabled]='disableSaveButton()' (click)="saveClick()" mat-raised-button>Save</button>
+</div>
 </div>
