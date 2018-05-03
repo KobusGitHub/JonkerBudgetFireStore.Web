@@ -29,7 +29,7 @@ export class CategoryGroupReportComponent implements OnInit {
     private _loadingService: TdLoadingService) { }
 
   ngOnInit() {
-    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCategoriesCallback(e));
+    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getAllCategoriesCallback(e));
     this.selectedYear = localStorage.getItem('category-group-report-year');
     this.selectedMonth = localStorage.getItem('category-group-report-month');
     if (this.selectedMonth !== undefined && this.selectedMonth !== null && this.selectedMonth !== ''

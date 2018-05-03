@@ -10,14 +10,14 @@
               {{formData.year}} {{formData.month}}
             </div>
             <div flex fxFlexAlign="end" class="customPadding">
-              <button mat-raised-button *ngIf="incomeLeft >= 0"  style="background-color: green; color:white;">
+              <button mat-raised-button *ngIf="incomeLeft >= 0" style="background-color: green; color:white;">
                 <app-currency-formatter [numberToFormat]='incomeLeft' (click)="forecastClick()"></app-currency-formatter>
               </button>
-              <button mat-raised-button  *ngIf="incomeLeft < 0" style="background-color: red; color:white;">
+              <button mat-raised-button *ngIf="incomeLeft < 0" style="background-color: red; color:white;">
                 <app-currency-formatter [numberToFormat]='incomeLeft' (click)="forecastClick()"></app-currency-formatter>
               </button>
 
-            
+
             </div>
             <mat-divider></mat-divider>
 
@@ -73,7 +73,7 @@
 
         <mat-list>
 
-          <mat-list-item >
+          <mat-list-item>
             <mat-select placeholder="Category" [(ngModel)]='transferToGuidId' style="padding-bottom: 15px;">
               <mat-option *ngFor="let category of categories" [value]="category.guidId">{{category.categoryName}}</mat-option>
             </mat-select>
@@ -136,8 +136,7 @@
 </div>
 
 <div hide-gt-md>
-
-<div class="footer" fxLayoutAlign="end" >
-  <button color="primary" style="margin:10px" [disabled]='disableSaveButton()' (click)="saveClick()" mat-raised-button>Save</button>
-</div>
+  <div class="footer" fxLayoutAlign="end">
+    <button color="primary" style="margin:10px" [disabled]='disableSaveButton()' (click)="saveClick()" mat-raised-button>Save</button>
+  </div>
 </div>

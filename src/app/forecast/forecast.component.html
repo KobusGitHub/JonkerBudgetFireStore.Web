@@ -1,30 +1,31 @@
 <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
   <div flex-gt-md="50" flex="100">
 
+    <div class="header" flex-gt-md="50" flex="100" fxLayoutAlign="end" style="width: 100%; text-align: right">
+      <div flex fxFlexAlign="end">
+        <button mat-raised-button *ngIf="forecastBudget >= 0" style="background-color: green; color:white;  cursor: default;">
+          <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
+        </button>
+        <button mat-raised-button *ngIf="forecastBudget < 0" style="background-color: red; color:white;  cursor: default;">
+          <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
+        </button>
+      </div>
+    </div>
 
-    <mat-card>
-      <mat-card-title>
+    <mat-card style="padding-top:50px;">
+      <!-- <mat-card-title>
         <div style="width: 100%; text-align: right">
-
-
-            <div flex fxFlexAlign="end" class="customPadding">
-                <button mat-raised-button *ngIf="forecastBudget >= 0"  style="background-color: green; color:white;  cursor: default;">
-                  <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
-                </button>
-                <button mat-raised-button  *ngIf="forecastBudget < 0" style="background-color: red; color:white;  cursor: default;">
-                  <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
-                </button>
-
-
-              </div>
-
-
-
+          <div flex fxFlexAlign="end">
+            <button mat-raised-button *ngIf="forecastBudget >= 0" style="background-color: green; color:white;  cursor: default;">
+              <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
+            </button>
+            <button mat-raised-button *ngIf="forecastBudget < 0" style="background-color: red; color:white;  cursor: default;">
+              <app-currency-formatter [numberToFormat]='forecastBudget'></app-currency-formatter>
+            </button>
+          </div>
         </div>
-      </mat-card-title>
+      </mat-card-title> -->
       <mat-card-content>
-
-
         <mat-list>
           <mat-list-item>
             <div flex fxFlexAlign="center">
@@ -39,7 +40,7 @@
 
           <mat-list-item *ngFor="let record of catOutstandingBudgets" (click)="budgetClick(record)">
             <i class="material-icons" *ngIf="record.selected" style="color:#B81F24; padding-right:5px;">check_box</i>
-            <i class="material-icons" *ngIf="!record.selected" style="padding-right:5px;" >check_box_outline_blank</i>
+            <i class="material-icons" *ngIf="!record.selected" style="padding-right:5px;">check_box_outline_blank</i>
 
             <div flex fxFlexAlign="center">
               {{record.category}}
@@ -50,16 +51,17 @@
             <mat-divider></mat-divider>
 
           </mat-list-item>
-
         </mat-list>
-
-
-
       </mat-card-content>
-      <mat-card-actions class="text-right">
-          <button color="seconday" (click)="backClick()" mat-raised-button>Back</button>
+      <mat-card-actions class="text-right" hide-xs hide-sm hide-md>
+        <button color="seconday" (click)="backClick()" mat-raised-button>Back</button>
       </mat-card-actions>
     </mat-card>
+  </div>
+</div>
 
+<div hide-gt-md>
+  <div class="footer" fxLayoutAlign="end">
+      <button color="seconday" style="margin:10px" (click)="backClick()" mat-raised-button>Back</button>
   </div>
 </div>

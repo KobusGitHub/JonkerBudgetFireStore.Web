@@ -7,6 +7,7 @@ import { CategoryModel } from '../../models/categories/category-model';
 import { MatSnackBar } from '@angular/material';
 import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-firebase-service-provider';
 import { CategoryHistoryModel } from '../../models';
+import { TdDialogService } from '@covalent/core';
 
 @Component({
   selector: 'app-category-add-modify',
@@ -33,7 +34,8 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
   currentBudget = 0;
   categoryHistoryRecords: CategoryHistoryModel[] = [];
 
-  constructor(private _snackBarService: MatSnackBar, private _router: Router, private _activatedRoute: ActivatedRoute, public builder: FormBuilder,
+  constructor(private _dialogService: TdDialogService, private _snackBarService: MatSnackBar, private _router: Router,
+    private _activatedRoute: ActivatedRoute, public builder: FormBuilder,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
     private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider) {
     this.frmBudget = builder.group({
@@ -105,7 +107,8 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
       categoryName: frmCmps.frmCmpCategory,
       budget: frmCmps.frmCmpBudget,
       isFavourite: this.isFavourite,
-      shareToken: localStorage.getItem('shareToken')
+      shareToken: localStorage.getItem('shareToken'),
+      isDeleted: false
     };
 
     if (this.categoryGuidId === '') {
@@ -151,6 +154,32 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
+  }
+
+  deleteClick(frmCmps) {
+    if (this.categoryGuidId === '') {
+      this._snackBarService.open('Cannot delete new Category', undefined, { duration: 3000 });
+      return;
+    }
+
+    let prompt = 'Are you sure you want to delete this category?';
+    this._dialogService.openConfirm({ message: prompt })
+      .afterClosed().toPromise().then((confirm: boolean) => {
+        if (confirm) {
+
+          this.categoryFirebaseServiceProvider.softDeleteRecord(this.formData, (e) => this.softDeleteCallback(e));
+          this._router.navigate(['/categories']);
+        }
+      });
+  }
+
+  softDeleteCallback(result: SqliteCallbackModel) {
+    if (result.success) {
+      this._snackBarService.open('Deleted category successfully', undefined, { duration: 3000 });
+
+      return;
+    }
+    this._snackBarService.open('Error deleting category', undefined, { duration: 3000 });
   }
 
   backClick() {

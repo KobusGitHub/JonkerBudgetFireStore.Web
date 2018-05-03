@@ -28,7 +28,7 @@ export class ExpenseReportComponent implements OnInit {
     private _loadingService: TdLoadingService) { }
 
   ngOnInit() {
-    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCategoriesCallback(e));
+    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getAllCategoriesCallback(e));
 
     this.selectedYear = localStorage.getItem('expense-report-year');
     this.selectedMonth = localStorage.getItem('expense-report-month');
@@ -76,6 +76,11 @@ export class ExpenseReportComponent implements OnInit {
           }
         });
 
+        if (catName === '') {
+          // Category got deleted
+          return;
+        }
+
         let dt = new Date(rec.recordDate);
 
         recordsTemp.push({
@@ -84,7 +89,6 @@ export class ExpenseReportComponent implements OnInit {
           expenseValue: rec.expenseValue,
           recordDate: rec.recordDate,
           recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear()
-
         });
       });
 

@@ -36,72 +36,40 @@
       </mat-card-content>
       <mat-card-actions class="text-right">
         <button color="seconday" (click)="cancelClick()" mat-raised-button>Cancel</button>
-        <button color="seconday" (click)="getHistoryData()" mat-raised-button>History</button>
         <button color="primary" (click)="saveClick(frmBudget.value)" [disabled]='!frmBudget.valid' mat-raised-button>Save</button>
+        <span style="text-align: right; width:25px;">
+          <button mat-icon-button [matMenuTriggerFor]="cardToolbarMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #cardToolbarMenu="matMenu">
+            <button (click)="getHistoryData()" mat-menu-item>
+              <mat-icon>create</mat-icon>
+              <span>History</span>
+            </button>
+            <button style="background-color: red; color:white" (click)="deleteClick(frmBudget.value)" mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+
+
+          </mat-menu>
+        </span>
       </mat-card-actions>
     </mat-card>
 
-    <!-- <mat-card *ngIf='showHistory'>
-      <mat-card-content style="margin-bottom:0px;" flex fxLayout="column">
-        <mat-list>
-          <mat-list-item>
-            <div flex style="font-weight: bold; color:lightgray;">Current Budget</div>
-            <div flex style="font-weight: bold; color:lightgray;">
-              <app-currency-formatter style="text-align: right" [numberToFormat]='currentBudget'></app-currency-formatter>
-            </div>
 
-          </mat-list-item>
-          <mat-list-item>
-            <div flex style="font-weight: bold">Suggested Budget</div>
-            <div flex style="font-weight: bold">
-              <app-currency-formatter style="text-align: right" [numberToFormat]='avarageExpenses'></app-currency-formatter>
-            </div>
-            <mat-divider></mat-divider>
-
-          </mat-list-item>
-
-          <mat-list-item>
-            <div flex>{{currentMonthText}}</div>
-            <div flex>
-              <app-currency-formatter style="text-align: right" [numberToFormat]='currentMonthExpenses'></app-currency-formatter>
-            </div>
-            <mat-divider></mat-divider>
-
-          </mat-list-item>
-          <mat-list-item>
-            <div flex>{{oneBackMonthText}}</div>
-            <div flex>
-              <app-currency-formatter style="text-align: right" [numberToFormat]='oneBackMonthExpenses'></app-currency-formatter>
-            </div>
-            <mat-divider></mat-divider>
-
-          </mat-list-item>
-          <mat-list-item>
-            <div flex>{{twoBackMonthText}}</div>
-            <div flex>
-              <app-currency-formatter style="text-align: right" [numberToFormat]='twoBackMonthExpenses'></app-currency-formatter>
-            </div>
-            <mat-divider></mat-divider>
-
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-      <mat-card-actions class="text-right">
-        <button color="seconday" (click)="backClick()" mat-raised-button>Back</button>
-      </mat-card-actions>
-    </mat-card> -->
 
     <mat-card *ngIf='showHistory'>
+      <mat-card-title>
+        {{formData.categoryName}}
+      </mat-card-title>
       <mat-card-content style="margin-bottom:0px;" flex fxLayout="column">
         <mat-list>
-
           <mat-list-item>
-            
             <div flex style="font-weight: bold; color:lightgray;">Current Budget</div>
             <div flex style="font-weight: bold; color:lightgray;">
               <app-currency-formatter style="text-align: right" [numberToFormat]='currentBudget'></app-currency-formatter>
             </div>
-
           </mat-list-item>
           <mat-list-item>
             <div flex style="font-weight: bold">Suggested Budget</div>
@@ -112,9 +80,9 @@
 
           </mat-list-item>
 
-          <mat-list-item *ngFor="let historyRecord of categoryHistoryRecords" (click) = "historyClick(historyRecord)">
-              <i class="material-icons" *ngIf="historyRecord.selected" style="color:#B81F24; padding-right:5px;">check_box</i>
-              <i class="material-icons" *ngIf="!historyRecord.selected" style="padding-right:5px;" >check_box_outline_blank</i>
+          <mat-list-item *ngFor="let historyRecord of categoryHistoryRecords" (click)="historyClick(historyRecord)">
+            <i class="material-icons" *ngIf="historyRecord.selected" style="color:#B81F24; padding-right:5px;">check_box</i>
+            <i class="material-icons" *ngIf="!historyRecord.selected" style="padding-right:5px;">check_box_outline_blank</i>
             <div flex>{{historyRecord.month}}</div>
             <div flex>
               <app-currency-formatter style="text-align: right" [numberToFormat]='historyRecord.monthValue'></app-currency-formatter>

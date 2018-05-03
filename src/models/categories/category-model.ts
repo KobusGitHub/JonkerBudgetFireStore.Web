@@ -4,4 +4,5 @@ export class CategoryModel {
   budget: number;
   isFavourite: boolean;
   shareToken: string;
+  isDeleted: boolean;
 }

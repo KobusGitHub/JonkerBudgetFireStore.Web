@@ -24,7 +24,7 @@ export class CategoriesComponent implements OnInit {
 
   filterData() {
     this._loadingService.register('category.list');
-    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCallback(e));
+    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getAllCallback(e));
   }
 
   getAllCallback(result: SqliteCallbackModel) {
@@ -37,6 +37,14 @@ export class CategoriesComponent implements OnInit {
     }
 
     // console.log(result.data);
+    // this.items = [];
+    // result.data.forEach((item) => {
+    //   console.log(item.categoryName + ' ' + item.isDeleted);
+    //   if (item.isDeleted !== true) {
+    //     this.items.push(item);
+    //   }
+    // });
+
     this.items = result.data;
   }
 

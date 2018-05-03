@@ -5,7 +5,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class CategoryFirebaseServiceProvider  {
+export class CategoryFirebaseServiceProvider {
     // https://www.youtube.com/watch?v=-GjF9pSeFTs
 
     // users
@@ -52,11 +52,44 @@ export class CategoryFirebaseServiceProvider  {
             // tslint:disable-next-line:no-debugger
             callbackMethod({ success: true, data: res });
         }, (err) => {
-           callbackMethod({ success: false, data: err });
+            callbackMethod({ success: false, data: err });
+        });
+    }
+
+    public getAllActive(callbackMethod) {
+        // tslint:disable-next-line:no-debugger
+        let categoryCollectionRef = this.db.collection('category', (ref) => {
+            return ref.where('shareToken', '==', localStorage.getItem('shareToken'))
+                .orderBy('isFavourite', 'desc').orderBy('categoryName');
+        });
+        let notes = categoryCollectionRef.valueChanges();
+        let subscription = notes.subscribe((res) => {
+            // tslint:disable-next-line:no-debugger
+
+            let items = [];
+            res.forEach((item: CategoryModel) => {
+                if (item.isDeleted !== true) {
+                    items.push(item);
+                }
+            });
+
+            callbackMethod({ success: true, data: items });
+        }, (err) => {
+            callbackMethod({ success: false, data: err });
         });
     }
 
     public updateRecord(categoryModel: CategoryModel, callbackMethod) {
+        let docRef = this.db.doc('category/' + categoryModel.guidId);
+        docRef.set(categoryModel).then((ok) => {
+            callbackMethod({ success: true, data: ok });
+        }).catch((err) => {
+            callbackMethod({ success: false, data: err });
+        });
+    }
+
+    public softDeleteRecord(categoryModel: CategoryModel, callbackMethod) {
+        categoryModel.isDeleted = true;
         let docRef = this.db.doc('category/' + categoryModel.guidId);
         docRef.set(categoryModel).then((ok) => {
             callbackMethod({ success: true, data: ok });

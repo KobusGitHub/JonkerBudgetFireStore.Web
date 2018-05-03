@@ -66,7 +66,7 @@ export class ForecastComponent implements OnInit, OnDestroy {
     this.getCategoriesDone = false;
 
     this.expenseFirebaseServiceProvider.getAllInPeriod(this.year.toString(), this.month, (e) => this.getExpensesCallback(e));
-    this.categoryFirebaseServiceProvider.getAll((e) => this.getCategoriesCallback(e));
+    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getCategoriesCallback(e));
 
   }
 

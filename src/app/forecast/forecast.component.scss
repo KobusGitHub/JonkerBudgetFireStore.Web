@@ -1,0 +1,18 @@
+.header {
+    position: fixed;
+    top: 57px;
+    z-index: 1;
+    width: 100%;
+    min-height: 40px;
+    margin-top:23px;
+    padding-right:23px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: whitesmoke;
+    min-height: 40px;
+    
+}

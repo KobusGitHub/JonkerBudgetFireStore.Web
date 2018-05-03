@@ -94,7 +94,7 @@ export class ExpenseComponent implements OnInit {
   }
 
   loadData() {
-    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCallback(e));
+    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getAllCallback(e));
   }
 
   getAllCallback(result: SqliteCallbackModel) {
