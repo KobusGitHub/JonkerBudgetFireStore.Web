@@ -162,25 +162,26 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let prompt = 'Are you sure you want to delete this category?';
+    let prompt = 'Are you sure you want to delete this category and all linked expenses?';
     this._dialogService.openConfirm({ message: prompt })
       .afterClosed().toPromise().then((confirm: boolean) => {
         if (confirm) {
-
-          this.categoryFirebaseServiceProvider.softDeleteRecord(this.formData, (e) => this.softDeleteCallback(e));
+          this.expenseFirebaseServiceProvider.getAllForCategory(this.categoryGuidId, (e) => this.getAllForCategoryCallback(e));
+          this.categoryFirebaseServiceProvider.deleteRecord(this.categoryGuidId, (e) => this.deleteCallback(e));
           this._router.navigate(['/categories']);
         }
       });
   }
 
-  softDeleteCallback(result: SqliteCallbackModel) {
-    if (result.success) {
-      this._snackBarService.open('Deleted category successfully', undefined, { duration: 3000 });
-
-      return;
+  getAllForCategoryCallback(sqliteCallbackModel: SqliteCallbackModel) {
+    if (sqliteCallbackModel.success) {
+      sqliteCallbackModel.data.forEach((exp) => {
+        this.expenseFirebaseServiceProvider.deleteRecord(exp.guidId, (e) => this.deleteCallback(e));
+      });
     }
-    this._snackBarService.open('Error deleting category', undefined, { duration: 3000 });
   }
+
+  deleteCallback(result: SqliteCallbackModel) {}
 
   backClick() {
     this.showHistory = false;
@@ -250,6 +251,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
 
     this.expenseFirebaseServiceProvider.getAllInPeriod(backThreeYear.toString(), this.threeBackMonthText,
       (e) => this.getAllInThreeBackPeriodCallback(e));
+
   }
 
   getAllInCurrentPeriodCallback(sqliteCallbackModel: SqliteCallbackModel) {

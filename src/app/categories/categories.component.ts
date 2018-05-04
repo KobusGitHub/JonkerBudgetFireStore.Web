@@ -24,35 +24,20 @@ export class CategoriesComponent implements OnInit {
 
   filterData() {
     this._loadingService.register('category.list');
-    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getAllCallback(e));
+    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCallback(e));
   }
 
   getAllCallback(result: SqliteCallbackModel) {
     this._loadingService.resolve('category.list');
     if (result.success === false) {
-      // console.log(result.data);
-      // this.toast.showToast('Error');
       alert('Error');
       alert(JSON.stringify(result.data));
     }
-
-    // console.log(result.data);
-    // this.items = [];
-    // result.data.forEach((item) => {
-    //   console.log(item.categoryName + ' ' + item.isDeleted);
-    //   if (item.isDeleted !== true) {
-    //     this.items.push(item);
-    //   }
-    // });
-
     this.items = result.data;
   }
 
   detailClick(item) {
     let obj = { guidId: item.guidId };
-    // console.log(obj);
-
     this._router.navigate(['/category-add-modify/' + item.guidId]);
-    // this._router.navigate(['/category-add-modify']);
   }
 }

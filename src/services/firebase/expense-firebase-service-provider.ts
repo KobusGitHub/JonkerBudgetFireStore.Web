@@ -56,6 +56,25 @@ export class ExpenseFirebaseServiceProvider {
             callbackMethod({ success: false, data: err });
         });
     }
+
+    public getAllForCategory(categoryGuidId: string, callbackMethod) {
+        let collectionRef = this.db.collection('expense', (ref) => {
+            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).where('categoryGuidId', '==', categoryGuidId);
+        });
+        // var notes = categoryCollectionRef.valueChanges();
+        let snapshot = collectionRef.snapshotChanges()
+            .map((changes) => {
+                return changes.map((snap) => {
+                    return snap.payload.doc.data() as ExpenseModel;
+                });
+            });
+        let subscription = snapshot.subscribe((res) => {
+            callbackMethod({ success: true, data: res });
+        }, (err) => {
+            callbackMethod({ success: false, data: err });
+        });
+    }
+
     public updateRecord(expenseModel: ExpenseModel, callbackMethod) {
         let docRef = this.db.doc('expense/' + expenseModel.guidId);
         docRef.set(expenseModel).then((ok) => {

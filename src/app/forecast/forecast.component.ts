@@ -47,9 +47,9 @@ export class ForecastComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this._activatedRoute.params.subscribe((params) => {
       /* tslint:disable:no-string-literal */
-      this.incomeLeft = parseFloat(params['incomeLeft']);
+      // this.incomeLeft = parseFloat(params['incomeLeft']);
+      this.expenseFirebaseServiceProvider.getSumInPeriod(this.year, this.month, (e) => this.getSumInPeriodCallback(e));
 
-      this.getExpenses();
     }));
 
   }
@@ -66,8 +66,16 @@ export class ForecastComponent implements OnInit, OnDestroy {
     this.getCategoriesDone = false;
 
     this.expenseFirebaseServiceProvider.getAllInPeriod(this.year.toString(), this.month, (e) => this.getExpensesCallback(e));
-    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getCategoriesCallback(e));
+    this.categoryFirebaseServiceProvider.getAll((e) => this.getCategoriesCallback(e));
 
+  }
+
+  getSumInPeriodCallback(result: SqliteCallbackModel) {
+    if (result.success) {
+      let incomeUsed = result.data;
+      this.incomeLeft = parseFloat(localStorage.getItem('budgetIncome')) - incomeUsed;
+    }
+    this.getExpenses();
   }
 
   getExpensesCallback(result: SqliteCallbackModel) {

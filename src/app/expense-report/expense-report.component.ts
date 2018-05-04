@@ -28,7 +28,7 @@ export class ExpenseReportComponent implements OnInit {
     private _loadingService: TdLoadingService) { }
 
   ngOnInit() {
-    this.categoryFirebaseServiceProvider.getAllActive((e) => this.getAllCategoriesCallback(e));
+    this.categoryFirebaseServiceProvider.getAll((e) => this.getAllCategoriesCallback(e));
 
     this.selectedYear = localStorage.getItem('expense-report-year');
     this.selectedMonth = localStorage.getItem('expense-report-month');
