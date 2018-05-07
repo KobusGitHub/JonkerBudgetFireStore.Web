@@ -64,8 +64,8 @@ const httpInterceptorProviders: Type<any>[] = [
     ],
     imports: [
         MatGridListModule,
-        // AngularFireModule.initializeApp(environment.firebase),
-        AngularFireModule.initializeApp(environment.firebaseDemo),
+        AngularFireModule.initializeApp(environment.firebase),
+        // AngularFireModule.initializeApp(environment.firebaseDemo),
         AngularFirestoreModule.enablePersistence(),
         // AngularFirestoreModule,
         AngularFireAuthModule,

@@ -161,8 +161,8 @@ export class ForecastComponent implements OnInit, OnDestroy {
     this.calculate();
   }
 
-  backClick() {
-    window.history.back();
-  }
+  // backClick() {
+  //   window.history.back();
+  // }
 
 }

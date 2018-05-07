@@ -7,7 +7,9 @@
         <mat-list>
           <mat-list-item>
             <div flex fxFlexAlign="center" class="customPadding">
-              {{formData.year}} {{formData.month}}
+                <mat-chip-list class="mat-chip-list">
+              <mat-chip >{{formData.year}}</mat-chip><mat-chip >{{formData.month}}</mat-chip>
+              </mat-chip-list>
             </div>
             <div flex fxFlexAlign="end" class="customPadding">
               <button mat-raised-button *ngIf="incomeLeft >= 0" style="background-color: green; color:white;">

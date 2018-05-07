@@ -56,11 +56,17 @@ const routes: Routes = [
                 canActivate: [RouteGuard],
                 data: { roles: [], url: '/categories', title: 'Categories', icon: 'tune', show: true, seq: 4 }
             },
+            // {
+            //     path: 'forecast/:incomeLeft',
+            //     component: ForecastComponent,
+            //     canActivate: [RouteGuard],
+            //     data: { roles: [], url: '/forecast', title: 'Forecast', icon: 'attach_money', show: false, seq: 4 }
+            // },
             {
-                path: 'forecast/:incomeLeft',
+                path: 'forecast',
                 component: ForecastComponent,
                 canActivate: [RouteGuard],
-                data: { roles: [], url: '/forecast', title: 'Forecast', icon: 'attach_money', show: false, seq: 4 }
+                data: { roles: [], url: '/forecast', title: 'Forecast', icon: 'attach_money', show: true, seq: 4 }
             },
             {
                 path: 'expense-report',

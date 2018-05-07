@@ -68,8 +68,8 @@ export class ExpenseReportComponent implements OnInit {
     this.records = [];
     if (sqliteCallbackModel.success) {
       let catName = '';
-
       sqliteCallbackModel.data.forEach((rec) => {
+        catName = '';
         this.categories.forEach((cat) => {
           if (cat.guidId === rec.categoryGuidId) {
             catName = cat.categoryName;

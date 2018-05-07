@@ -238,11 +238,18 @@ export class ExpenseComponent implements OnInit {
     alert(JSON.stringify(result.data));
   }
 
+  // forecastClick() {
+  //   let obj = {
+  //     incomeLeft: this.incomeLeft
+  //   };
+  //   this._router.navigate(['/forecast/' + this.incomeLeft]);
+  // }
+
   forecastClick() {
     let obj = {
       incomeLeft: this.incomeLeft
     };
-    this._router.navigate(['/forecast/' + this.incomeLeft]);
+    this._router.navigate(['/forecast']);
   }
 
   clearScreen() {
