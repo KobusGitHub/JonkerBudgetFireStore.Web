@@ -8,10 +8,42 @@
 
 <div fxLayout="row">
     <div fxFlex></div>
-    <div fxFlex.gt-sm="40" fxFlex.sm="80" fxFlex.xs="80"  fxLayoutAlign="center center">
+    <div fxFlex.gt-sm="40" fxFlex.sm="80" fxFlex.xs="80" fxLayoutAlign="center center">
         <mat-card class="example-card">
-            <img mat-card-image src="assets/images/HomeBudget.png" alt="Home Budget">
-            
+            <div hide-gt-xs> <img mat-card-image src="assets/images/HomeBudget.png" alt="Home Budget gtsm"></div>
+            <div hide-xs style="text-align: center"> <img mat-card-image style="width: 50%;" src="assets/images/HomeBudget.png" alt="Home Budget ktmd"></div>
+           
+
+            <div fxLayout="row">
+                <div fxFlex style="margin: 5px;">
+                    <button flex class="homeButtonStyle btnHover" (click)="openPage('expense')" mat-menu-item>
+                        <mat-icon style="color: white">attach_money</mat-icon>
+                        <div>Expense</div>
+                    </button>
+                </div>
+                <div fxFlex style="margin: 5px;">
+                    <button flex class="homeButtonStyle btnHover" (click)="openPage('forecast')" mat-menu-item>
+                        <mat-icon style="color: white">attach_money</mat-icon>
+                        <div>Forecast</div>
+                    </button>
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex style="margin: 5px;">
+                    <button flex class="homeButtonStyle btnHover" (click)="openPage('expense-report')" mat-menu-item>
+                        <mat-icon style="color: white">assignment</mat-icon>
+                        <div>Expense Report</div>
+                    </button>
+                </div>
+                <div fxFlex style="margin: 5px;">
+                    <button flex class="homeButtonStyle btnHover" (click)="openPage('category-group-report')" mat-menu-item>
+                        <mat-icon style="color: white">assignment</mat-icon>
+                        <div>Category Report</div>
+                    </button>
+                </div>
+            </div>
+
+
         </mat-card>
     </div>
     <div fxFlex></div>
