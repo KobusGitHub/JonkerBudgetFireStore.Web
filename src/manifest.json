@@ -6,7 +6,7 @@
     "description": "Home Budget",
     "orientation": "any",
 
-    "start_url": "http://www.crazysoftware.co.za/",
+    "start_url": "https://jonkerbudget.firebaseapp.com/",
 
     "icons": [
         {

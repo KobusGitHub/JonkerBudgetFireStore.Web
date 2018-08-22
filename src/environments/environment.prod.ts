@@ -1,7 +1,8 @@
 import { IThemeModel } from '../models';
 
-export const environment: { production: boolean, appTitle: string, webApiBaseAddress: string, themes: IThemeModel[], firebase: any } = {
-    production: true,
+export const environment: { production: boolean, appTitle: string, webApiBaseAddress: string, themes: IThemeModel[],
+    firebase: any, firebaseDemo: any } = {
+    production: false,
     appTitle: 'Home Budget',
     webApiBaseAddress: 'http://localhost:5000/api/',
     themes: [
@@ -25,5 +26,13 @@ export const environment: { production: boolean, appTitle: string, webApiBaseAdd
         projectId: 'jonkerbudget',
         storageBucket: 'jonkerbudget.appspot.com',
         messagingSenderId: '12474196481'
-      }
+    },
+    firebaseDemo: {
+        apiKey: 'AIzaSyAdxyqq999NKJUri85zm9YWPFCVgc2pkyM',
+        authDomain: 'homebudget-be8d4.firebaseapp.com',
+        databaseURL: 'https://homebudget-be8d4.firebaseio.com',
+        projectId: 'homebudget-be8d4',
+        storageBucket: 'homebudget-be8d4.appspot.com',
+        messagingSenderId: '16900260974'
+    }
 };

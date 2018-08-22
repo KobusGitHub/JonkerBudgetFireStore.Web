@@ -55,7 +55,7 @@ export class CategoryGroupReportComponent implements OnInit {
           categoryName: cat.categoryName,
           budget: cat.budget,
           expenseValue: 0,
-          textColor: 'lightgray'
+          textColor: 'gray'
         });
       });
       this.generateClick();
@@ -79,7 +79,7 @@ export class CategoryGroupReportComponent implements OnInit {
 
     this.categories.forEach((cat) => {
       cat.expenseValue = 0;
-      cat.textColor = 'lightgray';
+      cat.textColor = 'gray';
     });
     if (sqliteCallbackModel.success) {
 
