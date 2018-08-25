@@ -1,0 +1,53 @@
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
+  <div flex-gt-md="50" flex="100">
+    <mat-card>
+      <mat-card-content style="margin-bottom:0px;" flex fxLayout="column">
+
+        <mat-list>
+
+          <form [formGroup]="frmUser" class="example-form" novalidate>
+
+
+            <mat-list-item >
+              <mat-slide-toggle *ngIf="loggedInAdmin" formControlName="isAdmin">Is Admin</mat-slide-toggle>
+            </mat-list-item>
+
+            <mat-list-item>
+              <mat-form-field flex="50" style="min-width: 250px !important" class="example-full-width">
+                <input matInput placeholder="Name" formControlName="name" maxlength="50">
+              </mat-form-field>
+            </mat-list-item>
+
+            <mat-list-item>
+              <mat-form-field flex="50" style="min-width: 250px !important" class="example-full-width">
+                <input matInput placeholder="Surname" formControlName="surname" maxlength="50">
+              </mat-form-field>
+            </mat-list-item>
+
+          </form>
+        
+          <mat-list-item>
+            <mat-form-field flex="50" style="min-width: 250px !important" class="example-full-width">
+              <input matInput placeholder="Email" [(ngModel)]="email" [disabled]="userGuidId !== ''" maxlength="50">
+            </mat-form-field>
+          </mat-list-item>
+
+          <mat-list-item *ngIf="userGuidId === ''">
+            <mat-form-field flex="50" style="min-width: 250px !important" class="example-full-width">
+              <input matInput type="Password" placeholder="Password" [(ngModel)]="password" maxlength="50">
+            </mat-form-field>
+          </mat-list-item>
+
+        </mat-list>
+
+
+
+
+      </mat-card-content>
+      <mat-card-actions class="text-right">
+        <button color="seconday" (click)="cancelClick()" mat-raised-button>Cancel</button>
+        <button color="primary" (click)="saveClick()" [disabled]='!canSave()' mat-raised-button>Save</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

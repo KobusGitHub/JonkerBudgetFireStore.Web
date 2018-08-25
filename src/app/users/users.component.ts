@@ -1,79 +1,173 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { MatSnackBar, MatDialog, MatDialogRef } from '@angular/material';
-import { Title } from '@angular/platform-browser';
-import { TdLoadingService, TdDialogService, TdMediaService } from '@covalent/core';
-import 'rxjs/add/operator/toPromise';
-
-import { CreateUserComponent } from '../users/user-create/user-create.component';
-import { UsersStore } from '../../stores';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { UserFirebaseServiceProvider, AuthFirebaseServiceProvider } from '../../services';
+import { UserModel } from '../../models';
+import { MatSnackBar } from '../../../node_modules/@angular/material';
+import { Router } from '../../../node_modules/@angular/router';
+import { TdDialogService } from '../../../node_modules/@covalent/core';
+import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrls: ['./users.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
-    subscriptions: any[] = [];
-    filter = '';
-    dialogRef: MatDialogRef<CreateUserComponent>;
+export class UsersComponent implements OnInit {
+  users: UserModel[] = [];
+  reRegisteredUser: UserModel = undefined;
+  public currentUserShareToken: string = '';
+  public canShowAdmin: boolean = false;
+  public showAdmin: boolean = false;
 
-    constructor(
-        private _matDialog: MatDialog,
-        private _titleService: Title,
-        private _loadingService: TdLoadingService,
-        private _dialogService: TdDialogService,
-        private _snackBarService: MatSnackBar,
-        private _changeDetectorRef: ChangeDetectorRef,
-        public media: TdMediaService,
-        public _usersStore: UsersStore
-    ) {
+  constructor(private _snackBarService: MatSnackBar, private _router: Router, private _dialogService: TdDialogService,
+    private _viewContainerRef: ViewContainerRef,
+    private authFirebaseService: AuthFirebaseServiceProvider,
+    private userFirebaseServiceProvider: UserFirebaseServiceProvider) { }
 
+  ngOnInit() {
+    this.currentUserShareToken = localStorage.getItem('shareToken');
+    if (localStorage.getItem('isAdmin') === 'true') {
+      this.canShowAdmin = true;
+    } else {
+      this.canShowAdmin = false;
     }
 
-    ngOnDestroy(): void {
-        // this.subscriptions.forEach((result) => {
-        //     //result.unsubscribe();
-        //     result = undefined;
-        // });
-    }
+    this.loadData();
+  }
 
-    ngOnInit(): void {
-        this.subscriptions.push(this._usersStore.loadInitialUsers());
-        this.subscriptions.push(this._usersStore.loadInitialRoles());
-    }
+  loadData() {
+    if (this.showAdmin) {
+      this.userFirebaseServiceProvider.getAllAdmin((e) => this.getAllForEstateCallback(e));
 
-    ngAfterViewInit(): void {
-        setTimeout(() => { // workaround since MatSidenav has issues redrawing at the beginning
-            this.media.broadcast();
-            this._changeDetectorRef.detectChanges();
-        });
+      return;
     }
+    this.userFirebaseServiceProvider.getAll((e) => this.getAllForEstateCallback(e));
+  }
 
-    filterUsers(displayName: string = ''): void {
-        this.filter = displayName;
-    }
+  getAllForEstateCallback(callbackModel: SqliteCallbackModel) {
+    this.users = [];
+    if (callbackModel.success) {
 
-    enableOrDisable(id: string, isActive: boolean): void {
-        let prompt = '';
-        if (isActive) {
-            prompt = 'Are you sure you want to enable this user?';
-        } else {
-            prompt = 'Are you sure you want to disable this user?';
+      if (localStorage.getItem('isAdmin') === 'true') {
+        this.users = callbackModel.data;
+        return;
+      }
+
+      callbackModel.data.forEach((userModel) => {
+        if (userModel.guidId === localStorage.getItem('userGuidId')) {
+          this.users.push(userModel);
+          return;
         }
-        this._dialogService.openConfirm({ message: prompt })
-            .afterClosed().toPromise().then((confirm: boolean) => {
-                if (confirm) {
-                    this._usersStore.enableOrDisableUser(id, isActive).subscribe((res) => {
-                        this._usersStore.loadInitialUsers();
-                    });
-                }
-            });
-    }
-    createUser(): void {
-        this.subscriptions.push(this.dialogRef = this._matDialog.open(CreateUserComponent, { width: '400px' }));
+      });
+      return;
     }
 
+    this._snackBarService.open('Error getting users', '', {
+      duration: 2000
+    });
+  }
+
+  detailClick(userModel: UserModel) {
+    this._router.navigate(['/users/' + userModel.guidId]);
+  }
+
+  resetPasswordClick(userModel: UserModel) {
+    this.resetPassword(userModel.email);
+  }
+
+  resetPassword(email) {
+    this.authFirebaseService.sendPasswordResetEmail(email, (e) => this.resetPasswordCallback(e));
+
+  }
+
+  resetPasswordCallback(callback: SqliteCallbackModel) {
+    if (!callback.success) {
+      this._snackBarService.open('Error sending reset password', '', {
+        duration: 2000
+      });
+    }
+
+    this._snackBarService.open('Reset email send', '', {
+      duration: 2000
+    });
+  }
+
+  UpdateEmailClick(userModel: UserModel) {
+    this.reRegisteredUser = userModel;
+    this.openConfirm();
+  }
+
+  openConfirm(): void {
+    this._dialogService.openConfirm({
+      // tslint:disable-next-line:max-line-length
+      message: 'Are you sure you want to update your email?. This will update your login email asswell.',
+      disableClose: true, // defaults to false
+      viewContainerRef: this._viewContainerRef, // OPTIONAL
+      title: 'Confirm', // OPTIONAL, hides if not provided
+      cancelButton: 'Cancel', // OPTIONAL, defaults to 'CANCEL'
+      acceptButton: 'OK', // OPTIONAL, defaults to 'ACCEPT'
+      width: '500px' // OPTIONAL, defaults to 400px
+    }).afterClosed().subscribe((accept: boolean) => {
+      if (accept) {
+        // DO SOMETHING
+        this.openPrompt();
+      } else {
+        this.reRegisteredUser = undefined;
+        // DO SOMETHING ELSE
+      }
+    });
+  }
+
+  openPrompt(): void {
+    this._dialogService.openPrompt({
+      message: 'Please provide your new email',
+      disableClose: true, // defaults to false
+      viewContainerRef: this._viewContainerRef, // OPTIONAL
+      title: 'Prompt', // OPTIONAL, hides if not provided
+      value: '', // OPTIONAL
+      acceptButton: 'Ok', // OPTIONAL, defaults to 'ACCEPT'
+      width: '400px' // OPTIONAL, defaults to 400px
+    }).afterClosed().subscribe((newValue: string) => {
+      if (newValue) {
+        // DO SOMETHING
+        this.updateEmail(newValue);
+      } else {
+        this.reRegisteredUser = undefined;
+        // DO SOMETHING ELSE
+      }
+    });
+  }
+
+  updateEmail(email: string) {
+    this.reRegisteredUser.email = email;
+    this.authFirebaseService.updateUserEmail(email, (e) => this.updateEmailCallback(e));
+  }
+
+  updateEmailCallback(callback: SqliteCallbackModel) {
+    if (!callback.success) {
+      this._snackBarService.open('Something went wrong registering you!', '', {
+        duration: 2000
+      });
+      return;
+    }
+
+    this._snackBarService.open('Login updated successfully', '', {
+      duration: 2000
+    });
+
+    this.userFirebaseServiceProvider.updateRecord(this.reRegisteredUser, (e) => this.updateLoginEmailCallback(e));
+
+  }
+
+  updateLoginEmailCallback(callback: SqliteCallbackModel) {
+    if (!callback.success) {
+      this._snackBarService.open('Something went wrong updating user! Please contact your Administrator', '', {
+        duration: 2000
+      });
+      return;
+    }
+
+    this._snackBarService.open('Email updated successfully', '', {
+      duration: 2000
+    });
+  }
 }

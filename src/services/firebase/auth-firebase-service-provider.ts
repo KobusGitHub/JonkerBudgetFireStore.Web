@@ -28,6 +28,17 @@ export class AuthFirebaseServiceProvider {
 
     }
 
+    sendPasswordResetEmail(email, callbackMethod) {
+        const promise = this.afAuth.auth.sendPasswordResetEmail(email);
+        promise.then((res) => {
+            callbackMethod({ success: true, data: res });
+        });
+        promise.catch((error) => {
+            callbackMethod({ success: false, data: error });
+        });
+
+    }
+
     logout(callbackMethod) {
         const promise = this.afAuth.auth.signOut();
         promise.then((res) => {
@@ -40,6 +51,17 @@ export class AuthFirebaseServiceProvider {
 
     createUserWithEmailPassword(email, password, callbackMethod) {
         const promise = this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+        promise.then((res) => {
+            callbackMethod({ success: true, data: res });
+        });
+        promise.catch((error) => {
+            callbackMethod({ success: false, data: error });
+        });
+    }
+
+    updateUserEmail(email, callbackMethod) {
+        let user = this.afAuth.auth.currentUser;
+        const promise = user.updateEmail(email);
         promise.then((res) => {
             callbackMethod({ success: true, data: res });
         });

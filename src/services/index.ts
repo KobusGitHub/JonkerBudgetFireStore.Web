@@ -1,4 +1,5 @@
 export { AuthService } from './auth.service';
 export { HttpErrorService } from './http-error.service';
-export { UsersService } from './users.service';
-export { RolesService } from './roles.service';
+export { AuthFirebaseServiceProvider } from './firebase/auth-firebase-service-provider';
+export { UserFirebaseServiceProvider } from './firebase/user-firebase-service-provider';
+export { CommonService } from './common.service';

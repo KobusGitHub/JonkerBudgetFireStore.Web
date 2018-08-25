@@ -9,13 +9,12 @@ import { RequestInterceptor } from './app.interceptor';
 import { routedComponents, AppRoutingModule } from './app.routing';
 import { SharedModule, CustomModule } from '../modules';
 import { RouteGuard } from '../guards/route.guard';
-import { AuthService, HttpErrorService, RolesService, UsersService } from '../services';
-import { AppStore, AuthStore, UsersStore } from '../stores';
+import { AuthService, HttpErrorService, UserFirebaseServiceProvider, CommonService } from '../services';
+import { AppStore, AuthStore } from '../stores';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 // import { DynamicDashboardsModule } from '@sgits/dynamic-dashboards';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './home/home.component';
-import { CreateUserComponent, UserDetailComponent, UserRolesComponent } from './users';
 import { CategoriesComponent } from './categories/categories.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
@@ -37,6 +36,8 @@ import { TrackBudgetComponent } from './track-budget/track-budget';
 import { ForecastComponent } from './forecast/forecast.component';
 import { SetupComponent } from './setup/setup.component';
 import { AuthFirebaseServiceProvider } from '../services/firebase/auth-firebase-service-provider';
+import { UsersComponent } from './users/users.component';
+import { RegisterUserComponent } from './users/register-user/register-user.component';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -47,9 +48,6 @@ const httpInterceptorProviders: Type<any>[] = [
         AppComponent,
         routedComponents,
         HomeComponent,
-        CreateUserComponent,
-        UserDetailComponent,
-        UserRolesComponent,
         CategoriesComponent,
         CategoryAddModifyComponent,
         CurrencyFormatterComponent,
@@ -60,7 +58,9 @@ const httpInterceptorProviders: Type<any>[] = [
         CategoryExpenseReportComponent,
         ExpenseComponent,
         ForecastComponent,
-        SetupComponent
+        SetupComponent,
+        UsersComponent,
+        RegisterUserComponent
     ],
     imports: [
         MatGridListModule,
@@ -92,16 +92,15 @@ const httpInterceptorProviders: Type<any>[] = [
         HttpErrorService,
         AppStore,
         AuthStore,
-        RolesService,
-        UsersService,
-        UsersStore,
         CategoryFirebaseServiceProvider,
         ExpenseFirebaseServiceProvider,
-        AuthFirebaseServiceProvider
+        AuthFirebaseServiceProvider,
+        UserFirebaseServiceProvider,
+        CommonService
     ],
     exports: [
     ],
     bootstrap: [AppComponent],
-    entryComponents: [CreateUserComponent]
+    entryComponents: []
 })
 export class AppModule { }
