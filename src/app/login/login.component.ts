@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
 
             localStorage.setItem('userGuidId', callbackModel.data[0].guidId);
             localStorage.setItem('shareToken', callbackModel.data[0].shareToken);
-            localStorage.setItem('isAdmin', callbackModel.data[0].isAdmin);
+            // localStorage.setItem('isAdmin', callbackModel.data[0].isAdmin);
 
             this.secureLocalStorage.setItem('userGuidId', callbackModel.data[0].guidId).subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => { }, (err) => { alert('Error'); });
@@ -94,12 +94,11 @@ export class LoginComponent implements OnInit {
         if (sqliteCallbackModel.success) {
             localStorage.removeItem('userGuidId');
             localStorage.removeItem('shareToken');
-            localStorage.removeItem('isAdmin');
+            // localStorage.removeItem('isAdmin');
 
             this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
-
 
             this._notificationService.displayMessage('Logged out successfully');
             return;

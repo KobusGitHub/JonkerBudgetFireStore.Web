@@ -46,9 +46,9 @@ export class AuthStore {
     }
 
     clearToken() {
-        localStorage.setItem('token', undefined);
-        localStorage.setItem('expiresIn', undefined);
-        localStorage.setItem('isAuth', 'false');
+        // localStorage.setItem('token', undefined);
+        // localStorage.setItem('expiresIn', undefined);
+        // localStorage.setItem('isAuth', 'false');
 
         this._token.next(this.getToken());
     }

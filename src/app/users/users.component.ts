@@ -5,6 +5,7 @@ import { MatSnackBar } from '../../../node_modules/@angular/material';
 import { Router } from '../../../node_modules/@angular/router';
 import { TdDialogService } from '../../../node_modules/@covalent/core';
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
+import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
 
 @Component({
   selector: 'app-users',
@@ -15,39 +16,42 @@ export class UsersComponent implements OnInit {
   users: UserModel[] = [];
   reRegisteredUser: UserModel = undefined;
   public currentUserShareToken: string = '';
-  public canShowAdmin: boolean = false;
+  public isAdmin: boolean = false;
   public showAdmin: boolean = false;
 
   constructor(private _snackBarService: MatSnackBar, private _router: Router, private _dialogService: TdDialogService,
-    private _viewContainerRef: ViewContainerRef,
+    private _viewContainerRef: ViewContainerRef, protected secureLocalStorage: LocalStorage,
     private authFirebaseService: AuthFirebaseServiceProvider,
     private userFirebaseServiceProvider: UserFirebaseServiceProvider) { }
 
   ngOnInit() {
     this.currentUserShareToken = localStorage.getItem('shareToken');
-    if (localStorage.getItem('isAdmin') === 'true') {
-      this.canShowAdmin = true;
-    } else {
-      this.canShowAdmin = false;
-    }
 
-    this.loadData();
+    this.secureLocalStorage.getItem('isAdmin').subscribe((res) => {
+      if (res === true) {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+
+      this.loadData();
+    });
   }
 
   loadData() {
     if (this.showAdmin) {
-      this.userFirebaseServiceProvider.getAllAdmin((e) => this.getAllForEstateCallback(e));
+      this.userFirebaseServiceProvider.getAllAdmin((e) => this.getAllCallback(e));
 
       return;
     }
-    this.userFirebaseServiceProvider.getAll((e) => this.getAllForEstateCallback(e));
+    this.userFirebaseServiceProvider.getAll((e) => this.getAllCallback(e));
   }
 
-  getAllForEstateCallback(callbackModel: SqliteCallbackModel) {
+  getAllCallback(callbackModel: SqliteCallbackModel) {
     this.users = [];
     if (callbackModel.success) {
 
-      if (localStorage.getItem('isAdmin') === 'true') {
+      if (this.isAdmin) {
         this.users = callbackModel.data;
         return;
       }

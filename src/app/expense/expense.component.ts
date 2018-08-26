@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material';
 import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-firebase-service-provider';
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
 import { ExpenseModel } from '../../models/expenses/expense-model';
+import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
 
 @Component({
   selector: 'app-expense',
@@ -24,7 +25,7 @@ export class ExpenseComponent implements OnInit {
 
   modelToSave: ExpenseModel = undefined;
 
-  constructor(private _snackBarService: MatSnackBar, private _router: Router,
+  constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
     private _activatedRoute: ActivatedRoute, private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider) { }
 
@@ -81,16 +82,7 @@ export class ExpenseComponent implements OnInit {
   }
 
   buildEmptyModel() {
-    this.formData.id = 0;
-    // tslint:disable-next-line:radix
-    this.formData.year = parseInt(localStorage.getItem('budgetYear'));
-    this.formData.month = localStorage.getItem('budgetMonth');
-    this.formData.income = parseFloat(localStorage.getItem('budgetIncome'));
-    this.formData.categoryGuidId = '';
-    this.formData.expenseValue = '';
-    this.formData.expenseCode = '';
-    this.formData.comment = '';
-    this.formData.inSync = false;
+
   }
 
   loadData() {
@@ -103,7 +95,24 @@ export class ExpenseComponent implements OnInit {
       this.categories = result.data;
       this.buildEmptyModel();
 
-      this.expenseFirebaseServiceProvider.getSumInPeriod(this.formData.year, this.formData.month, (e) => this.getSumInPeriodCallback(e));
+      // Buid Empty Model
+      this.secureLocalStorage.getItem('budgetIncome').subscribe((res) => {
+        this.formData.income = res;
+
+        this.formData.id = 0;
+        // tslint:disable-next-line:radix
+        this.formData.year = parseInt(localStorage.getItem('budgetYear'));
+        this.formData.month = localStorage.getItem('budgetMonth');
+        // this.formData.income = parseFloat(localStorage.getItem('budgetIncome'));
+        this.formData.categoryGuidId = '';
+        this.formData.expenseValue = '';
+        this.formData.expenseCode = '';
+        this.formData.comment = '';
+        this.formData.inSync = false;
+
+        // Get sum in period
+        this.expenseFirebaseServiceProvider.getSumInPeriod(this.formData.year, this.formData.month, (e) => this.getSumInPeriodCallback(e));
+      });
 
       return;
     }
@@ -193,7 +202,7 @@ export class ExpenseComponent implements OnInit {
     if (this.formData.categoryGuidId === undefined || this.formData.categoryGuidId === null
       || this.formData.categoryGuidId === 0 || this.formData.categoryGuidId === '' ||
       this.formData.expenseValue === undefined || this.formData.expenseValue === null
-       || this.formData.expenseValue === 0  || this.formData.expenseValue === '') {
+      || this.formData.expenseValue === 0 || this.formData.expenseValue === '') {
       return true;
     }
 

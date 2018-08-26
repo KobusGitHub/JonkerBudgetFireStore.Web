@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-firebase-service-provider';
 import { CategoryFirebaseServiceProvider } from '../../services/firebase/category-firebase-service-provider';
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
+import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
 
 @Component({
   selector: 'app-forecast',
@@ -31,27 +32,23 @@ export class ForecastComponent implements OnInit, OnDestroy {
   getExpensesDone = false;
   getCategoriesDone = false;
 
-  constructor(private _snackBarService: MatSnackBar, private _router: Router,
+  constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
     private _activatedRoute: ActivatedRoute, private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider) {
 
     // tslint:disable-next-line:radix
     this.year = parseInt(localStorage.getItem('budgetYear'));
     this.month = localStorage.getItem('budgetMonth');
-    this.income = parseFloat(localStorage.getItem('budgetIncome'));
-    // this.incomeLeft = parseFloat(this.navParams.get('incomeLeft'));
-
+    // this.income = parseFloat(localStorage.getItem('budgetIncome'));
   }
 
   ngOnInit() {
-
-    this.subscriptions.push(this._activatedRoute.params.subscribe((params) => {
-      /* tslint:disable:no-string-literal */
-      // this.incomeLeft = parseFloat(params['incomeLeft']);
-      this.expenseFirebaseServiceProvider.getSumInPeriod(this.year, this.month, (e) => this.getSumInPeriodCallback(e));
-
-    }));
-
+    this.secureLocalStorage.getItem('budgetIncome').subscribe((res) => {
+      this.income = res;
+      this.subscriptions.push(this._activatedRoute.params.subscribe((params) => {
+        this.expenseFirebaseServiceProvider.getSumInPeriod(this.year, this.month, (e) => this.getSumInPeriodCallback(e));
+      }));
+    });
   }
 
   ngOnDestroy() {
@@ -73,7 +70,8 @@ export class ForecastComponent implements OnInit, OnDestroy {
   getSumInPeriodCallback(result: SqliteCallbackModel) {
     if (result.success) {
       let incomeUsed = result.data;
-      this.incomeLeft = parseFloat(localStorage.getItem('budgetIncome')) - incomeUsed;
+      // this.incomeLeft = parseFloat(localStorage.getItem('budgetIncome')) - incomeUsed;
+      this.incomeLeft = this.income - incomeUsed;
     }
     this.getExpenses();
   }

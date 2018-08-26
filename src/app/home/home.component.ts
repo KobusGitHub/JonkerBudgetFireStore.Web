@@ -24,12 +24,6 @@ export class HomeComponent implements OnInit {
     openPage(page) {
         switch (page) {
             case 'expense':
-                let sharedToken = '';
-                this.secureLocalStorage.getItem<string>('shareToken').subscribe((res) => {
-                    console.log(res);
-                    sharedToken = res;
-                }, (err) => { });
-
                 this._router.navigate(['/expense']);
                 break;
             case 'forecast':

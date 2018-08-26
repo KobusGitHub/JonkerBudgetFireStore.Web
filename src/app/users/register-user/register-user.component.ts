@@ -5,6 +5,7 @@ import { MatSnackBar } from '../../../../node_modules/@angular/material';
 import { FormBuilder, FormGroup, Validators } from '../../../../node_modules/@angular/forms';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { SqliteCallbackModel } from '../../../models/sqlite-callback-model';
+import { LocalStorage } from '../../../../node_modules/@ngx-pwa/local-storage';
 
 @Component({
   selector: 'app-register-user',
@@ -21,7 +22,7 @@ export class RegisterUserComponent implements OnInit {
 
   frmUser: FormGroup;
 
-  constructor(private _snackBarService: MatSnackBar, private _router: Router, private commonSevice: CommonService,
+  constructor(private _snackBarService: MatSnackBar, private _router: Router, private commonSevice: CommonService, secureLocalStorage: LocalStorage,
     public builder: FormBuilder,
     private _activatedRoute: ActivatedRoute, private userFirebaseService: UserFirebaseServiceProvider,
     private authFirebaseService: AuthFirebaseServiceProvider) {
@@ -34,9 +35,12 @@ export class RegisterUserComponent implements OnInit {
     });
 
     this.loggedInAdmin = false;
-    if (localStorage.getItem('isAdmin') === 'true') {
-      this.loggedInAdmin = true;
-    }
+
+    secureLocalStorage.getItem('isAdmin').subscribe((res) => {
+      if (res === true) {
+        this.loggedInAdmin = true;
+      }
+    });
   }
 
   ngOnInit() {
