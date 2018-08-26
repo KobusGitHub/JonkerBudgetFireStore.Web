@@ -38,6 +38,7 @@ import { SetupComponent } from './setup/setup.component';
 import { AuthFirebaseServiceProvider } from '../services/firebase/auth-firebase-service-provider';
 import { UsersComponent } from './users/users.component';
 import { RegisterUserComponent } from './users/register-user/register-user.component';
+import { LocalStorageModule } from '@ngx-pwa/local-storage';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -71,6 +72,7 @@ const httpInterceptorProviders: Type<any>[] = [
         AngularFireAuthModule,
         AppRoutingModule,
         BrowserModule,
+        LocalStorageModule,
         BrowserAnimationsModule,
         SharedModule,
         ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),

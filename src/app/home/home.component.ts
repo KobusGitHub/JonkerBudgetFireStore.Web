@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { LocalStorage } from '@ngx-pwa/local-storage';
 
 @Component({
     selector: 'app-home',
@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HomeComponent implements OnInit {
 
 
-    constructor(private _snackBarService: MatSnackBar, private _router: Router,
+    constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
         private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
@@ -24,6 +24,12 @@ export class HomeComponent implements OnInit {
     openPage(page) {
         switch (page) {
             case 'expense':
+                let sharedToken = '';
+                this.secureLocalStorage.getItem<string>('shareToken').subscribe((res) => {
+                    console.log(res);
+                    sharedToken = res;
+                }, (err) => { });
+
                 this._router.navigate(['/expense']);
                 break;
             case 'forecast':

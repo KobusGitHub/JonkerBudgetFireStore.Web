@@ -10,6 +10,7 @@ import { SgNotificationService } from '../../components';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
 import { AuthFirebaseServiceProvider } from '../../services/firebase/auth-firebase-service-provider';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 
 @Component({
     selector: 'app-login',
@@ -32,12 +33,13 @@ export class LoginComponent implements OnInit {
         private _snackBarService: MatSnackBar,
         private _httpErrorService: HttpErrorService,
         private afAuth: AngularFireAuth,
-        private authFirebaseService: AuthFirebaseServiceProvider
+        private authFirebaseService: AuthFirebaseServiceProvider,
+        protected secureLocalStorage: LocalStorage
     ) {
     }
 
     login(): void {
-       this.authFirebaseService.loginWithEmailPassword(this.email, this.password, (e) => this.loginWithEmailPasswordCallback(e));
+        this.authFirebaseService.loginWithEmailPassword(this.email, this.password, (e) => this.loginWithEmailPasswordCallback(e));
     }
 
     loginWithEmailPasswordCallback(sqliteCallbackModel: SqliteCallbackModel) {
@@ -61,6 +63,12 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('userGuidId', callbackModel.data[0].guidId);
             localStorage.setItem('shareToken', callbackModel.data[0].shareToken);
             localStorage.setItem('isAdmin', callbackModel.data[0].isAdmin);
+
+            this.secureLocalStorage.setItem('userGuidId', callbackModel.data[0].guidId).subscribe((res) => { }, (err) => { alert('Error'); });
+            this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => { }, (err) => { alert('Error'); });
+            this.secureLocalStorage.setItem('isAdmin', callbackModel.data[0].isAdmin).subscribe((res) => { }, (err) => { alert('Error'); });
+
+
             this._router.navigate(['/']);
         } else {
             this._notificationService.displayMessage(callbackModel.data[0].message);
@@ -73,6 +81,11 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem('shareToken');
         localStorage.removeItem('isAdmin');
 
+        this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
+        this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
+        this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
+
+
         this.authFirebaseService.logout((e) => this.logoutCallback(e));
         this._titleService.setTitle(this.appTitle + ' | ' + 'Login');
     }
@@ -82,6 +95,12 @@ export class LoginComponent implements OnInit {
             localStorage.removeItem('userGuidId');
             localStorage.removeItem('shareToken');
             localStorage.removeItem('isAdmin');
+
+            this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
+            this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
+            this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
+
+
             this._notificationService.displayMessage('Logged out successfully');
             return;
         }
