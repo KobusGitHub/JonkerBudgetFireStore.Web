@@ -24,7 +24,9 @@ export class HomeComponent implements OnInit {
     openPage(page) {
         switch (page) {
             case 'expense':
-                this._router.navigate(['/expense']);
+            this.secureLocalStorage.removeItemSubscribe('shareToken');
+
+                //this._router.navigate(['/expense']);
                 break;
             case 'forecast':
                 this._router.navigate(['/forecast']);

@@ -3,6 +3,7 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { MatSnackBar } from '@angular/material';
 import { AuthStore } from '../stores/auth.store';
 import { LocalStorage } from '../../node_modules/@ngx-pwa/local-storage';
+import { Observable } from '../../node_modules/rxjs';
 
 @Injectable()
 export class RouteGuard implements CanActivate {
@@ -12,52 +13,63 @@ export class RouteGuard implements CanActivate {
         private _mdSnackBar: MatSnackBar) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
-        : boolean {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
 
         // return true;
 
-        if (localStorage.getItem('shareToken') === undefined || localStorage.getItem('shareToken') === ''
-            || localStorage.getItem('shareToken') === null) {
-            this._mdSnackBar.open('Access Unauthorised!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        return this.secureLocalStorage.getItem('shareToken').map((res) => {
+            if (res === null || res === undefined || res === '') {
+                this._authStore.logout();
+                return false;
+            }
+
+            return true;
+        }, (err) => {
             this._authStore.logout();
             return false;
-        }
+        });
 
-        if (state.url === '/') {
-            return true;
-        }
+        // if (localStorage.getItem('shareToken') === undefined || localStorage.getItem('shareToken') === ''
+        //     || localStorage.getItem('shareToken') === null) {
+        //     this._mdSnackBar.open('Access Unauthorised!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     this._authStore.logout();
+        //     return false;
+        // }
 
-        let selectedYear = localStorage.getItem('budgetYear');
-        let selectedMonth = localStorage.getItem('budgetMonth');
-        let isIncomeSetup = localStorage.getItem('isIncomeSetup');
-        let shareToken = localStorage.getItem('shareToken');
+        // if (state.url === '/') {
+        //     return true;
+        // }
+
+        // let selectedYear = localStorage.getItem('budgetYear');
+        // let selectedMonth = localStorage.getItem('budgetMonth');
+        // let isIncomeSetup = localStorage.getItem('isIncomeSetup');
+        // let shareToken = localStorage.getItem('shareToken');
 
 
-        if (!selectedYear || selectedYear.toString() === '') {
-            this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-            // this._router.navigate(['/setup']);
-            return false;
-        }
+        // if (!selectedYear || selectedYear.toString() === '') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
 
-        if (!selectedMonth || selectedMonth.toString() === '') {
-            this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-            // this._router.navigate(['/setup']);
-            return false;
-        }
-        if (!isIncomeSetup || selectedMonth.toString() === '' ||  selectedMonth.toString() === 'false') {
-            this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-            // this._router.navigate(['/setup']);
-            return false;
-        }
-        if (!shareToken || shareToken.toString() === '') {
-            this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-            // this._router.navigate(['/setup']);
-            return false;
-        }
-        return true;
+        // if (!selectedMonth || selectedMonth.toString() === '') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
+        // if (!isIncomeSetup || selectedMonth.toString() === '' || selectedMonth.toString() === 'false') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
+        // if (!shareToken || shareToken.toString() === '') {
+        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+        //     // this._router.navigate(['/setup']);
+        //     return false;
+        // }
+        // return true;
 
-       
+
 
         // let roles: string[] = route.data.roles;
         // if (!this._authStore.hasValidToken()) {

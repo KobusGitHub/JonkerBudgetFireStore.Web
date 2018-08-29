@@ -65,11 +65,13 @@ export class LoginComponent implements OnInit {
             // localStorage.setItem('isAdmin', callbackModel.data[0].isAdmin);
 
             this.secureLocalStorage.setItem('userGuidId', callbackModel.data[0].guidId).subscribe((res) => { }, (err) => { alert('Error'); });
-            this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.setItem('isAdmin', callbackModel.data[0].isAdmin).subscribe((res) => { }, (err) => { alert('Error'); });
+            this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => {
+                this._router.navigate(['/']);
+
+             }, (err) => { alert('Error'); });
 
 
-            this._router.navigate(['/']);
         } else {
             this._notificationService.displayMessage(callbackModel.data[0].message);
         }
