@@ -23,64 +23,17 @@ export class RouteGuard implements CanActivate {
                 return false;
             }
 
+            // let isIncomeSetup = localStorage.getItem('isIncomeSetup');
+            // if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
+            //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+            //     // this._router.navigate(['/setup']);
+            //     return false;
+            // }
             return true;
         }, (err) => {
             this._authStore.logout();
             return false;
         });
-
-        // if (localStorage.getItem('shareToken') === undefined || localStorage.getItem('shareToken') === ''
-        //     || localStorage.getItem('shareToken') === null) {
-        //     this._mdSnackBar.open('Access Unauthorised!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-        //     this._authStore.logout();
-        //     return false;
-        // }
-
-        // if (state.url === '/') {
-        //     return true;
-        // }
-
-        // let selectedYear = localStorage.getItem('budgetYear');
-        // let selectedMonth = localStorage.getItem('budgetMonth');
-        // let isIncomeSetup = localStorage.getItem('isIncomeSetup');
-        // let shareToken = localStorage.getItem('shareToken');
-
-
-        // if (!selectedYear || selectedYear.toString() === '') {
-        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-        //     // this._router.navigate(['/setup']);
-        //     return false;
-        // }
-
-        // if (!selectedMonth || selectedMonth.toString() === '') {
-        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-        //     // this._router.navigate(['/setup']);
-        //     return false;
-        // }
-        // if (!isIncomeSetup || selectedMonth.toString() === '' || selectedMonth.toString() === 'false') {
-        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-        //     // this._router.navigate(['/setup']);
-        //     return false;
-        // }
-        // if (!shareToken || shareToken.toString() === '') {
-        //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-        //     // this._router.navigate(['/setup']);
-        //     return false;
-        // }
-        // return true;
-
-
-
-        // let roles: string[] = route.data.roles;
-        // if (!this._authStore.hasValidToken()) {
-        //     this._mdSnackBar.open('Session Expired! Please Login Again.', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-        //     this._authStore.logout();
-        //     return false;
-        // }
-
-        // if (this._authStore.hasRoles(roles)) {
-        //     return true;
-        // }
 
     }
 }

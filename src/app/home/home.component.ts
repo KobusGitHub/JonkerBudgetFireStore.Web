@@ -11,22 +11,30 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 export class HomeComponent implements OnInit {
 
 
-    constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
+    constructor(private _snackBarService: MatSnackBar, private _router: Router, 
+        protected secureLocalStorage: LocalStorage,
         private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
-        if (localStorage.getItem('shareToken') === undefined || localStorage.getItem('shareToken') === ''
-            || localStorage.getItem('shareToken') === null) {
+        this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+            if (res === null || res === undefined || res === '') {
+                this._router.navigate(['/login']);
+            }
+
+            let isIncomeSetup = localStorage.getItem('isIncomeSetup');
+            if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
+                this._router.navigate(['/setup']);
+            }
+
+        }, (err) => {
             this._router.navigate(['/login']);
-        }
+        });
     }
 
     openPage(page) {
         switch (page) {
             case 'expense':
-            this.secureLocalStorage.removeItemSubscribe('shareToken');
-
-                //this._router.navigate(['/expense']);
+                this._router.navigate(['/expense']);
                 break;
             case 'forecast':
                 this._router.navigate(['/forecast']);

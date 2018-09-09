@@ -5,6 +5,7 @@ import { TokenModel } from '../../models';
 import { AuthStore, AppStore } from '../../stores';
 import { environment } from '../../environments/environment';
 import { mainRouterTransition } from '../../animations';
+import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
 
 @Component({
     selector: 'app-main',
@@ -24,6 +25,7 @@ export class MainComponent implements OnInit {
     userRoutes: Routes;
 
     constructor(
+        protected secureLocalStorage: LocalStorage,
         private _router: Router,
         private _titleService: Title,
         private _authStore: AuthStore,
@@ -42,11 +44,17 @@ export class MainComponent implements OnInit {
     }
 
     initMainMenuRoutes(routes: Route[]) {
+        // let isIncomeSetup = localStorage.getItem('isIncomeSetup');
         routes.forEach((route) => {
-
+            // if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
+            //     if (route.path === 'setup') {
+            //         this.mainMenuRoutes.push(route);
+            //     }
+            // } else {
             if (route.data && route.data.show) {
                 this.mainMenuRoutes.push(route);
             }
+            // }
 
             if (route.children) {
                 this.initMainMenuRoutes(route.children);

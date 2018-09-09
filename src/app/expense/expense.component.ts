@@ -14,6 +14,7 @@ import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
   styleUrls: ['./expense.component.scss']
 })
 export class ExpenseComponent implements OnInit {
+  private shareToken: string;
   formData: any = {};
   loader: any;
   categories: CategoryModel[] = [];
@@ -27,7 +28,14 @@ export class ExpenseComponent implements OnInit {
 
   constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
     private _activatedRoute: ActivatedRoute, private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
-    private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider) { }
+    private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider) {
+
+      this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+        this.shareToken = res;
+      }, (err) => {
+        this._router.navigate(['/login']);
+      });
+     }
 
   ngOnInit() {
     // localStorage.setItem('budgetYear', '2018');
@@ -140,7 +148,7 @@ export class ExpenseComponent implements OnInit {
         comment: this.formData.comment,
         recordDate: new Date().toString(),
         expenseCode: this.getNewExpenseCode(),
-        shareToken: localStorage.getItem('shareToken')
+        shareToken: this.shareToken
       };
     } else {
       let eValue = Number((-1) * this.formData.expenseValue);
@@ -155,7 +163,7 @@ export class ExpenseComponent implements OnInit {
         comment: this.formData.comment,
         recordDate: new Date().toString(),
         expenseCode: this.getNewExpenseCode(),
-        shareToken: localStorage.getItem('shareToken')
+        shareToken: this.shareToken
       };
     }
     this.saveExpense();
@@ -218,19 +226,25 @@ export class ExpenseComponent implements OnInit {
   }
 
   saveTransfer() {
-    this.modelToSave = {
-      // tslint:disable-next-line:radix
-      year: parseInt(localStorage.getItem('budgetYear')),
-      month: localStorage.getItem('budgetMonth'),
-      categoryGuidId: this.transferToGuidId,
-      guidId: this.getNewGuid(),
-      expenseValue: this.formData.expenseValue,
-      comment: this.formData.comment,
-      recordDate: new Date().toString(),
-      expenseCode: this.getNewExpenseCode(),
-      shareToken: localStorage.getItem('shareToken')
-    };
-    this.saveTransferToSql();
+
+    this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+      this.modelToSave = {
+        // tslint:disable-next-line:radix
+        year: parseInt(localStorage.getItem('budgetYear')),
+        month: localStorage.getItem('budgetMonth'),
+        categoryGuidId: this.transferToGuidId,
+        guidId: this.getNewGuid(),
+        expenseValue: this.formData.expenseValue,
+        comment: this.formData.comment,
+        recordDate: new Date().toString(),
+        expenseCode: this.getNewExpenseCode(),
+        shareToken: res
+      };
+      this.saveTransferToSql();
+
+    }, (err) => {
+      this._router.navigate(['/login']);
+    });
   }
 
   saveTransferToSql() {

@@ -13,6 +13,7 @@ import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
+  private shareToken: string;
   users: UserModel[] = [];
   reRegisteredUser: UserModel = undefined;
   public currentUserShareToken: string = '';
@@ -22,19 +23,22 @@ export class UsersComponent implements OnInit {
   constructor(private _snackBarService: MatSnackBar, private _router: Router, private _dialogService: TdDialogService,
     private _viewContainerRef: ViewContainerRef, protected secureLocalStorage: LocalStorage,
     private authFirebaseService: AuthFirebaseServiceProvider,
-    private userFirebaseServiceProvider: UserFirebaseServiceProvider) { }
+    private userFirebaseServiceProvider: UserFirebaseServiceProvider) {
+  }
 
   ngOnInit() {
-    this.currentUserShareToken = localStorage.getItem('shareToken');
-
-    this.secureLocalStorage.getItem('isAdmin').subscribe((res) => {
-      if (res === true) {
-        this.isAdmin = true;
-      } else {
-        this.isAdmin = false;
-      }
-
-      this.loadData();
+    this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+      this.currentUserShareToken = res;
+      this.secureLocalStorage.getItem('isAdmin').subscribe((isAdminRes) => {
+        if (isAdminRes === true) {
+          this.isAdmin = true;
+        } else {
+          this.isAdmin = false;
+        }
+        this.loadData();
+      }, (err) => {
+        this._router.navigate(['/login']);
+      });
     });
   }
 
@@ -56,13 +60,20 @@ export class UsersComponent implements OnInit {
         return;
       }
 
-      callbackModel.data.forEach((userModel) => {
-        if (userModel.guidId === localStorage.getItem('userGuidId')) {
-          this.users.push(userModel);
-          return;
-        }
+      this.secureLocalStorage.getItem('userGuidId').subscribe((res) => {
+        let userGuidId = res;
+
+        callbackModel.data.forEach((userModel) => {
+          if (userModel.guidId === userGuidId) {
+            this.users.push(userModel);
+            return;
+          }
+        });
+        return;
+
+      }, (err) => {
+        this._router.navigate(['/login']);
       });
-      return;
     }
 
     this._snackBarService.open('Error getting users', '', {

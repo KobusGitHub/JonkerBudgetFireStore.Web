@@ -3,6 +3,7 @@ import { ExpenseModel } from '../../models/expenses/expense-model';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
 @Injectable()
 export class ExpenseFirebaseServiceProvider {
     // https://www.youtube.com/watch?v=-GjF9pSeFTs
@@ -11,7 +12,8 @@ export class ExpenseFirebaseServiceProvider {
     // Category
     // Expense,
 
-    constructor(private db: AngularFirestore) { }
+    constructor(protected secureLocalStorage: LocalStorage,
+        private db: AngularFirestore) { }
 
     public insertRecord(expenseModel: ExpenseModel, callbackMethod) {
         this.db.collection('expense').doc(expenseModel.guidId).set(expenseModel).then((docRef) => {
@@ -40,36 +42,50 @@ export class ExpenseFirebaseServiceProvider {
         });
     }
     public getAll(callbackMethod) {
-        let collectionRef = this.db.collection('expense', (ref) => {
-            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).orderBy('recordDate');
-        });
-        // var notes = categoryCollectionRef.valueChanges();
-        let snapshot = collectionRef.snapshotChanges()
-            .map((changes) => {
-                return changes.map((snap) => {
-                    return snap.payload.doc.data() as ExpenseModel;
-                });
+
+        this.secureLocalStorage.getItem('shareToken').subscribe((stRes) => {
+            let shareToken = stRes;
+            let collectionRef = this.db.collection('expense', (ref) => {
+                return ref.where('shareToken', '==', shareToken).orderBy('recordDate');
             });
-        let subscription = snapshot.subscribe((res) => {
-            callbackMethod({ success: true, data: res });
+            // var notes = categoryCollectionRef.valueChanges();
+            let snapshot = collectionRef.snapshotChanges()
+                .map((changes) => {
+                    return changes.map((snap) => {
+                        return snap.payload.doc.data() as ExpenseModel;
+                    });
+                });
+            let subscription = snapshot.subscribe((res) => {
+                callbackMethod({ success: true, data: res });
+            }, (err) => {
+                callbackMethod({ success: false, data: err });
+            });
+
         }, (err) => {
             callbackMethod({ success: false, data: err });
         });
     }
 
     public getAllForCategory(categoryGuidId: string, callbackMethod) {
-        let collectionRef = this.db.collection('expense', (ref) => {
-            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).where('categoryGuidId', '==', categoryGuidId);
-        });
-        // var notes = categoryCollectionRef.valueChanges();
-        let snapshot = collectionRef.snapshotChanges()
-            .map((changes) => {
-                return changes.map((snap) => {
-                    return snap.payload.doc.data() as ExpenseModel;
-                });
+
+        this.secureLocalStorage.getItem('shareToken').subscribe((stRes) => {
+            let shareToken = stRes;
+
+            let collectionRef = this.db.collection('expense', (ref) => {
+                return ref.where('shareToken', '==', shareToken).where('categoryGuidId', '==', categoryGuidId);
             });
-        let subscription = snapshot.subscribe((res) => {
-            callbackMethod({ success: true, data: res });
+            // var notes = categoryCollectionRef.valueChanges();
+            let snapshot = collectionRef.snapshotChanges()
+                .map((changes) => {
+                    return changes.map((snap) => {
+                        return snap.payload.doc.data() as ExpenseModel;
+                    });
+                });
+            let subscription = snapshot.subscribe((res) => {
+                callbackMethod({ success: true, data: res });
+            }, (err) => {
+                callbackMethod({ success: false, data: err });
+            });
         }, (err) => {
             callbackMethod({ success: false, data: err });
         });
@@ -98,42 +114,56 @@ export class ExpenseFirebaseServiceProvider {
     public getSumInPeriod(year: number, month: string, callbackMethod) {
         let yearString = year.toString();
 
-        let collectionRef = this.db.collection('expense', (ref) => {
-            return ref.where('shareToken', '==', localStorage.getItem('shareToken'))
-            // tslint:disable-next-line:radix
-            .where('month', '==', month).where('year', '==', parseInt(yearString)).orderBy('recordDate');
-        });
-        // var notes = categoryCollectionRef.valueChanges();
-        let snapshot = collectionRef.snapshotChanges()
-            .map((changes) => {
-                return changes.map((snap) => {
-                    return snap.payload.doc.data() as ExpenseModel;
-                });
+        this.secureLocalStorage.getItem('shareToken').subscribe((stRes) => {
+            let shareToken = stRes;
+
+            let collectionRef = this.db.collection('expense', (ref) => {
+                return ref.where('shareToken', '==', shareToken)
+                    // tslint:disable-next-line:radix
+                    .where('month', '==', month).where('year', '==', parseInt(yearString)).orderBy('recordDate');
             });
-        let subscription = snapshot.subscribe((res) => {
-            let expenseValue = 0;
-            res.forEach((exp) => {
-                expenseValue += Number(exp.expenseValue);
+            // var notes = categoryCollectionRef.valueChanges();
+            let snapshot = collectionRef.snapshotChanges()
+                .map((changes) => {
+                    return changes.map((snap) => {
+                        return snap.payload.doc.data() as ExpenseModel;
+                    });
+                });
+            let subscription = snapshot.subscribe((res) => {
+                let expenseValue = 0;
+                res.forEach((exp) => {
+                    expenseValue += Number(exp.expenseValue);
+                });
+
+                callbackMethod({ success: true, data: expenseValue });
+            }, (err) => {
+                callbackMethod({ success: false, data: err });
             });
 
-            callbackMethod({ success: true, data: expenseValue });
         }, (err) => {
             callbackMethod({ success: false, data: err });
         });
-
     }
     public getAllInPeriod(year: string, month: string, callbackMethod) {
-        let collectionRef = this.db.collection('expense', (ref) => {
-            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).where('month', '==', month)
-            // tslint:disable-next-line:radix
-            .where('year', '==', parseInt(year)).orderBy('recordDate');
-        });
-        let notes = collectionRef.valueChanges();
-        let subscription = notes.subscribe((res) => {
-            // tslint:disable-next-line:no-debugger
-            callbackMethod({ success: true, data: res });
+
+        this.secureLocalStorage.getItem('shareToken').subscribe((stRes) => {
+            let shareToken = stRes;
+
+            let collectionRef = this.db.collection('expense', (ref) => {
+                return ref.where('shareToken', '==', shareToken).where('month', '==', month)
+                    // tslint:disable-next-line:radix
+                    .where('year', '==', parseInt(year)).orderBy('recordDate');
+            });
+            let notes = collectionRef.valueChanges();
+            let subscription = notes.subscribe((res) => {
+                // tslint:disable-next-line:no-debugger
+                callbackMethod({ success: true, data: res });
+            }, (err) => {
+                callbackMethod({ success: false, data: err });
+            });
+
         }, (err) => {
-           callbackMethod({ success: false, data: err });
+            callbackMethod({ success: false, data: err });
         });
     }
 }

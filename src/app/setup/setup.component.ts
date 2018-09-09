@@ -20,17 +20,21 @@ export class SetupComponent implements OnInit {
 
   constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
     private _activatedRoute: ActivatedRoute) {
-      // tslint:disable-next-line:radix
-      this.selectedYear = localStorage.getItem('budgetYear');
-      this.selectedMonth = localStorage.getItem('budgetMonth');
+    // tslint:disable-next-line:radix
+    this.selectedYear = localStorage.getItem('budgetYear');
+    this.selectedMonth = localStorage.getItem('budgetMonth');
 
-      // this.income = parseFloat(localStorage.getItem('budgetIncome'));
-      this.secureLocalStorage.getItem('budgetIncome').subscribe((res) => {
-        this.income = res;
-      });
+    // this.income = parseFloat(localStorage.getItem('budgetIncome'));
+    this.secureLocalStorage.getItem('budgetIncome').subscribe((res) => {
+      this.income = res;
+    });
 
-      this.shareToken = localStorage.getItem('shareToken');
-    }
+    this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+      this.shareToken = res;
+    }, (err) => {
+      this._router.navigate(['/login']);
+    });
+  }
 
   ngOnInit() {
   }
@@ -59,23 +63,21 @@ export class SetupComponent implements OnInit {
   saveClick() {
     localStorage.setItem('budgetMonth', this.selectedMonth);
     localStorage.setItem('budgetYear', this.selectedYear.toString());
-    // localStorage.setItem('budgetIncome', this.income.toString());
-    localStorage.setItem('shareToken', this.shareToken);
-
 
     this.secureLocalStorage.setItem('budgetIncome', this.income).subscribe((res) => {
       localStorage.setItem('isIncomeSetup', 'true');
 
-    }, (err) => {});
+      localStorage.setItem('category-group-report-month', this.selectedMonth);
+      localStorage.setItem('category-group-report-year', this.selectedYear.toString());
+      localStorage.setItem('expense-report-month', this.selectedMonth);
+      localStorage.setItem('expense-report-year', this.selectedYear.toString());
+
+      this._snackBarService.open('Saved Successfully', undefined, { duration: 3000 });
+      this._router.navigate(['/']);
+
+    }, (err) => { });
 
 
-    localStorage.setItem('category-group-report-month', this.selectedMonth);
-    localStorage.setItem('category-group-report-year', this.selectedYear.toString());
-    localStorage.setItem('expense-report-month', this.selectedMonth);
-    localStorage.setItem('expense-report-year', this.selectedYear.toString());
-
-    this._snackBarService.open('Saved Successfully', undefined, { duration: 3000 });
-    this._router.navigate(['/']);
   }
 
   generateShareTokenClick() {

@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material';
 import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-firebase-service-provider';
 import { CategoryHistoryModel } from '../../models';
 import { TdDialogService } from '@covalent/core';
+import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
 
 @Component({
   selector: 'app-category-add-modify',
@@ -15,6 +16,7 @@ import { TdDialogService } from '@covalent/core';
   styleUrls: ['./category-add-modify.component.scss']
 })
 export class CategoryAddModifyComponent implements OnInit, OnDestroy {
+  private shareToken: string;
   private subscriptions: any[] = [];
   private categoryGuidId: string;
 
@@ -35,9 +37,17 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
   categoryHistoryRecords: CategoryHistoryModel[] = [];
 
   constructor(private _dialogService: TdDialogService, private _snackBarService: MatSnackBar, private _router: Router,
+    protected secureLocalStorage: LocalStorage,
     private _activatedRoute: ActivatedRoute, public builder: FormBuilder,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
     private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider) {
+
+    this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+      this.shareToken = res;
+    }, (err) => {
+      this._router.navigate(['/login']);
+    });
+
     this.frmBudget = builder.group({
       'frmCmpCategory': [{ value: '' }, Validators.required],
       'frmCmpBudget': [{ value: '' }, Validators.required]
@@ -107,7 +117,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
       categoryName: frmCmps.frmCmpCategory,
       budget: frmCmps.frmCmpBudget,
       isFavourite: this.isFavourite,
-      shareToken: localStorage.getItem('shareToken'),
+      shareToken: this.shareToken,
       isDeleted: false
     };
 
@@ -181,7 +191,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteCallback(result: SqliteCallbackModel) {}
+  deleteCallback(result: SqliteCallbackModel) { }
 
   backClick() {
     this.showHistory = false;

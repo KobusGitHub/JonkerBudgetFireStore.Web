@@ -60,15 +60,15 @@ export class LoginComponent implements OnInit {
     getUserCallback(callbackModel: SqliteCallbackModel) {
         if (callbackModel.success) {
 
-            localStorage.setItem('userGuidId', callbackModel.data[0].guidId);
-            localStorage.setItem('shareToken', callbackModel.data[0].shareToken);
+            // localStorage.setItem('userGuidId', callbackModel.data[0].guidId);
+            // localStorage.setItem('shareToken', callbackModel.data[0].shareToken);
             // localStorage.setItem('isAdmin', callbackModel.data[0].isAdmin);
 
             this.secureLocalStorage.setItem('userGuidId', callbackModel.data[0].guidId).subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.setItem('isAdmin', callbackModel.data[0].isAdmin).subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => {
+                debugger;
                 this._router.navigate(['/']);
-
              }, (err) => { alert('Error'); });
 
 
@@ -78,15 +78,13 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
-        localStorage.removeItem('userGuidId');
         localStorage.removeItem('shareToken');
+        localStorage.removeItem('userGuidId');
         localStorage.removeItem('isAdmin');
 
         this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
         this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
         this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
-
 
         this.authFirebaseService.logout((e) => this.logoutCallback(e));
         this._titleService.setTitle(this.appTitle + ' | ' + 'Login');

@@ -3,6 +3,7 @@ import { CategoryModel } from '../../models/categories/category-model';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
 
 @Injectable()
 export class CategoryFirebaseServiceProvider {
@@ -12,7 +13,8 @@ export class CategoryFirebaseServiceProvider {
     // Category
     // Expense,
 
-    constructor(private db: AngularFirestore) { }
+    constructor(protected secureLocalStorage: LocalStorage,
+        private db: AngularFirestore) { }
 
     public insertRecord(categoryModel: CategoryModel, callbackMethod) {
         let dd = 6;
@@ -43,39 +45,26 @@ export class CategoryFirebaseServiceProvider {
     }
 
     public getAll(callbackMethod) {
-        // tslint:disable-next-line:no-debugger
-        let categoryCollectionRef = this.db.collection('category', (ref) => {
-            return ref.where('shareToken', '==', localStorage.getItem('shareToken')).orderBy('isFavourite', 'desc').orderBy('categoryName');
-        });
-        let notes = categoryCollectionRef.valueChanges();
-        let subscription = notes.subscribe((res) => {
+
+        this.secureLocalStorage.getItem('shareToken').subscribe((stRes) => {
+            let shareToken = stRes;
+
             // tslint:disable-next-line:no-debugger
-            callbackMethod({ success: true, data: res });
+            let categoryCollectionRef = this.db.collection('category', (ref) => {
+                return ref.where('shareToken', '==', shareToken).orderBy('isFavourite', 'desc').orderBy('categoryName');
+            });
+            let notes = categoryCollectionRef.valueChanges();
+            let subscription = notes.subscribe((res) => {
+                // tslint:disable-next-line:no-debugger
+                callbackMethod({ success: true, data: res });
+            }, (err) => {
+                callbackMethod({ success: false, data: err });
+            });
+
         }, (err) => {
             callbackMethod({ success: false, data: err });
         });
     }
-
-    // public getAllActive(callbackMethod) {
-    //     // tslint:disable-next-line:no-debugger
-    //     let categoryCollectionRef = this.db.collection('category', (ref) => {
-    //         return ref.where('shareToken', '==', localStorage.getItem('shareToken'))
-    //             .orderBy('isFavourite', 'desc').orderBy('categoryName');
-    //     });
-    //     let notes = categoryCollectionRef.valueChanges();
-    //     let subscription = notes.subscribe((res) => {
-    //         // tslint:disable-next-line:no-debugger
-    //         let items = [];
-    //         res.forEach((item: CategoryModel) => {
-    //             if (item.isDeleted !== true) {
-    //                 items.push(item);
-    //             }
-    //         });
-    //         callbackMethod({ success: true, data: items });
-    //     }, (err) => {
-    //         callbackMethod({ success: false, data: err });
-    //     });
-    // }
 
     public updateRecord(categoryModel: CategoryModel, callbackMethod) {
         let docRef = this.db.doc('category/' + categoryModel.guidId);
@@ -85,16 +74,6 @@ export class CategoryFirebaseServiceProvider {
             callbackMethod({ success: false, data: err });
         });
     }
-
-    // public softDeleteRecord(categoryModel: CategoryModel, callbackMethod) {
-    //     categoryModel.isDeleted = true;
-    //     let docRef = this.db.doc('category/' + categoryModel.guidId);
-    //     docRef.set(categoryModel).then((ok) => {
-    //         callbackMethod({ success: true, data: ok });
-    //     }).catch((err) => {
-    //         callbackMethod({ success: false, data: err });
-    //     });
-    // }
 
     public deleteRecord(id, callbackMethod) {
         this.deleteRecordByGuidId(id, callbackMethod);
