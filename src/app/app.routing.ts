@@ -26,12 +26,12 @@ const routes: Routes = [
     {
         path: '',
         component: MainComponent,
-        canActivate: [RouteGuard],
+        // canActivate: [RouteGuard],
         children: [
             {
                 path: '',
                 component: HomeComponent,
-                canActivate: [],
+                // canActivate: [],
                 data: { roles: [], url: '/', title: 'Home', icon: 'home', show: true, seq: 1 }
             },
             {
@@ -79,7 +79,7 @@ const routes: Routes = [
             {
                 path: 'setup',
                 component: SetupComponent,
-                canActivate: [],
+                // canActivate: [],
                 data: { roles: [], url: '/setup', title: 'Budget Setup', icon: 'build', show: true, seq: 9 }
             },
             {

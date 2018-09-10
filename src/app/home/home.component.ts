@@ -16,19 +16,19 @@ export class HomeComponent implements OnInit {
         private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
-        this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
-            if (res === null || res === undefined || res === '') {
-                this._router.navigate(['/login']);
-            }
+        // this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+        //     if (res === null || res === undefined || res === '') {
+        //         this._router.navigate(['/login']);
+        //     }
 
-            let isIncomeSetup = localStorage.getItem('isIncomeSetup');
-            if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
-                this._router.navigate(['/setup']);
-            }
+        //     let isIncomeSetup = localStorage.getItem('isIncomeSetup');
+        //     if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
+        //         this._router.navigate(['/setup']);
+        //     }
 
-        }, (err) => {
-            this._router.navigate(['/login']);
-        });
+        // }, (err) => {
+        //     this._router.navigate(['/login']);
+        // });
     }
 
     openPage(page) {

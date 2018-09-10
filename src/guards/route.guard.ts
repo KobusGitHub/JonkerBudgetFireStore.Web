@@ -23,12 +23,12 @@ export class RouteGuard implements CanActivate {
                 return false;
             }
 
-            // let isIncomeSetup = localStorage.getItem('isIncomeSetup');
-            // if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
-            //     this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
-            //     // this._router.navigate(['/setup']);
-            //     return false;
-            // }
+            let isIncomeSetup = localStorage.getItem('isIncomeSetup');
+            if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
+                this._mdSnackBar.open('Need Setup!', 'Close', { duration: 5000, panelClass: ['bgc-red-700', 'text-white'] });
+                this._router.navigate(['/setup']);
+                return false;
+            }
             return true;
         }, (err) => {
             this._authStore.logout();
