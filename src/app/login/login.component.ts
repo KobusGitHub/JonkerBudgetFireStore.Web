@@ -46,8 +46,6 @@ export class LoginComponent implements OnInit {
         if (sqliteCallbackModel.success) {
             this._notificationService.displayMessage('Logged in successfully');
             this.getUser(sqliteCallbackModel.data.uid);
-
-            this._router.navigate(['/']);
         } else {
             this._notificationService.displayMessage(sqliteCallbackModel.data.message);
         }
@@ -59,19 +57,12 @@ export class LoginComponent implements OnInit {
 
     getUserCallback(callbackModel: SqliteCallbackModel) {
         if (callbackModel.success) {
-
-            // localStorage.setItem('userGuidId', callbackModel.data[0].guidId);
-            // localStorage.setItem('shareToken', callbackModel.data[0].shareToken);
-            // localStorage.setItem('isAdmin', callbackModel.data[0].isAdmin);
-
             this.secureLocalStorage.setItem('userGuidId', callbackModel.data[0].guidId).subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.setItem('isAdmin', callbackModel.data[0].isAdmin).subscribe((res) => { }, (err) => { alert('Error'); });
+
             this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => {
-                debugger;
                 this._router.navigate(['/']);
              }, (err) => { alert('Error'); });
-
-
         } else {
             this._notificationService.displayMessage(callbackModel.data[0].message);
         }
@@ -81,10 +72,12 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem('shareToken');
         localStorage.removeItem('userGuidId');
         localStorage.removeItem('isAdmin');
+        localStorage.removeItem('isIncomeSetup');
 
         this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
         this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
         this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
+        this.secureLocalStorage.removeItemSubscribe('budgetIncome');
 
         this.authFirebaseService.logout((e) => this.logoutCallback(e));
         this._titleService.setTitle(this.appTitle + ' | ' + 'Login');
@@ -94,11 +87,12 @@ export class LoginComponent implements OnInit {
         if (sqliteCallbackModel.success) {
             localStorage.removeItem('userGuidId');
             localStorage.removeItem('shareToken');
-            // localStorage.removeItem('isAdmin');
+            localStorage.removeItem('isIncomeSetup');
 
             this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
+            this.secureLocalStorage.removeItemSubscribe('budgetIncome');
 
             this._notificationService.displayMessage('Logged out successfully');
             return;

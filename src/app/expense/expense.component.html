@@ -138,7 +138,7 @@
 </div>
 
 <div hide-gt-md>
-  <div class="footer" fxLayoutAlign="end">
-    <button color="primary" style="margin:10px;" [disabled]='disableSaveButton()' (click)="saveClick()" mat-raised-button>Save</button>
+  <div class="footer" fxLayoutAlign="end" *ngIf="!disableSaveButton()">
+    <button color="primary" style="margin:5px 10px 5px 5px;" [disabled]='disableSaveButton()' (click)="saveClick()" mat-raised-button>Save</button>
   </div>
 </div>

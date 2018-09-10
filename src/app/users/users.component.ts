@@ -72,13 +72,17 @@ export class UsersComponent implements OnInit {
         return;
 
       }, (err) => {
+        this._snackBarService.open('UserId invalid', '', {
+          duration: 2000
+        });
+
         this._router.navigate(['/login']);
       });
+    } else {
+      this._snackBarService.open('Error getting users', '', {
+        duration: 2000
+      });
     }
-
-    this._snackBarService.open('Error getting users', '', {
-      duration: 2000
-    });
   }
 
   detailClick(userModel: UserModel) {

@@ -19,7 +19,7 @@ export class RouteGuard implements CanActivate {
 
         return this.secureLocalStorage.getItem('shareToken').map((res) => {
             if (res === null || res === undefined || res === '') {
-                this._authStore.logout();
+                this._router.navigate(['/login']);
                 return false;
             }
 
@@ -31,7 +31,7 @@ export class RouteGuard implements CanActivate {
             }
             return true;
         }, (err) => {
-            this._authStore.logout();
+            this._router.navigate(['/login']);
             return false;
         });
 

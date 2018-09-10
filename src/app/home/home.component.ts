@@ -10,25 +10,18 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 })
 export class HomeComponent implements OnInit {
 
-
-    constructor(private _snackBarService: MatSnackBar, private _router: Router, 
+    constructor(private _snackBarService: MatSnackBar, private _router: Router,
         protected secureLocalStorage: LocalStorage,
         private _activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
-        // this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
-        //     if (res === null || res === undefined || res === '') {
-        //         this._router.navigate(['/login']);
-        //     }
-
-        //     let isIncomeSetup = localStorage.getItem('isIncomeSetup');
-        //     if (!isIncomeSetup || isIncomeSetup.toString() !== 'true') {
-        //         this._router.navigate(['/setup']);
-        //     }
-
-        // }, (err) => {
-        //     this._router.navigate(['/login']);
-        // });
+        this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
+            if (res === null || res === undefined || res === '') {
+                this._router.navigate(['/login']);
+            }
+        }, (err) => {
+            this._router.navigate(['/login']);
+        });
     }
 
     openPage(page) {
