@@ -77,7 +77,6 @@ export class SetupComponent implements OnInit {
 
     }, (err) => { });
 
-
   }
 
   generateShareTokenClick() {

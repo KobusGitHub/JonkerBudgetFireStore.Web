@@ -19,8 +19,11 @@ export class RegisterUserComponent implements OnInit {
   public password: string = '';
   public email: string = '';
   public loggedInAdmin = false;
+  public lastActive = '';
 
   frmUser: FormGroup;
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  years = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'];
 
   constructor(private _snackBarService: MatSnackBar, private _router: Router, private commonSevice: CommonService, secureLocalStorage: LocalStorage,
     public builder: FormBuilder,
@@ -87,6 +90,14 @@ export class RegisterUserComponent implements OnInit {
     if (callback.success) {
       this.userModel = callback.data;
       this.email = this.userModel.email;
+
+      if (this.userModel.lastActive) {
+        let dt = new Date(this.userModel.lastActive);
+        this.lastActive = dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear()
+
+      } else {
+        this.lastActive = '';
+      }
       this.frmUser.reset(this.userModel);
       return;
     }
@@ -111,7 +122,8 @@ export class RegisterUserComponent implements OnInit {
       email: this.email,
       isAdmin: this.frmUser.value.isAdmin,
       name: this.frmUser.value.name,
-      surname: this.frmUser.value.surname
+      surname: this.frmUser.value.surname,
+      lastActive: new Date().toString()
     };
     this.userFirebaseService.updateRecord(userCreateModel, (e) => this.updateUserCallback(e));
   }
@@ -130,7 +142,8 @@ export class RegisterUserComponent implements OnInit {
       email: this.email,
       isAdmin: this.frmUser.value.isAdmin,
       name: this.frmUser.value.name,
-      surname: this.frmUser.value.surname
+      surname: this.frmUser.value.surname,
+      lastActive: new Date().toString()
     };
 
     this.userFirebaseService.insertRecord(userModel, (e) => this.insertUserCallback(e));

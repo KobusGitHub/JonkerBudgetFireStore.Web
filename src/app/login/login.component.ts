@@ -68,16 +68,22 @@ export class LoginComponent implements OnInit {
         }
     }
 
+    clearCache() {
+        localStorage.removeItem('isIncomeSetup');
+        this.secureLocalStorage.removeItemSubscribe('budgetIncome');
+        this._notificationService.displayMessage('Cache cleared');
+    }
+
     ngOnInit(): void {
         localStorage.removeItem('shareToken');
         localStorage.removeItem('userGuidId');
         localStorage.removeItem('isAdmin');
-        localStorage.removeItem('isIncomeSetup');
+        // localStorage.removeItem('isIncomeSetup');
 
         this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
         this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
         this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
-        this.secureLocalStorage.removeItemSubscribe('budgetIncome');
+        // this.secureLocalStorage.removeItemSubscribe('budgetIncome');
 
         this.authFirebaseService.logout((e) => this.logoutCallback(e));
         this._titleService.setTitle(this.appTitle + ' | ' + 'Login');
@@ -87,12 +93,12 @@ export class LoginComponent implements OnInit {
         if (sqliteCallbackModel.success) {
             localStorage.removeItem('userGuidId');
             localStorage.removeItem('shareToken');
-            localStorage.removeItem('isIncomeSetup');
+            // localStorage.removeItem('isIncomeSetup');
 
             this.secureLocalStorage.removeItem('userGuidId').subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.removeItem('shareToken').subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.removeItem('isAdmin').subscribe((res) => { }, (err) => { alert('Error'); });
-            this.secureLocalStorage.removeItemSubscribe('budgetIncome');
+            // this.secureLocalStorage.removeItemSubscribe('budgetIncome');
 
             this._notificationService.displayMessage('Logged out successfully');
             return;

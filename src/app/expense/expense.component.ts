@@ -7,6 +7,8 @@ import { ExpenseFirebaseServiceProvider } from '../../services/firebase/expense-
 import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
 import { ExpenseModel } from '../../models/expenses/expense-model';
 import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
+import { UserFirebaseServiceProvider } from '../../services';
+import { UserModel } from '../../models';
 
 @Component({
   selector: 'app-expense',
@@ -28,6 +30,7 @@ export class ExpenseComponent implements OnInit {
 
   constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
     private _activatedRoute: ActivatedRoute, private expenseFirebaseServiceProvider: ExpenseFirebaseServiceProvider,
+    private userFirebaseServiceProvider: UserFirebaseServiceProvider,
     private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider) {
 
       this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
@@ -188,6 +191,7 @@ export class ExpenseComponent implements OnInit {
   insertExpenseTableCallback(result: SqliteCallbackModel) {
     if (result.success) {
       this._snackBarService.open('Expense uploaded successfully', undefined, { duration: 3000 });
+      this.updateUserActivityToSql();
       return;
     }
     this._snackBarService.open('Error uploading expense', undefined, { duration: 3000 });
@@ -283,6 +287,28 @@ export class ExpenseComponent implements OnInit {
     this.formData.categoryGuidId = undefined;
     this.transferToGuidId = undefined;
     this.loadData();
+  }
 
+  updateUserActivityToSql() {
+    this.secureLocalStorage.getItem('userGuidId').subscribe((stRes) => {
+      let userGuidId = stRes;
+      this.userFirebaseServiceProvider.getRecord(userGuidId, (e) => this.getUserCallback(e));
+    });
+  }
+
+  getUserCallback(result: SqliteCallbackModel) {
+    if (result.success) {
+      let model: UserModel = result.data;
+      model.lastActive = new Date().toString();
+
+      this.userFirebaseServiceProvider.updateRecord(model,  (e) => this.updateUserCallback(e));
+      return;
+    }
+  }
+
+  updateUserCallback(result: SqliteCallbackModel) {
+    if (result.success) {
+      return;
+    }
   }
 }
