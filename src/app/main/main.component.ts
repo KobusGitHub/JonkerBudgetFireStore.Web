@@ -43,6 +43,9 @@ export class MainComponent implements OnInit {
         this.mainMenuRoutes.sort((a, b) => a.data.seq - b.data.seq);
     }
 
+    reload() {
+        window.location.reload();
+    }
     initMainMenuRoutes(routes: Route[]) {
         // let isIncomeSetup = localStorage.getItem('isIncomeSetup');
         routes.forEach((route) => {

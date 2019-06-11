@@ -93,7 +93,7 @@ export class ExpenseReportComponent implements OnInit {
       });
 
       this.records = recordsTemp.sort((a: any, b: any) => {
-        return Date.parse(a.recordDate) - Date.parse(b.recordDate);
+        return Date.parse(b.recordDate) - Date.parse(a.recordDate);
       });
     }
   }

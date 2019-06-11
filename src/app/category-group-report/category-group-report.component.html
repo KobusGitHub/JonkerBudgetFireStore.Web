@@ -48,31 +48,50 @@
             </div>
             <mat-divider></mat-divider>
           </mat-list-item>
+
+
           <mat-list-item style="height: auto">
-            <div flex  *ngIf="categories.length === 0">
+            <div flex *ngIf="categories.length === 0">
               <br/>
               <div flex layout="column" layout-align="center center" class="tc-grey-500 mat-typography pad-lg">
-                <mat-icon flex  matListAvatar class="text-super push-bottom">device_hub</mat-icon>
+                <mat-icon flex matListAvatar class="text-super push-bottom">device_hub</mat-icon>
                 <h2>No data</h2>
                 <h3>There are no category groups</h3>
               </div>
             </div>
           </mat-list-item>
-          <mat-list-item *ngFor="let record of categories" (click)="detailClick(record)" class="hand">
-            <div flex fxFlexAlign="center">
-              {{record.categoryName}}
-            </div>
 
-            <div hide-xs flex fxFlexAlign="center" style="text-align: right; color:gray">
-              <app-currency-formatter style="text-align: right" [numberToFormat]='record.budget'></app-currency-formatter>
-            </div>
 
-            <div flex fxFlexAlign="end" style="padding-bottom:13px;" [style.color]="record.textColor">
-              <app-currency-formatter style="text-align: right" [numberToFormat]='record.expenseValue'></app-currency-formatter>
-            </div>
-            <mat-divider></mat-divider>
+          <span *ngFor="let record of categories" (click)="detailClick(record)" class="hand">
 
-          </mat-list-item>
+            <mat-list-item style="margin-bottom: -25px;">
+
+              <div flex fxFlexAlign="center">
+                {{record.categoryName}}
+              </div>
+
+
+              <div hide-xs flex fxFlexAlign="center" style="text-align: right; color:gray">
+                <app-currency-formatter style="text-align: right" [numberToFormat]='record.budget'></app-currency-formatter>
+              </div>
+
+
+              <div flex fxFlexAlign="end" style="padding-bottom:13px;" [style.color]="record.textColor">
+                <app-currency-formatter style="text-align: right" [numberToFormat]='record.expenseValue'></app-currency-formatter>
+              </div>
+
+             
+            </mat-list-item>
+
+            <mat-list-item>
+                <mat-slider disabled="true" min="0" [max]="record.budget" [value]="record.expenseValue" style="width: 100%; margin-left: 50px; margin-right: 50px;"></mat-slider>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+          </span>
+
+
+          <!--  -->
+
         </mat-list>
 
       </mat-card-content>
