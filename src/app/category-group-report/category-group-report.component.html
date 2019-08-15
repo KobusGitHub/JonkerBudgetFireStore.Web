@@ -46,9 +46,9 @@
             <div flex fxFlexAlign="end" style="padding-bottom:13px;  text-align: right">
               Expense
             </div>
-            <mat-divider></mat-divider>
+           
           </mat-list-item>
-
+          <mat-divider></mat-divider>
 
           <mat-list-item style="height: auto">
             <div flex *ngIf="categories.length === 0">
@@ -83,10 +83,13 @@
              
             </mat-list-item>
 
-            <mat-list-item>
-                <mat-progress-bar mode="determinate" [value]="(record.expenseValue / record.budget) * 100"></mat-progress-bar>
-                <mat-divider></mat-divider>
+            <mat-list-item style="padding-right: 10%;padding-left: 10%;">
+                <mat-progress-bar style="padding-left: 10px; padding-right: 10px" mode="determinate" [value]="(record.expenseValue / record.budget) * 100"></mat-progress-bar>
             </mat-list-item>
+            <mat-divider></mat-divider>
+            <!-- <mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list-item> -->
           </span>
         </mat-list>
 
