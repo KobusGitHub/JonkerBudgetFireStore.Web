@@ -8,12 +8,16 @@
         </mat-list-item>
 
         <mat-list-item>
-          <span class="mat-body-1 tc-grey-500" fxFlex="100" gt-xs="50">
+          <span class="mat-body-1 tc-grey-500" fxFlex="100" >
             Name
           </span>
-          <span class="mat-body-1 tc-grey-500" fxFlex="50" fxHide fxShow.gt-sm>
+          <span class="mat-body-1 tc-grey-500" fxFlex="50" fxHide fxShow.gt-xs>
             Email
           </span>
+          <span class="mat-body-1 tc-grey-500" fxFlex="50" fxHide fxShow.gt-sm>
+            Last Active
+          </span>
+          
           <span class="mat-body-1 tc-grey-500">
             Action
           </span>
@@ -27,11 +31,14 @@
       </mat-list-item> -->
         <mat-list-item *ngFor="let record of users" class="gridRow">
 
-          <span fxFlex="100" gt-sm="50">
+          <span fxFlex="100">
             {{record.name}} {{record.surname}}
           </span>
           <span fxHide fxShow.gt-xs fxFlex="50">
             {{record.email}}
+          </span>
+          <span fxHide fxShow.gt-sm fxFlex="50">
+            {{record.lastActive}}
           </span>
           <span style="text-align: right; width:50px;" class="hand">
             <button mat-icon-button [matMenuTriggerFor]="cardToolbarMenu">

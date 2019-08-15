@@ -84,14 +84,10 @@
             </mat-list-item>
 
             <mat-list-item>
-                <mat-slider disabled="true" min="0" [max]="record.budget" [value]="record.expenseValue" style="width: 100%; margin-left: 50px; margin-right: 50px;"></mat-slider>
+                <mat-progress-bar mode="determinate" [value]="(record.expenseValue / record.budget) * 100"></mat-progress-bar>
                 <mat-divider></mat-divider>
             </mat-list-item>
           </span>
-
-
-          <!--  -->
-
         </mat-list>
 
       </mat-card-content>

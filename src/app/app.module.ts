@@ -40,6 +40,7 @@ import { UsersComponent } from './users/users.component';
 import { RegisterUserComponent } from './users/register-user/register-user.component';
 import { LocalStorageModule } from '@ngx-pwa/local-storage';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 const httpInterceptorProviders: Type<any>[] = [
     RequestInterceptor
@@ -67,6 +68,7 @@ const httpInterceptorProviders: Type<any>[] = [
     imports: [
         MatGridListModule,
         MatSliderModule,
+        MatProgressBarModule,
         AngularFireModule.initializeApp(environment.firebase),
         // AngularFireModule.initializeApp(environment.firebaseDemo),
         AngularFirestoreModule.enablePersistence(),

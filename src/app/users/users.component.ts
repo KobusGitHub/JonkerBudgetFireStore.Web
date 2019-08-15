@@ -20,6 +20,9 @@ export class UsersComponent implements OnInit {
   public isAdmin: boolean = false;
   public showAdmin: boolean = false;
 
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  years = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'];
+
   constructor(private _snackBarService: MatSnackBar, private _router: Router, private _dialogService: TdDialogService,
     private _viewContainerRef: ViewContainerRef, protected secureLocalStorage: LocalStorage,
     private authFirebaseService: AuthFirebaseServiceProvider,
@@ -54,9 +57,9 @@ export class UsersComponent implements OnInit {
   getAllCallback(callbackModel: SqliteCallbackModel) {
     this.users = [];
     if (callbackModel.success) {
-
       if (this.isAdmin) {
         this.users = callbackModel.data;
+        this.setLastActive(this.users);
         return;
       }
 
@@ -66,6 +69,9 @@ export class UsersComponent implements OnInit {
         callbackModel.data.forEach((userModel) => {
           if (userModel.guidId === userGuidId) {
             this.users.push(userModel);
+
+            this.setLastActive(this.users);
+
             return;
           }
         });
@@ -83,6 +89,18 @@ export class UsersComponent implements OnInit {
         duration: 2000
       });
     }
+  }
+
+  setLastActive(userModels) {
+    userModels.forEach((userModel) => {
+      if (userModel.lastActive) {
+        let dt = new Date(userModel.lastActive);
+        userModel.lastActive = dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear();
+
+      } else {
+        userModel.lastActive = '';
+      }
+    });
   }
 
   detailClick(userModel: UserModel) {
