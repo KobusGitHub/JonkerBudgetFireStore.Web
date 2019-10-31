@@ -88,7 +88,8 @@ export class ExpenseReportComponent implements OnInit {
           category: catName,
           expenseValue: rec.expenseValue,
           recordDate: rec.recordDate,
-          recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear()
+          recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear(),
+          comment: rec.comment
         });
       });
 
