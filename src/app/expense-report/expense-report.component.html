@@ -31,7 +31,7 @@
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
-          <mat-list-item *ngIf="records.length > 0" class='listHeading'>
+          <mat-list-item *ngIf="records.length > 0" class='listHeading' style="color: #B81F24">
             <div flex fxFlexAlign="center">
                 Category
             </div>
@@ -74,10 +74,10 @@
 
 
             <mat-list-item>
-              <div flex fxFlexAlign="center">
+              <div flex fxFlexAlign="center" style="font-weight: bold">
                 {{record.category}}
               </div>
-              <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
+              <div flex fxFlexAlign="end" style=" padding-bottom:13px; font-weight: bold">
                 <app-currency-formatter style="text-align: right" [numberToFormat]='record.expenseValue'></app-currency-formatter>
               </div>
 
@@ -86,11 +86,11 @@
             <mat-list-item class="infoStyle">
               <div flex layout="column">
                 <div flex fxFlexAlign="left">
-                  <span class="infoHeadingStyle">Date: </span>{{record.recordDateFormatted}}
+                    <mat-chip style="border-radius: 5px; padding: 2px;"><span class="infoHeadingStyle">Date:</span></mat-chip>&nbsp;{{record.recordDateFormatted}}
                 </div>
 
                 <div *ngIf="record.comment.length > 0" flex fxFlexAlign="left" style="padding-top:5px">
-                    <span class="infoHeadingStyle">Comment: </span>{{record.comment}}
+                    <mat-chip style="border-radius: 5px; padding: 2px;"><span class="infoHeadingStyle">Comment:</span></mat-chip>&nbsp;{{record.comment}}
                 </div>
               </div>
             </mat-list-item>

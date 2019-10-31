@@ -34,19 +34,15 @@
       <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
         <mat-list>
-          <mat-list-item *ngIf="categories.length > 0" class='listHeading'>
+          <mat-list-item *ngIf="categories.length > 0" class='listHeading' style="color: #B81F24">
             <div flex fxFlexAlign="center">
               Category
-            </div>
-
-            <div hide-xs flex fxFlexAlign="center" style="text-align: right;">
-              Budget
             </div>
 
             <div flex fxFlexAlign="end" style="padding-bottom:13px;  text-align: right">
               Expense
             </div>
-           
+
           </mat-list-item>
           <mat-divider></mat-divider>
 
@@ -66,30 +62,45 @@
 
             <mat-list-item style="margin-bottom: -25px;">
 
-              <div flex fxFlexAlign="center">
+              <div flex fxFlexAlign="center" style="font-weight: bold">
                 {{record.categoryName}}
               </div>
 
 
-              <div hide-xs flex fxFlexAlign="center" style="text-align: right; color:gray">
+              <!-- <div hide-xs flex fxFlexAlign="center" style="text-align: right; color:gray">
                 <app-currency-formatter style="text-align: right" [numberToFormat]='record.budget'></app-currency-formatter>
-              </div>
+              </div> -->
 
 
               <div flex fxFlexAlign="end" style="padding-bottom:13px;" [style.color]="record.textColor">
-                <app-currency-formatter style="text-align: right" [numberToFormat]='record.expenseValue'></app-currency-formatter>
+                <app-currency-formatter style="text-align: right; font-weight: bold" [numberToFormat]='record.expenseValue'></app-currency-formatter>
               </div>
 
-             
+
             </mat-list-item>
 
             <mat-list-item style="padding-right: 10%;padding-left: 10%;">
-                <mat-progress-bar style="padding-left: 10px; padding-right: 10px" mode="determinate" [value]="(record.expenseValue / record.budget) * 100"></mat-progress-bar>
+              <mat-progress-bar style="padding-left: 10px; padding-right: 10px" mode="determinate" [value]="(record.expenseValue / record.budget) * 100"></mat-progress-bar>
             </mat-list-item>
+
+
+            <mat-list-item class="infoStyle">
+              <div flex layout="column">
+                <div flex layout="row" fxFlexAlign="left">
+                    <mat-chip style="border-radius: 5px; padding: 2px;"><span class="infoHeadingStyle">Budget:&nbsp;</span></mat-chip>&nbsp;
+                    <app-currency-formatter [numberToFormat]='record.budget' style="margin-top: 5px;"></app-currency-formatter>
+                </div>
+
+                <div flex layout="row" fxFlexAlign="left" style="padding-top:5px" [style.color]="record.textColor">
+                    <mat-chip style="border-radius: 5px; padding: 2px;"><span class="infoHeadingStyle">Remaining:&nbsp;</span></mat-chip>&nbsp;
+                    <app-currency-formatter [numberToFormat]='record.budget - record.expenseValue' style="margin-top: 5px;"></app-currency-formatter>
+                </div>
+              </div>
+            </mat-list-item>
+
+
             <mat-divider></mat-divider>
-            <!-- <mat-list-item>
-              <mat-divider></mat-divider>
-            </mat-list-item> -->
+
           </span>
         </mat-list>
 
