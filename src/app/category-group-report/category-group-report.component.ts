@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./category-group-report.component.scss']
 })
 export class CategoryGroupReportComponent implements OnInit {
+  showDetail = true;
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   years = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'];
 

@@ -4,9 +4,13 @@
     <mat-card>
       <mat-card-title>
         {{categoryName}}
-      </mat-card-title>
-      <mat-card-content style="margin-bottom:0px;" fxLayout="column" flex>
 
+
+      </mat-card-title>
+      <mat-card-content style="margin-bottom:0px; padding-top: 0px" fxLayout="column" flex>
+        <mat-list-item>
+          <mat-slide-toggle [(ngModel)]="showDetail" >Show Detail</mat-slide-toggle>
+        </mat-list-item>
 
         <mat-list>
           <mat-list-item *ngIf="records.length > 0" class='listHeading'>
@@ -30,16 +34,35 @@
               </div>
             </div>
           </mat-list-item>
-          <mat-list-item *ngFor="let record of records" (click)="detailClick(record)" class='hand'>
+
+
+          <div *ngFor="let record of records" (click)="detailClick(record)" class='hand'>
+
+          <mat-list-item>
             <div flex fxFlexAlign="center">
               {{record.recordDateFormatted}}
             </div>
             <div flex fxFlexAlign="end" style=" padding-bottom:13px;">
               <app-currency-formatter style="text-align: right;" [numberToFormat]='record.expenseValue'></app-currency-formatter>
             </div>
+        
+          </mat-list-item>
+
+            <mat-list-item *ngIf="showDetail" class="infoStyle">
+              <div flex layout="column">
+                <div flex fxFlexAlign="left">
+                    <mat-chip style="border-radius: 5px; padding: 2px;"><span class="infoHeadingStyle">Date:</span></mat-chip>&nbsp;{{record.recordDateFormatted}}
+                </div>
+
+                <div *ngIf="record.comment.length > 0" flex fxFlexAlign="left" style="padding-top:5px">
+                    <mat-chip style="border-radius: 5px; padding: 2px;"><span class="infoHeadingStyle">Comment:</span></mat-chip>&nbsp;{{record.comment}}
+                </div>
+              </div>
+            </mat-list-item>
+
             <mat-divider></mat-divider>
 
-          </mat-list-item>
+          </div>
         </mat-list>
 
       </mat-card-content>

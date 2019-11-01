@@ -8,7 +8,7 @@
         </mat-list-item>
 
         <mat-list-item>
-          <span class="mat-body-1 tc-grey-500" fxFlex="100" >
+          <span class="mat-body-1 tc-grey-500" fxFlex="100">
             Name
           </span>
           <span class="mat-body-1 tc-grey-500" fxFlex="50" fxHide fxShow.gt-xs>
@@ -17,7 +17,7 @@
           <span class="mat-body-1 tc-grey-500" fxFlex="50" fxHide fxShow.gt-sm>
             Last Active
           </span>
-          
+
           <span class="mat-body-1 tc-grey-500">
             Action
           </span>
@@ -29,40 +29,64 @@
         <div flex>
         </div>
       </mat-list-item> -->
-        <mat-list-item *ngFor="let record of users" class="gridRow">
 
-          <span fxFlex="100">
-            {{record.name}} {{record.surname}}
-          </span>
-          <span fxHide fxShow.gt-xs fxFlex="50">
-            {{record.email}}
-          </span>
-          <span fxHide fxShow.gt-sm fxFlex="50">
-            {{record.lastActive}}
-          </span>
-          <span style="text-align: right; width:50px;" class="hand">
-            <button mat-icon-button [matMenuTriggerFor]="cardToolbarMenu">
-              <mat-icon matListAvatar class="push-bottom">more_vert</mat-icon>
-            </button>
-            <mat-menu #cardToolbarMenu="matMenu">
-              <button (click)="detailClick(record)" mat-menu-item>
-                <mat-icon>create</mat-icon>
-                <span>Edit</span>
+        <div *ngFor="let record of users" class='gridRow'>
+          <mat-list-item>
+
+            <span fxFlex="100">
+              {{record.name}} {{record.surname}}
+            </span>
+            <span fxHide fxShow.gt-xs fxFlex="50">
+              {{record.email}}
+            </span>
+            <span fxHide fxShow.gt-sm fxFlex="50">
+              {{record.lastActive}}
+            </span>
+            <span style="text-align: right; width:50px;" class="hand">
+              <button mat-icon-button [matMenuTriggerFor]="cardToolbarMenu">
+                <mat-icon matListAvatar class="push-bottom">more_vert</mat-icon>
               </button>
-              <button (click)="resetPasswordClick(record)" mat-menu-item>
-                <mat-icon>create</mat-icon>
-                <span>Reset Password</span>
-              </button>
-              <button *ngIf="currentUserShareToken === record.shareToken" (click)="UpdateEmailClick(record)" mat-menu-item>
-                <mat-icon>create</mat-icon>
-                <span>Update Email</span>
-              </button>
-            </mat-menu>
-          </span>
+              <mat-menu #cardToolbarMenu="matMenu">
+                <button (click)="detailClick(record)" mat-menu-item>
+                  <mat-icon>create</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <button (click)="resetPasswordClick(record)" mat-menu-item>
+                  <mat-icon>create</mat-icon>
+                  <span>Reset Password</span>
+                </button>
+                <button *ngIf="currentUserShareToken === record.shareToken" (click)="UpdateEmailClick(record)" mat-menu-item>
+                  <mat-icon>create</mat-icon>
+                  <span>Update Email</span>
+                </button>
+              </mat-menu>
+            </span>
+
+
+
+          </mat-list-item>
+
+          <mat-list-item  fxShow fxHide.gt-sm class="infoStyle">
+            <div flex layout="column">
+             <div flex  fxShow fxHide.gt-xs fxFlexAlign="left">
+                <mat-chip style="border-radius: 5px; padding: 2px;">
+                  <span class="infoHeadingStyle">Email:</span>
+                </mat-chip>&nbsp;{{record.email}}
+              </div>
+              <div flex  fxShow fxHide.gt-sm fxFlexAlign="left">
+                <mat-chip style="border-radius: 5px; padding: 2px;">
+                  <span class="infoHeadingStyle">Last Active:</span>
+                </mat-chip>&nbsp;{{record.lastActive}}
+              </div>
+              
+
+            </div>
+          </mat-list-item>
+
 
           <mat-divider></mat-divider>
+        </div>
 
-        </mat-list-item>
       </mat-list>
     </div>
     <div flex *ngIf="users.length === 0">

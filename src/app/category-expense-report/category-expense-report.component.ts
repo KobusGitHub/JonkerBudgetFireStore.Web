@@ -12,6 +12,7 @@ import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
 })
 export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
   private subscriptions: any[] = [];
+  showDetail = true;
   catGuidId: string;
   selectedMonth = '';
   selectedYear = '1900';
@@ -79,7 +80,8 @@ export class CategoryExpenseReportComponent implements OnInit, OnDestroy {
             category: this.categoryName,
             expenseValue: rec.expenseValue,
             recordDate: rec.recordDate,
-            recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear()
+            recordDateFormatted: dt.getDate() + ' ' + this.monthNames[(dt.getMonth())] + ' ' + dt.getFullYear(),
+            comment: rec.comment
           });
         }
       });

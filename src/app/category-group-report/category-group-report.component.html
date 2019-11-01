@@ -1,7 +1,7 @@
 <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" style="padding-bottom:60px;">
   <div flex-gt-md="50" flex="100">
     <mat-card *ngIf="!showExport">
-      <mat-card-content>
+      <mat-card-content style="margin: 0px; padding-bottom: 0px;">
         <mat-list>
 
           <mat-list-item>
@@ -18,6 +18,9 @@
                 <mat-option *ngFor="let month of monthNames" [value]="month">{{month}}</mat-option>
               </mat-select>
             </mat-form-field>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-slide-toggle [(ngModel)]="showDetail" >Show Detail</mat-slide-toggle>
           </mat-list-item>
 
         </mat-list>
@@ -84,7 +87,7 @@
             </mat-list-item>
 
 
-            <mat-list-item class="infoStyle">
+            <mat-list-item *ngIf="showDetail" class="infoStyle">
               <div flex layout="column">
                 <div flex layout="row" fxFlexAlign="left">
                     <mat-chip style="border-radius: 5px; padding: 2px;"><span class="infoHeadingStyle">Budget:&nbsp;</span></mat-chip>&nbsp;
