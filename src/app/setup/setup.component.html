@@ -9,30 +9,49 @@
       <mat-card-content>
 
 
+
+        <mat-form-field style="width: 100%">
+          <mat-select placeholder="Current Year" [(ngModel)]='selectedYear' style="padding-bottom: 15px;" required>
+            <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%;">
+          <mat-select placeholder="Current Month" [(ngModel)]='selectedMonth' style="padding-bottom: 15px;" required>
+            <mat-option *ngFor="let month of monthNames" [value]="month">{{month}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%">
+          <input matInput type="number" placeholder="Income" [(ngModel)]="income" maxlength="50">
+        </mat-form-field>
+
+        <div flex fxFlexAlign="center" style="align-self: center; font-size: 10px; color: #b81f24; padding-bottom: 4px;">
+          Store Income in Database
+        </div>
+        <div flex fxFlexAlign="end" style="padding-bottom: 4px;">
+          <mat-checkbox color="primary" style="margin-right: 4px;" [(ngModel)]="storeIncome"></mat-checkbox>
+        </div>
+        <div *ngIf='storeIncome === true' flex fxFlexAlign="end" style="color: #b81f24; font-size: 12px;">
+         Please note your income will be saved in the database as plain text.
+        </div>
+        <div *ngIf='storeIncome !== true' flex fxFlexAlign="end" style="color: black; font-size: 12px;">
+          Your income will be only be saved on this device.
+         </div>
+
+
+        <mat-form-field style="width: 100%; padding-top: 12px; ">
+          <input matInput disabled="disabled" placeholder="Share Token" [(ngModel)]="shareToken" maxlength="50">
+        </mat-form-field>
+        <!-- <button color="secondary" (click)="generateShareTokenClick()" mat-raised-button>Generate Share Token</button> -->
+
+
+     
         
-            <mat-form-field style="width: 100%">
-              <mat-select placeholder="Current Year" [(ngModel)]='selectedYear' style="padding-bottom: 15px;" required>
-                <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field style="width: 100%;">
-              <mat-select placeholder="Current Month" [(ngModel)]='selectedMonth' style="padding-bottom: 15px;" required>
-                <mat-option *ngFor="let month of monthNames" [value]="month">{{month}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-         
-            <mat-form-field style="width: 100%">
-              <input matInput type="number" placeholder="Income" [(ngModel)]="income" maxlength="50">
-            </mat-form-field>
-
-            <mat-form-field style="width: 100%">
-                <input matInput disabled="disabled" placeholder="Share Token" [(ngModel)]="shareToken" maxlength="50">
-            </mat-form-field>
-            <!-- <button color="secondary" (click)="generateShareTokenClick()" mat-raised-button>Generate Share Token</button> -->
        
+
       </mat-card-content>
-      
+
       <mat-card-actions class="text-right">
         <button color="primary" [disabled]="isSaveDisabled()" (click)="saveClick()" mat-raised-button>Save</button>
       </mat-card-actions>

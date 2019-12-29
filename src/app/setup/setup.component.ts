@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorage } from '../../../node_modules/@ngx-pwa/local-storage';
+import { SqliteCallbackModel } from '../../models/sqlite-callback-model';
+import { UserFirebaseServiceProvider } from '../../services';
+import { TdDialogService } from '../../../node_modules/@covalent/core';
+import { UserModel } from '../../models';
 
 @Component({
   selector: 'app-setup',
@@ -17,8 +21,13 @@ export class SetupComponent implements OnInit {
   selectedYear = '1900';
   income: number = 0;
   shareToken = '';
+  storeIncome: boolean = false;
+  userGuidId = '';
+  userModel: UserModel = new UserModel();
 
-  constructor(private _snackBarService: MatSnackBar, private _router: Router, protected secureLocalStorage: LocalStorage,
+  constructor(private _snackBarService: MatSnackBar,
+    private userFirebaseService: UserFirebaseServiceProvider
+    , private _router: Router, protected secureLocalStorage: LocalStorage,
     private _activatedRoute: ActivatedRoute) {
     // tslint:disable-next-line:radix
     this.selectedYear = localStorage.getItem('budgetYear');
@@ -29,6 +38,11 @@ export class SetupComponent implements OnInit {
       this.income = res;
     });
 
+    this.secureLocalStorage.getItem('userGuidId').subscribe((res) => {
+      this.userGuidId = res;
+      this.userFirebaseService.getRecord(this.userGuidId, (e) => this.getRecordCallback(e));
+    });
+
     this.secureLocalStorage.getItem('shareToken').subscribe((res) => {
       this.shareToken = res;
     }, (err) => {
@@ -37,6 +51,22 @@ export class SetupComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  getRecordCallback(callback: SqliteCallbackModel) {
+    if (callback.success) {
+      this.userModel = callback.data;
+      if (this.userModel.budget === 0) {
+        this.storeIncome = false;
+      } else {
+        this.storeIncome = true;
+      }
+      return;
+    }
+
+    this._snackBarService.open('Error getting user', '', {
+      duration: 2000
+    });
   }
 
   isSaveDisabled() {
@@ -72,10 +102,27 @@ export class SetupComponent implements OnInit {
       localStorage.setItem('expense-report-month', this.selectedMonth);
       localStorage.setItem('expense-report-year', this.selectedYear.toString());
 
-      this._snackBarService.open('Saved Successfully', undefined, { duration: 3000 });
-      this._router.navigate(['/']);
+      if (this.storeIncome === true) {
+        this.userModel.budget = this.income;
+      } else {
+        this.userModel.budget = 0;
+      }
+      this.userFirebaseService.updateRecord(this.userModel, (e) => this.updateUserCallback(e));
 
     }, (err) => { });
+
+  }
+
+  updateUserCallback(callback: SqliteCallbackModel) {
+    if (!callback.success) {
+      this._snackBarService.open('Something went wrong updating user! Please contact your Administrator', '', {
+        duration: 2000
+      });
+      return;
+    }
+
+    this._snackBarService.open('Saved Successfully', undefined, { duration: 3000 });
+    this._router.navigate(['/']);
 
   }
 
@@ -94,4 +141,5 @@ export class SetupComponent implements OnInit {
     });
     return uuid;
   }
+
 }

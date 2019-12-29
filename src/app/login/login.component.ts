@@ -60,6 +60,10 @@ export class LoginComponent implements OnInit {
             this.secureLocalStorage.setItem('userGuidId', callbackModel.data[0].guidId).subscribe((res) => { }, (err) => { alert('Error'); });
             this.secureLocalStorage.setItem('isAdmin', callbackModel.data[0].isAdmin).subscribe((res) => { }, (err) => { alert('Error'); });
 
+            if (callbackModel.data[0].budget !== undefined && callbackModel.data[0].budget !== 0) {
+                this.secureLocalStorage.setItem('budgetIncome', callbackModel.data[0].budget).subscribe((res) => { }, (err) => { alert('Error'); });
+            }
+
             this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => {
                 this._router.navigate(['/']);
              }, (err) => { alert('Error'); });

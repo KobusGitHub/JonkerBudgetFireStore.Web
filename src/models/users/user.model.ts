@@ -6,4 +6,5 @@ export class UserModel {
     name: string;
     surname: string;
     lastActive: string;
+    budget: number;
 }

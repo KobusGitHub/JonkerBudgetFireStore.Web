@@ -123,7 +123,8 @@ export class RegisterUserComponent implements OnInit {
       isAdmin: this.frmUser.value.isAdmin,
       name: this.frmUser.value.name,
       surname: this.frmUser.value.surname,
-      lastActive: new Date().toString()
+      lastActive: new Date().toString(),
+      budget: (this.userModel.budget) === undefined ? 0 : this.userModel.budget
     };
     this.userFirebaseService.updateRecord(userCreateModel, (e) => this.updateUserCallback(e));
   }
@@ -143,7 +144,8 @@ export class RegisterUserComponent implements OnInit {
       isAdmin: this.frmUser.value.isAdmin,
       name: this.frmUser.value.name,
       surname: this.frmUser.value.surname,
-      lastActive: new Date().toString()
+      lastActive: new Date().toString(),
+      budget: 0
     };
 
     this.userFirebaseService.insertRecord(userModel, (e) => this.insertUserCallback(e));
