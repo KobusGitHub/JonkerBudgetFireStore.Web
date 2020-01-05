@@ -89,7 +89,9 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
       this.isFavourite = result.data.isFavourite;
       return;
     }
-    alert('Error retrieving data');
+
+    this._snackBarService.open('Error retrieving data', undefined, { duration: 3000 });
+    // alert('Error retrieving data');
   }
 
   buildEmptyModel() {
@@ -209,7 +211,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
     let currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth() + 1;
-    this.currentMonthText = this.monthNames[currentMonth];
+    this.currentMonthText = this.monthNames[currentMonth - 1];
     this.categoryHistoryRecords.push(
       {
         month: this.currentMonthText,
@@ -220,7 +222,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
     let backOneDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
     let backOneYear = backOneDate.getFullYear();
     let backOneMonth = backOneDate.getMonth() + 1;
-    this.oneBackMonthText = this.monthNames[backOneMonth];
+    this.oneBackMonthText = this.monthNames[backOneMonth - 1];
     this.categoryHistoryRecords.push(
       {
         month: this.oneBackMonthText,
@@ -231,7 +233,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
     let backTwoDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
     let backTwoYear = backTwoDate.getFullYear();
     let backTwoMonth = backTwoDate.getMonth() + 1;
-    this.twoBackMonthText = this.monthNames[backTwoMonth];
+    this.twoBackMonthText = this.monthNames[backTwoMonth - 1];
     this.categoryHistoryRecords.push(
       {
         month: this.twoBackMonthText,
@@ -242,7 +244,7 @@ export class CategoryAddModifyComponent implements OnInit, OnDestroy {
     let backThreeDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
     let backThreeYear = backThreeDate.getFullYear();
     let backThreeMonth = backThreeDate.getMonth() + 1;
-    this.threeBackMonthText = this.monthNames[backThreeMonth];
+    this.threeBackMonthText = this.monthNames[backThreeMonth - 1];
     this.categoryHistoryRecords.push(
       {
         month: this.threeBackMonthText,

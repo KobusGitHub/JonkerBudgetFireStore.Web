@@ -195,7 +195,7 @@ export class ExpenseComponent implements OnInit {
       return;
     }
     this._snackBarService.open('Error uploading expense', undefined, { duration: 3000 });
-    alert(JSON.stringify(result.data));
+    // alert(JSON.stringify(result.data));
   }
 
   getNewExpenseCode(): string {
@@ -262,7 +262,7 @@ export class ExpenseComponent implements OnInit {
       return;
     }
     this._snackBarService.open('Error uploading transfer', undefined, { duration: 3000 });
-    alert(JSON.stringify(result.data));
+    // alert(JSON.stringify(result.data));
   }
 
   // forecastClick() {

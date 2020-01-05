@@ -44,8 +44,12 @@ export class LoginComponent implements OnInit {
 
     loginWithEmailPasswordCallback(sqliteCallbackModel: SqliteCallbackModel) {
         if (sqliteCallbackModel.success) {
-            this._notificationService.displayMessage('Logged in successfully');
-            this.getUser(sqliteCallbackModel.data.uid);
+
+            let authKey = sqliteCallbackModel.data.uid;
+            if (authKey !== undefined && authKey !== null && authKey.length > 0) {
+                this._notificationService.displayMessage('Logged in successfully');
+                this.getUser(authKey);
+            }
         } else {
             this._notificationService.displayMessage(sqliteCallbackModel.data.message);
         }
@@ -53,6 +57,7 @@ export class LoginComponent implements OnInit {
 
     getUser(authKey: string) {
         this.userService.getRecordFromAuthKey(authKey, (e) => this.getUserCallback(e));
+
     }
 
     getUserCallback(callbackModel: SqliteCallbackModel) {
@@ -66,7 +71,7 @@ export class LoginComponent implements OnInit {
 
             this.secureLocalStorage.setItem('shareToken', callbackModel.data[0].shareToken).subscribe((res) => {
                 this._router.navigate(['/']);
-             }, (err) => { alert('Error'); });
+            }, (err) => { alert('Error'); });
         } else {
             this._notificationService.displayMessage(callbackModel.data[0].message);
         }

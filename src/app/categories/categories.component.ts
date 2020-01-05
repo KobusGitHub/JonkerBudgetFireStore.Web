@@ -5,6 +5,7 @@ import { ITdDataTableColumn, TdDataTableService, TdDataTableSortingOrder, ITdDat
 import { CategoryModel } from '../../models/categories/category-model';
 import { TdLoadingService } from '@covalent/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '../../../node_modules/@angular/material';
 
 @Component({
   selector: 'app-categories',
@@ -15,7 +16,8 @@ export class CategoriesComponent implements OnInit {
   items: any[];
   haveCategories: boolean = false;
 
-  constructor(private _router: Router, private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
+  constructor(private _snackBarService: MatSnackBar,
+    private _router: Router, private categoryFirebaseServiceProvider: CategoryFirebaseServiceProvider,
     private _loadingService: TdLoadingService) { }
 
   ngOnInit() {
@@ -30,8 +32,10 @@ export class CategoriesComponent implements OnInit {
   getAllCallback(result: SqliteCallbackModel) {
     this._loadingService.resolve('category.list');
     if (result.success === false) {
-      alert('Error');
-      alert(JSON.stringify(result.data));
+      // alert('Error');
+      // alert(JSON.stringify(result.data));
+      // this._snackBarService.open('Error getting all Categories', undefined, { duration: 3000 });
+
     }
     this.items = result.data;
   }

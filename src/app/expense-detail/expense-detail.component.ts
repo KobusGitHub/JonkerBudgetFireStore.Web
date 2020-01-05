@@ -119,7 +119,7 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy  {
       return;
     }
     this._snackBarService.open('Error editing expense', undefined, { duration: 3000 });
-    alert(JSON.stringify(result.data));
+    // alert(JSON.stringify(result.data));
   }
 
 }
